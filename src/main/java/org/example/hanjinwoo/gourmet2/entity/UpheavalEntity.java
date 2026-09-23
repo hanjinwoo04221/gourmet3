@@ -94,6 +94,8 @@ public class UpheavalEntity extends VisualEntity {
         private final int settleAt;
         private float spin;
         private float rattle = (float) JITTER;
+        /** Whether this piece's own block was taken out of the world to be shown lifted instead. */
+        private boolean hidden;
         private boolean settling;
         private boolean settled;
 
@@ -193,6 +195,9 @@ public class UpheavalEntity extends VisualEntity {
             }
             if (piece.settling && !piece.settled && tickCount >= piece.settleAt + RETURN_TICKS) {
                 piece.settled = true;
+                // Home again and about to fade: the ground goes back now, so there is never a moment where the
+                // piece has gone and the cell it came from is still empty.
+                restore(piece);
                 send(piece, new Quaternionf(), new Vector3f(), 0.001F, SHRINK_TICKS);
             }
         }
@@ -203,6 +208,8 @@ public class UpheavalEntity extends VisualEntity {
         super.remove(reason);
         if (!level().isClientSide()) {
             for (Piece piece : pieces) {
+                // Whatever is left over when the effect is done, put the ground back.
+                restore(piece);
                 piece.display.discard();
             }
             pieces.clear();
@@ -304,12 +311,29 @@ public class UpheavalEntity extends VisualEntity {
             Display.BlockDisplay display = new Display.BlockDisplay(EntityType.BLOCK_DISPLAY, level);
             display.load(displayTag(state, pos, lightOf(level, pos), pose(turn, new Vector3f(), 1.0F), 0));
             level.addFreshEntity(display);
-            pieces.add(new Piece(display, state, pos.immutable(), turn, axis, spin, target, settleAt));
+            Piece piece = new Piece(display, state, pos.immutable(), turn, axis, spin, target, settleAt);
+            // Take the real block out of the world and leave nothing visible in its place, so the display standing
+            // over that cell reads as the block itself lifting out of the ground. A barrier rather than air: it
+            // keeps the light and the collision of the cell for the moment it is standing in for, and is put back
+            // in remove() whatever happens to the effect.
+            piece.hidden = level.setBlock(pos, Blocks.BARRIER.defaultBlockState(), 3);
+            pieces.add(piece);
         }
         // The hit itself throws dust: what the blow knocked off the ground it landed on.
         for (Piece piece : pieces) {
             dust(piece, 2, 1);
         }
+    }
+
+    /**
+     * Puts a piece's own block back exactly as it was. Only if that cell still holds the placeholder this left
+     * there: anything a player has done to it since is theirs and is left alone.
+     */
+    private void restore(Piece piece) {
+        if (piece.hidden && level().getBlockState(piece.pos).is(Blocks.BARRIER)) {
+            level().setBlock(piece.pos, piece.state, 3);
+        }
+        piece.hidden = false;
     }
 
     /**
@@ -354,7 +378,10 @@ public class UpheavalEntity extends VisualEntity {
     private static boolean isLooseGround(ServerLevel level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
         if (state.isAir() || !state.getFluidState().isEmpty() || state.is(Blocks.BEDROCK)
-                || state.hasBlockEntity() || state.getCollisionShape(level, pos).isEmpty()) {
+                || state.hasBlockEntity() || state.getCollisionShape(level, pos).isEmpty()
+                || state.getLightEmission() > 0 || state.is(Blocks.BARRIER)) {
+            // Light sources are left out: taking one out of the world would darken the spot for as long as the
+            // piece is up, which reads as a bug rather than as a block being lifted.
             return false;
         }
         for (Direction side : Direction.values()) {

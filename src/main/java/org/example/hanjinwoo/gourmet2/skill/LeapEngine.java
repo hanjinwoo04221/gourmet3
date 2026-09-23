@@ -9,12 +9,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -24,6 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.example.hanjinwoo.gourmet2.compat.CombatAnimations;
 import org.example.hanjinwoo.gourmet2.data.TorikoData;
 import org.example.hanjinwoo.gourmet2.entity.ShockwaveRingEntity;
+import org.example.hanjinwoo.gourmet2.entity.UpheavalEntity;
 import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.registry.ModDamageTypes;
 
@@ -79,8 +77,11 @@ public final class LeapEngine {
     private static final double GROUND_LIFT_BASE_RISE = 1.2;
     private static final double GROUND_LIFT_RISE_PER_DAMAGE = 0.28;
     private static final double GROUND_LIFT_MAX_RISE = 4.5;
-    /** Hard cap on the blocks one launch throws, so no amount of strength can stall the server. */
-    private static final int GROUND_LIFT_MAX_BLOCKS = 24;
+    /** How many blocks the burst is made of, and how many more each point of damage past the threshold adds. */
+    private static final double GROUND_LIFT_BASE_BLOCKS = 6.0;
+    private static final double GROUND_LIFT_BLOCKS_PER_DAMAGE = 0.8;
+    /** How close a new burst may land to one that is still breaking up before it is left out. */
+    private static final double GROUND_LIFT_MIN_SPACING = 2.0;
 
     /** How far ahead the crosshair can pick an entity to fly at. */
     private static final double TARGET_RANGE = 24.0;
@@ -307,11 +308,10 @@ public final class LeapEngine {
     }
 
     /**
-     * Tears the launch point up when the player is strong enough to do it. The top block of each column
-     * around them is thrown into the air and falls back onto the column it came from, so the ground reads
-     * as being lifted without anything actually being destroyed. Both the area and the height grow with how
-     * far past {@link #GROUND_LIFT_MIN_DAMAGE} the player's attack damage is, and the number of blocks is
-     * capped so no amount of strength can stall the server.
+     * Tears the launch point up when the player is strong enough to do it: the same burst a hard blow leaves on
+     * terrain, centred on the block the leap pushes off from, so both read the same way rather than one being
+     * displays and the other falling blocks. Both the area and the lift grow with how far past
+     * {@link #GROUND_LIFT_MIN_DAMAGE} the player's attack damage is.
      */
     private static void liftGround(ServerPlayer player) {
         double damage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
@@ -323,40 +323,19 @@ public final class LeapEngine {
                 GROUND_LIFT_BASE_RADIUS + over * GROUND_LIFT_RADIUS_PER_DAMAGE);
         double rise = Math.min(GROUND_LIFT_MAX_RISE,
                 GROUND_LIFT_BASE_RISE + over * GROUND_LIFT_RISE_PER_DAMAGE);
-        // A column every couple of blocks: a sparse grid of ground jumping reads better than a solid slab
-        // and keeps the entity count down, and it is the same picture whatever the strength.
-        int stride = Math.max(1, Mth.ceil(radius / 2.0));
-        int reach = Mth.ceil(radius);
-        int centerX = Mth.floor(player.getX());
-        int centerZ = Mth.floor(player.getZ());
-        ServerLevel level = (ServerLevel) player.level();
-        // A falling block is pulled down 0.04 a tick, so this is the speed that carries it `rise` blocks up.
-        float upward = (float) Math.sqrt(2.0 * 0.04 * rise);
+        int blocks = (int) Math.round(GROUND_LIFT_BASE_BLOCKS + over * GROUND_LIFT_BLOCKS_PER_DAMAGE);
 
-        int thrown = 0;
-        for (int dx = -reach; dx <= reach && thrown < GROUND_LIFT_MAX_BLOCKS; dx += stride) {
-            for (int dz = -reach; dz <= reach && thrown < GROUND_LIFT_MAX_BLOCKS; dz += stride) {
-                if (dx * dx + dz * dz > radius * radius) {
-                    continue;
-                }
-                int x = centerX + dx;
-                int z = centerZ + dz;
-                BlockPos surface = new BlockPos(x,
-                        level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1, z);
-                BlockState state = level.getBlockState(surface);
-                if (state.isAir() || !state.getFluidState().isEmpty() || state.is(Blocks.BEDROCK)) {
-                    continue;
-                }
-                FallingBlockEntity block = FallingBlockEntity.fall(level, surface, state);
-                block.setDeltaMovement((level.random.nextDouble() - 0.5) * 0.12, upward,
-                        (level.random.nextDouble() - 0.5) * 0.12);
-                block.hurtMarked = true;
-                thrown++;
-            }
-        }
-        if (thrown == 0) {
+        ServerLevel level = (ServerLevel) player.level();
+        BlockPos under = player.blockPosition().below();
+        // Ground already coming apart there waits for it to settle, the same as a blow into it would.
+        if (!level.getEntitiesOfClass(UpheavalEntity.class,
+                new AABB(under).inflate(GROUND_LIFT_MIN_SPACING)).isEmpty()) {
             return;
         }
+        UpheavalEntity burst = new UpheavalEntity(level);
+        burst.moveTo(under.getX() + 0.5, under.getY() + 1.0, under.getZ() + 0.5, 0.0F, 0.0F);
+        burst.setBurst(radius, rise, blocks, player.getLookAngle());
+        level.addFreshEntity(burst);
         ShockwaveRingEntity ring = new ShockwaveRingEntity(level);
         ring.moveTo(player.getX(), player.getY() + 0.1, player.getZ(), player.getYRot(), 0.0F);
         level.addFreshEntity(ring);

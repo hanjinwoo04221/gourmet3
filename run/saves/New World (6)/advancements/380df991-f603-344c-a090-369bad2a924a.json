@@ -48,5 +48,143 @@
     },
     "done": true
   },
+  "minecraft:recipes/decorations/ladder": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "epicfight:recipes/combat/wooden_tachi": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "epicfight:recipes/combat/wooden_longsword": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/campfire": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/wooden_hoe": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/wooden_pickaxe": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/wooden_axe": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "epicfight:recipes/combat/wooden_spear": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "epicfight:recipes/combat/wooden_greatsword": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/wooden_shovel": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/wooden_sword": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "epicfight:recipes/combat/wooden_dagger": {
+    "criteria": {
+      "has_stick": "2026-09-24 03:50:51 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/glass": {
+    "criteria": {
+      "has_smelts_to_glass": "2026-09-24 03:54:12 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/red_sandstone": {
+    "criteria": {
+      "has_sand": "2026-09-24 03:54:12 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/mangrove_boat": {
+    "criteria": {
+      "in_water": "2026-09-24 03:57:20 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/acacia_boat": {
+    "criteria": {
+      "in_water": "2026-09-24 03:57:20 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/cherry_boat": {
+    "criteria": {
+      "in_water": "2026-09-24 03:57:20 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/bamboo_raft": {
+    "criteria": {
+      "in_water": "2026-09-24 03:57:20 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/spruce_boat": {
+    "criteria": {
+      "in_water": "2026-09-24 03:57:20 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/birch_boat": {
+    "criteria": {
+      "in_water": "2026-09-24 03:57:20 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/oak_boat": {
+    "criteria": {
+      "in_water": "2026-09-24 03:57:20 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/jungle_boat": {
+    "criteria": {
+      "in_water": "2026-09-24 03:57:20 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/dark_oak_boat": {
+    "criteria": {
+      "in_water": "2026-09-24 03:57:20 +0900"
+    },
+    "done": true
+  },
   "DataVersion": 3955
 }
