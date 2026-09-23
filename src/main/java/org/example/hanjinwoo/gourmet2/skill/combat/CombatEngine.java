@@ -1,13 +1,21 @@
 package org.example.hanjinwoo.gourmet2.skill.combat;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.example.hanjinwoo.gourmet2.compat.CombatAnimations;
 import org.example.hanjinwoo.gourmet2.data.TorikoData;
+import org.example.hanjinwoo.gourmet2.entity.UpheavalEntity;
 import org.example.hanjinwoo.gourmet2.fx.FxDispatch;
 import org.example.hanjinwoo.gourmet2.fx.SkillFx;
 import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
@@ -16,6 +24,10 @@ import org.example.hanjinwoo.gourmet2.skill.Hurt;
 import org.example.hanjinwoo.gourmet2.skill.SkillContext;
 import org.example.hanjinwoo.gourmet2.skill.SkillEngine;
 import org.example.hanjinwoo.gourmet2.skill.Targeting;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Server side of combat mode: a style's attack groups, a dodge dash with brief invulnerability and a
@@ -66,6 +78,38 @@ public final class CombatEngine {
     private static final float GUARD_DAMAGE_FACTOR = 0.25F;
     private static final int PERFECT_GUARD_TICKS = 6;
     private static final double GUARD_CONE = 0.3;
+
+    /**
+     * "힘": a bare player has an attack damage of 1, and every point above that adds this much to what a
+     * blow does. Cell level is applied on top of it by {@code ctx.damage}.
+     */
+    private static final double BASE_ATTACK_DAMAGE = 1.0;
+    private static final double STRENGTH_PER_DAMAGE = 0.25;
+
+    /**
+     * Striking terrain with a blow heaves it up. The heave is worth the player's strength times how fast they
+     * are actually moving — the length of their velocity, not the speed attribute — and it has to clear
+     * {@link #HEAVE_MIN_POWER} before anything moves at all, so a punch thrown at a wall while standing still
+     * is just a punch.
+     */
+    private static final double HEAVE_MIN_POWER = 2.5;
+    private static final double HEAVE_SPEED_WEIGHT = 6.0;
+    private static final double HEAVE_BASE_RADIUS = 1.2;
+    private static final double HEAVE_RADIUS_PER_POWER = 0.28;
+    /**
+     * The swell is kept to a few blocks across and a few high: the power shows in how tall and how uneven it
+     * comes up, and the whole thing stays a handful of block writes rather than a chunk of terrain rewritten
+     * on every blow.
+     */
+    private static final double HEAVE_MAX_RADIUS = 3.5;
+    private static final double HEAVE_BASE_RISE = 1.0;
+    private static final double HEAVE_RISE_PER_POWER = 0.12;
+    private static final double HEAVE_MAX_RISE = 4.0;
+    /** How many blocks the crater is made of, and how many more each point of power adds to it. */
+    private static final double HEAVE_BASE_BLOCKS = 6.0;
+    private static final double HEAVE_BLOCKS_PER_POWER = 0.8;
+    /** How close a new burst may land to one that is still breaking up before it is left out. */
+    private static final double HEAVE_MIN_SPACING = 2.0;
 
     private CombatEngine() {}
 
@@ -168,15 +212,17 @@ public final class CombatEngine {
         int step = data.groupTimer(groupIndex) > 0 ? data.groupStep(groupIndex) : 0;
         ComboMove move = group.move(step);
         boolean finisher = group.isFinisher(step);
-        // A move whose animation lands two blows splits its damage over both of them.
-        float hitDamage = move.twoHits() ? move.damage() * 0.5F : move.damage();
+        // A move whose animation lands two blows splits its damage over both of them, and "힘" scales the lot.
+        float hitDamage = (move.twoHits() ? move.damage() * 0.5F : move.damage()) * strengthScale(player);
         boolean immediateKnockback = finisher && !move.twoHits();
+        // Read before the lunge below is added to it: the heave wants the speed carried into the blow.
+        double movingSpeed = player.getDeltaMovement().horizontalDistance();
 
         player.swing(net.minecraft.world.InteractionHand.MAIN_HAND, true);
         lunge(player, finisher ? 0.5 : 0.3);
         Hurt.playSound(ctx, player.position(), SoundEvents.PLAYER_ATTACK_SWEEP, 0.8F, 1.0F + step * 0.15F);
 
-        for (LivingEntity victim : inFront(player)) {
+        for (LivingEntity victim : inLimbs(player, group)) {
             // Chained hits must land even inside the victim's post-hit invulnerability window.
             victim.invulnerableTime = 0;
             if (Hurt.apply(ctx, victim, ModDamageTypes.NAIL, ctx.damage(hitDamage))) {
@@ -191,18 +237,24 @@ public final class CombatEngine {
         data.setGroupTimer(groupIndex, Math.round(COMBO_WINDOW / style.attackSpeed()));
         data.setCombatCooldown(move.lockTicks(style.attackSpeed()));
 
+        // A blow that lands on terrain heaves the ground around it up, scaled by strength and by how fast the
+        // player was moving when they threw it.
+        upheave(player, group, movingSpeed);
+
         if (move.twoHits()) {
             data.setDelayedHitTicks(move.secondHitDelay());
             data.setDelayedHitDamage(hitDamage);
             // A chain's last move still knocks away on its second blow; the earlier moves stay in place.
             data.setDelayedHitKnockback(finisher);
+            data.setDelayedHitGroup(groupIndex);
         }
     }
 
     /** The second blow of a move whose animation lands two, delivered a few ticks after the first. */
     private static void deliverDelayedHit(SkillContext ctx, TorikoData data) {
         ServerPlayer player = ctx.player();
-        for (LivingEntity victim : inFront(player)) {
+        // The same limb as its first blow: a spin's second kick sweeps where the spin does.
+        for (LivingEntity victim : inLimbs(player, groupOf(data, data.delayedHitGroup()))) {
             victim.invulnerableTime = 0;
             if (Hurt.apply(ctx, victim, ModDamageTypes.NAIL, ctx.damage(data.delayedHitDamage()))) {
                 if (data.delayedHitKnockback()) {
@@ -363,6 +415,169 @@ public final class CombatEngine {
     }
 
     // -------------------------------------------------------------------- helpers
+
+    /**
+     * A limb a blow is thrown with, as a box in the player's own frame: x is the character's right, y is up
+     * from their feet, z is forward, all in blocks. A blow lands where the limb actually is, so what a swing
+     * can reach is the shape of the swing rather than a cone drawn out in front of the eyes.
+     */
+    private record Limb(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {}
+
+    /** The limbs each attack form is thrown with, keyed by {@link AttackGroup#id()}. */
+    private static final Map<String, List<Limb>> LIMBS = Map.of(
+            // Fists and feet: everything in front of the body, from the shins to the chin.
+            "basic", List.of(new Limb(-0.7, 0.2, 0.1, 0.7, 1.85, 2.3)),
+            // Legs: low and long — the arc a kick sweeps.
+            "kick", List.of(new Limb(-1.3, 0.05, 0.15, 1.3, 1.4, 2.6)),
+            // Arms: waist to over the head, out in front.
+            "hand", List.of(new Limb(-1.1, 0.8, 0.15, 1.1, 2.05, 2.2)),
+            // Spins: the whole body, all the way round.
+            "spin", List.of(new Limb(-2.4, 0.05, -2.4, 2.4, 1.95, 2.4)));
+
+    private static List<Limb> limbsOf(AttackGroup group) {
+        return LIMBS.getOrDefault(group.id(), LIMBS.get("basic"));
+    }
+
+    /** The attack group a stored index refers to, falling back to the style's first when it is stale. */
+    private static AttackGroup groupOf(TorikoData data, int groupIndex) {
+        List<AttackGroup> groups = CombatStyles.get(data.combatStyle()).groups();
+        return groups.get(groupIndex >= 0 && groupIndex < groups.size() ? groupIndex : 0);
+    }
+
+    /** "힘" as a multiplier on a blow: 1 for a bare player, more for anything adding attack damage. */
+    private static float strengthScale(ServerPlayer player) {
+        return (float) (1.0
+                + Math.max(0.0, player.getAttributeValue(Attributes.ATTACK_DAMAGE) - BASE_ATTACK_DAMAGE)
+                * STRENGTH_PER_DAMAGE);
+    }
+
+    /** Everything standing in the way of the limb this blow is thrown with. */
+    private static List<LivingEntity> inLimbs(ServerPlayer player, AttackGroup group) {
+        List<Limb> limbs = limbsOf(group);
+        Vec3 feet = player.position();
+        double yaw = Math.toRadians(player.getYRot());
+        Vec3 forward = new Vec3(-Math.sin(yaw), 0.0, Math.cos(yaw));
+        Vec3 right = new Vec3(-Math.cos(yaw), 0.0, -Math.sin(yaw));
+        List<LivingEntity> hits = new ArrayList<>();
+        for (LivingEntity victim : player.level().getEntitiesOfClass(LivingEntity.class,
+                player.getBoundingBox().inflate(2.8),
+                candidate -> candidate != player && candidate.isPickable())) {
+            if (reaches(limbs, feet, forward, right, victim.getBoundingBox())) {
+                hits.add(victim);
+            }
+        }
+        return hits;
+    }
+
+    /**
+     * Whether the limb's box overlaps anything of this body. The body is sampled rather than simplified to its
+     * centre, so a kick that only gets as high as a tall mob's legs still counts as reaching it.
+     */
+    private static boolean reaches(List<Limb> limbs, Vec3 feet, Vec3 forward, Vec3 right, AABB body) {
+        for (int i = 0; i <= 2; i++) {
+            for (int j = 0; j <= 2; j++) {
+                for (int k = 0; k <= 2; k++) {
+                    Vec3 point = new Vec3(
+                            Mth.lerp(i * 0.5, body.minX, body.maxX),
+                            Mth.lerp(j * 0.5, body.minY, body.maxY),
+                            Mth.lerp(k * 0.5, body.minZ, body.maxZ));
+                    if (inside(limbs, feet, forward, right, point)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean inside(List<Limb> limbs, Vec3 feet, Vec3 forward, Vec3 right, Vec3 point) {
+        Vec3 local = point.subtract(feet);
+        double x = local.dot(right);
+        double y = local.y;
+        double z = local.dot(forward);
+        for (Limb limb : limbs) {
+            if (x >= limb.minX() && x <= limb.maxX()
+                    && y >= limb.minY() && y <= limb.maxY()
+                    && z >= limb.minZ() && z <= limb.maxZ()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * The block a blow lands on, or null when it swings through air. Only terrain the limb reaches counts, and
+     * not what the player is already standing in or on.
+     */
+    private static BlockPos struckBlock(ServerPlayer player, AttackGroup group) {
+        List<Limb> limbs = limbsOf(group);
+        Vec3 feet = player.position();
+        double yaw = Math.toRadians(player.getYRot());
+        Vec3 forward = new Vec3(-Math.sin(yaw), 0.0, Math.cos(yaw));
+        Vec3 right = new Vec3(-Math.cos(yaw), 0.0, -Math.sin(yaw));
+        AABB standing = player.getBoundingBox();
+        ServerLevel level = (ServerLevel) player.level();
+        AABB searched = player.getBoundingBox().inflate(2.8, 1.0, 2.8).expandTowards(forward.scale(0.6));
+        for (BlockPos pos : BlockPos.betweenClosed(
+                Mth.floor(searched.minX), Mth.floor(searched.minY), Mth.floor(searched.minZ),
+                Mth.floor(searched.maxX), Mth.floor(searched.maxY), Mth.floor(searched.maxZ))) {
+            BlockState state = level.getBlockState(pos);
+            if (state.isAir()) {
+                continue;
+            }
+            // Checked before bounds(): an empty shape — grass, a torch, a sign, anything with no collision —
+            // has no bounds to ask for and throws if you ask anyway.
+            VoxelShape shape = state.getCollisionShape(level, pos);
+            if (shape.isEmpty()) {
+                continue;
+            }
+            AABB box = shape.bounds().move(pos);
+            if (standing.intersects(box)) {
+                continue;
+            }
+            if (reaches(limbs, feet, forward, right, box)) {
+                return pos.immutable();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * A blow that lands on terrain heaves it up. The swell is worth the player's strength times how fast they
+     * were moving when they threw it, and every column comes up by its own amount — some not at all — so the
+     * ground rises at uneven angles instead of as one flat slab. Nothing is destroyed: each column swells
+     * upward in the material it already was.
+     */
+    private static void upheave(ServerPlayer player, AttackGroup group, double movingSpeed) {
+        BlockPos struck = struckBlock(player, group);
+        if (struck == null) {
+            return;
+        }
+        double power = player.getAttributeValue(Attributes.ATTACK_DAMAGE) * (1.0 + movingSpeed * HEAVE_SPEED_WEIGHT);
+        if (power < HEAVE_MIN_POWER) {
+            return;
+        }
+        double radius = Math.min(HEAVE_MAX_RADIUS, HEAVE_BASE_RADIUS + power * HEAVE_RADIUS_PER_POWER);
+        double rise = Math.min(HEAVE_MAX_RISE, HEAVE_BASE_RISE + power * HEAVE_RISE_PER_POWER);
+        int blocks = (int) Math.round(HEAVE_BASE_BLOCKS + power * HEAVE_BLOCKS_PER_POWER);
+        ServerLevel level = (ServerLevel) player.level();
+        // One at a time in any one place: ground that is already coming apart there waits until it has settled
+        // before it can be broken open again, so hammering one spot does not stack craters on top of each other.
+        // Anything still breaking up nearby counts, whoever threw it.
+        if (!level.getEntitiesOfClass(UpheavalEntity.class,
+                new AABB(struck).inflate(HEAVE_MIN_SPACING)).isEmpty()) {
+            return;
+        }
+        // Block displays rather than terrain: the ground looks like it came up and settles back, and nothing is
+        // placed or broken. The crater puts itself away when its owner times out.
+        UpheavalEntity crater = new UpheavalEntity(level);
+        crater.moveTo(struck.getX() + 0.5, struck.getY() + 1.0, struck.getZ() + 0.5, 0.0F, 0.0F);
+        // The way the blow was thrown travels with it: what the ground does follows the strike's direction.
+        crater.setBurst(radius, rise, blocks, player.getLookAngle());
+        level.addFreshEntity(crater);
+        level.playSound(null, struck.getX() + 0.5, struck.getY() + 1.0, struck.getZ() + 0.5,
+                SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 0.5F, 0.6F);
+    }
 
     private static java.util.List<LivingEntity> inFront(ServerPlayer player) {
         Vec3 eye = player.getEyePosition();

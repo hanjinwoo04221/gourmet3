@@ -62,6 +62,8 @@ public final class ClientSetup {
         event.registerEntityRenderer(ModEntities.LEG_KNIFE_SLASH.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ModEntities.KI_AURA.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ModEntities.SHOCKWAVE_RING.get(), ShockwaveRingRenderer::new);
+        // A crater draws only its own block displays, so its owner has nothing to render.
+        event.registerEntityRenderer(ModEntities.UPHEAVAL.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }
 
     /** Effect availability is cached per resource-pack stack, so invalidate it on reload. */

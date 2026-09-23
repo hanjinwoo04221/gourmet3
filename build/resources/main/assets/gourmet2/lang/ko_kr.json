@@ -10,6 +10,7 @@
   "key.gourmet2.skill_settings": "기술 위력 설정 열기",
   "key.gourmet2.attack_group_2": "두 번째 공격 묶음 (컴뱃)",
   "key.gourmet2.attack_group_3": "세 번째 공격 묶음 (컴뱃)",
+  "key.gourmet2.leap": "차지 도약 (누르고 있다가 떼기)",
 
   "skill.gourmet2.nail_punch": "네일 펀치",
   "skill.gourmet2.nail_punch.desc": "눌러서 충전하면 드릴 펀치 연타로 이어진다. 오래 충전할수록 더 많이 연타한다.",

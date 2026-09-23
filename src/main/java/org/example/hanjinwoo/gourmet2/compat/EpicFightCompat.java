@@ -62,7 +62,9 @@ public final class EpicFightCompat {
             Map.entry("leg_knife_charge", 56), Map.entry("flying_fork_charge", 56), Map.entry("flying_fork_shot", 10),
             Map.entry("flying_knife_charge", 56), Map.entry("flying_knife_shot", 12), Map.entry("intimidation", 34),
             Map.entry("demon_form", 46), Map.entry("ki_release", 40), Map.entry("food_immersion", 84),
-            Map.entry("leap_charge", 24), Map.entry("leap", 16));
+            Map.entry("leap_charge", 24), Map.entry("leap_hold", 12),
+            Map.entry("leap", 16), Map.entry("leap_up", 16),
+            Map.entry("leap_fly", 12), Map.entry("leap_up_fly", 12));
 
     /** Accessors keyed by "<animationDir>/<clip>". */
     private static final Map<String, AnimationManager.AnimationAccessor<? extends StaticAnimation>> CLIPS = new HashMap<>();

@@ -8,7 +8,6 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.example.hanjinwoo.gourmet2.Config;
 import org.example.hanjinwoo.gourmet2.skill.ActiveSkill;
 import org.example.hanjinwoo.gourmet2.skill.CellEvolution;
-import org.example.hanjinwoo.gourmet2.skill.LeapEngine;
 import org.example.hanjinwoo.gourmet2.skill.combat.CombatStyles;
 import org.example.hanjinwoo.gourmet2.skill.SkillType;
 import org.jetbrains.annotations.Nullable;
@@ -81,7 +80,23 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
      */
     private transient boolean leapCharging;
     private transient int leapChargeTicks;
-    private transient int leapTicks;
+    /**
+     * Ticks of dash left, or {@link #NO_LEAP}. A dash counts down to 0, and 0 is the tick it settles on — so
+     * "no leap" needs its own value rather than sharing 0 with "just made the last step".
+     */
+    private transient int leapTicks = NO_LEAP;
+    /** No leap running. */
+    private static final int NO_LEAP = -1;
+    /**
+     * Distance the current dash set out to cover. Air resistance bleeds the speed off as the leap flies, and
+     * how far along it is decides how much has been bled, so the launch distance is kept for the profile.
+     */
+    private transient double leapTravel;
+    /**
+     * Ticks the dash has been flying. The dash needs a plain clock, and the tick budget is not one — that is
+     * stretched whenever the leap is slowed down — so this counts separately for pacing the held flight pose.
+     */
+    private transient int leapElapsed;
     private transient Vec3 leapAim = Vec3.ZERO;
     /** The entity the dash is homing on, or -1 for "just fly where the crosshair pointed". */
     private transient int leapTargetId = -1;
@@ -94,6 +109,8 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     private transient int delayedHitTicks;
     private transient float delayedHitDamage;
     private transient boolean delayedHitKnockback;
+    /** Which attack group the delayed hit belongs to, so its second blow is thrown with the same limb. */
+    private transient int delayedHitGroup;
 
     /** Passive regeneration accumulator. Not worth persisting. */
     private transient int regenTimer = 0;
@@ -544,8 +561,12 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
 
     public int leapChargeTicks() { return leapChargeTicks; }
 
-    /** Counts the wind-up up to a full charge, which is as far as a leap ever reaches. */
-    public void tickLeapCharge() { leapChargeTicks = Math.min(leapChargeTicks + 1, LeapEngine.MAX_CHARGE_TICKS); }
+    /**
+     * Counts the wind-up on. It is deliberately not capped: the leap clamps how much of it is worth
+     * charge, and the engine uses the running count to pace the held pose so a long hold keeps its stance
+     * instead of falling back to the idle one.
+     */
+    public void tickLeapCharge() { leapChargeTicks++; }
 
     public int leapTicks() { return leapTicks; }
     public void setLeapTicks(int ticks) { leapTicks = Math.max(0, ticks); }
@@ -553,14 +574,22 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     public void setLeapAim(Vec3 aim) { leapAim = aim; }
     public int leapTargetId() { return leapTargetId; }
     public void setLeapTargetId(int id) { leapTargetId = id; }
-    public boolean isLeaping() { return leapTicks > 0; }
+    public double leapTravel() { return leapTravel; }
+    public void setLeapTravel(double travel) { leapTravel = travel; }
+    public int leapElapsed() { return leapElapsed; }
+    public void tickLeapElapsed() { leapElapsed++; }
+    public void resetLeapElapsed() { leapElapsed = 0; }
+    /** True from the launch until the tick that settles it, which is the step after the last one. */
+    public boolean isLeaping() { return leapTicks >= NO_LEAP + 1; }
 
     /** Ends both halves of the leap: the wind-up and the dash. */
     public void stopLeap() {
         leapCharging = false;
         leapChargeTicks = 0;
-        leapTicks = 0;
+        leapTicks = NO_LEAP;
         leapTargetId = -1;
+        leapTravel = 0.0;
+        leapElapsed = 0;
     }
 
     public int dodgeTicks() { return dodgeTicks; }
@@ -573,6 +602,8 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     public void setDelayedHitDamage(float damage) { delayedHitDamage = damage; }
     public boolean delayedHitKnockback() { return delayedHitKnockback; }
     public void setDelayedHitKnockback(boolean knockback) { delayedHitKnockback = knockback; }
+    public int delayedHitGroup() { return delayedHitGroup; }
+    public void setDelayedHitGroup(int group) { delayedHitGroup = group; }
     public boolean isGuarding() { return guarding; }
     public int guardTicks() { return guardTicks; }
 

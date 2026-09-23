@@ -96,7 +96,7 @@ key_key.right:key.keyboard.d
 key_key.jump:key.keyboard.space
 key_key.sneak:key.keyboard.left.shift
 key_key.sprint:key.keyboard.left.control
-key_key.drop:key.keyboard.q
+key_key.drop:key.keyboard.unknown
 key_key.inventory:key.keyboard.e
 key_key.chat:key.keyboard.unknown
 key_key.playerlist:key.keyboard.tab
@@ -146,6 +146,7 @@ key_key.gourmet2.combat_style:key.keyboard.n
 key_key.gourmet2.dodge:key.keyboard.x
 key_key.gourmet2.attack_group_2:key.keyboard.f
 key_key.gourmet2.attack_group_3:key.keyboard.t
+key_key.gourmet2.leap:key.keyboard.q
 soundCategory_master:0.6142384105960265
 soundCategory_music:1.0
 soundCategory_record:1.0

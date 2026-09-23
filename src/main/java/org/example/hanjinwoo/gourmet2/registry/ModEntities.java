@@ -12,6 +12,7 @@ import org.example.hanjinwoo.gourmet2.entity.FlyingKnifeEntity;
 import org.example.hanjinwoo.gourmet2.entity.KiAuraEntity;
 import org.example.hanjinwoo.gourmet2.entity.LegKnifeSlashEntity;
 import org.example.hanjinwoo.gourmet2.entity.ShockwaveRingEntity;
+import org.example.hanjinwoo.gourmet2.entity.UpheavalEntity;
 
 public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> REGISTER =
@@ -77,6 +78,17 @@ public final class ModEntities {
                     .noSummon()
                     .fireImmune()
                     .build("shockwave_ring"));
+
+    /** The invisible owner of a crater of block displays; it renders nothing itself. */
+    public static final DeferredHolder<EntityType<?>, EntityType<UpheavalEntity>> UPHEAVAL =
+            REGISTER.register("upheaval", () -> EntityType.Builder
+                    .<UpheavalEntity>of(UpheavalEntity::new, MobCategory.MISC)
+                    .sized(0.1F, 0.1F)
+                    .clientTrackingRange(8)
+                    .updateInterval(4)
+                    .noSummon()
+                    .fireImmune()
+                    .build("upheaval"));
 
     private ModEntities() {}
 }

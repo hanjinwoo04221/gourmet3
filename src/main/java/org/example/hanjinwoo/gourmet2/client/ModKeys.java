@@ -85,7 +85,7 @@ public final class ModKeys {
             CATEGORY);
 
     /**
-     * The charged leap: hold it while standing on (or holding on to) a surface to wind up, let go to
+     * The charged leap: hold it while against a surface — floor, wall or ceiling — to wind up, let go to
      * launch in the direction being looked at. Rebindable like every other key here.
      */
     public static final KeyMapping LEAP = new KeyMapping(
