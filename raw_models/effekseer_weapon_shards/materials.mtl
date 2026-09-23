@@ -1,0 +1,9 @@
+# Made for effekseer_weapon_shards.obj
+# Placeholder material - the shape is what matters; assign the real glow/additive
+# material inside the Effekseer Editor after import (see README.md in this folder).
+newmtl m_b74e3d50-4c90-1dd1-e64c-12ab94a32243
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 1

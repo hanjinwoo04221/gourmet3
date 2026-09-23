@@ -1,0 +1,9 @@
+[mcp_servers.blender]
+command = "uvx"
+args = ["mcp-for-blender"]
+
+[mcp_servers.blockbench]
+url = "http://localhost:3000/bb-mcp"
+
+[mcp_servers.cascadeur]
+url = "http://127.0.0.1:8765/mcp"

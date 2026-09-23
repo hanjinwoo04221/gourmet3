@@ -1,0 +1,62 @@
+[balance]
+	#Global multiplier applied to all Toriko skill damage.
+	# Default: 1.0
+	# Range: 0.0 ~ 64.0
+	damageMultiplier = 1.0
+	#Global multiplier applied to all skill cooldowns. 0.5 = twice as fast.
+	# Default: 1.0
+	# Range: 0.0 ~ 16.0
+	cooldownMultiplier = 1.0
+	#Global multiplier applied to the Appetite cost of every skill.
+	# Default: 1.0
+	# Range: 0.0 ~ 16.0
+	appetiteCostMultiplier = 1.0
+	#Maximum Appetite (the skill resource). Restored by eating food.
+	# Default: 100
+	# Range: 10 ~ 10000
+	maxAppetite = 100
+	#How many ticks between passive Appetite regeneration ticks.
+	# Default: 20
+	# Range: 1 ~ 1200
+	appetiteRegenInterval = 20
+	#How much Appetite is restored per regeneration tick.
+	# Default: 1
+	# Range: 0 ~ 1000
+	appetiteRegenAmount = 1
+	#Appetite restored per point of food nutrition when eating.
+	# Default: 4.0
+	# Range: 0.0 ~ 200.0
+	appetitePerNutrition = 4.0
+	#When Appetite hits zero, inflict Weakness/Slowness (Toriko's 'starving' state).
+	starvationPenalty = true
+	#Gourmet Cell evolution XP gained per point of food nutrition when eating.
+	#See skill.CellEvolution for the level curve this feeds into.
+	# Default: 3.0
+	# Range: 0.0 ~ 200.0
+	cellXpPerNutrition = 3.0
+	#Appetite drained per second while Intimidation's toggle is on.
+	# Default: 4
+	# Range: 0 ~ 1000
+	intimidationDrainPerSecond = 4
+	#Appetite drained per second per output level while Ki Release is on.
+	# Default: 2
+	# Range: 0 ~ 1000
+	kiDrainPerSecond = 2
+	#Intimidation only works on targets whose Capture Level is lower than the caster's by MORE than this.
+	#Equal, similar or higher Capture Levels shrug it off.
+	# Default: 2
+	# Range: 0 ~ 1000
+	captureSimilarityWindow = 2
+
+[world]
+	#Let cutting skills (Knife / Flying Knife / Leg Knife) shear leaves and plants.
+	cutVegetation = true
+	#Let thrown techniques punch straight through any block, not just weak ones, once the caster's Gourmet Cells have evolved enough for its hardness.
+	#See skill.CellEvolution#blockHardnessCap for the level curve.
+	cellPowerBreaksBlocks = true
+
+[gameplay]
+	#Require an empty main hand for the bare-handed skills (everything but Food Immersion).
+	skillsNeedEmptyHand = false
+	#Whether Toriko skills can damage other players.
+	affectPlayers = true

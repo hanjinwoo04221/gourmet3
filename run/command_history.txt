@@ -1,0 +1,47 @@
+/difficulty hard
+/summon minecraft:iron_golem
+/tick freeze
+/tick unfreeze
+/summon minecraft:iron_golem
+/gamerule keepInventory true
+/summon minecraft:iron_golem
+/summon minecraft:husk
+/effect give @n minecraft:resistance infinite 5
+/effect give @s[type=minecraft:husk] minecraft:resistance infinite 5
+/give @a potion[potion_contents={custom_effects:[{id:resistance,duration:2000,amplifier:5}]}]
+/give @a splash_potion[potion_contents={custom_effects:[{id:resistance,duration:2000,amplifier:5}]}]
+/summon minecraft:husk
+/time set day
+/summon minecraft:iron_golem
+/effect give Dev minecraft:hunger infinite 100 true
+/summon minecraft:iron_golem
+/gamerule keepInventory true
+/effect give Dev minecraft:hunger infinite 255 true
+/effect clear Dev
+/summon minecraft:iron_golem
+/summon minecraft:iron_golem]
+/summon minecraft:iron_golem
+/summon minecraft:husk
+/summon minecraft:iron_golem'
+/summon minecraft:iron_golem
+/summon minecraft:husk
+/summon minecraft:iron_golem
+/summon minecraft:husk
+/summon minecraft:horse
+/give @a potion[potion_contents={custom_effects:[{id:resistance,duration:1000,amplifier:255}]}]
+/give @a splash_potion[potion_contents={custom_effects:[{id:resistance,duration:1000,amplifier:255}]}]
+/summon minecraft:iron_golem
+/summon minecraft:husk
+/summon epicfight:wither_skeleton_minion
+/summon minecraft:iron_golem
+/time set day
+/weather clear
+/summon minecraft:iron_golem
+/summon minecraft:horse
+/summon minecraft:husk
+/summon minecraft:iron_golem
+/summon minecraft:husk
+/summon minecraft:iron_golem
+/summon minecraft:husk
+/summon minecraft:horse
+/summon minecraft:iron_golem
