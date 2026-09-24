@@ -13,11 +13,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.skill.Hurt;
 import org.example.hanjinwoo.gourmet2.skill.Targeting;
 import net.minecraft.server.level.ServerPlayer;
@@ -50,6 +50,24 @@ public abstract class SkillProjectile extends Projectile {
 
     /** Apply this projectile's damage and status effects to one victim. */
     protected abstract void hitTarget(LivingEntity target);
+
+    /**
+     * How much this technique hurts. Doubles as the weight it puts behind a blow against terrain: see
+     * {@link Hurt#impulse}, where a heavier technique punches deeper than a lighter one thrown as fast.
+     */
+    protected abstract float damage();
+
+    /**
+     * The face this technique turns toward what it runs into, in blocks² — its own hitbox as built, not as
+     * tuned. The size setting widens what it collides with and how much it reaches, but how <i>deep</i> a
+     * blow bites is a property of the technique's shape: a fork is a prong and a knife is a fan, and no
+     * amount of dialling either up spreads that force thinner. See {@link Hurt#frontalArea}.
+     */
+    protected double impactArea(Vec3 blow) {
+        EntityDimensions base = super.getDimensions(getPose());
+        double half = base.width() / 2.0;
+        return Hurt.frontalArea(new AABB(-half, 0.0, -half, half, base.height(), half), blow);
+    }
 
     /**
      * Multiplies the flight speed by this much every tick; 1.0 (the default) is constant speed. A
@@ -114,8 +132,11 @@ public abstract class SkillProjectile extends Projectile {
                 return;
             }
             if (casterOrNull() instanceof ServerPlayer caster) {
-                Hurt.sweepBreak(caster, ModAttachments.of(caster).cellLevel(), level(),
-                        getBoundingBox().inflate(breakSweepMargin()));
+                // What it tears through depends on how hard this technique actually hits where it is now:
+                // its speed is its own, growing as it accelerates, not the caster's.
+                Vec3 blow = getDeltaMovement();
+                Hurt.sweepBreak(caster, level(), getBoundingBox().inflate(breakSweepMargin()), blow, damage(),
+                        impactArea(blow));
             }
             if (scanForHits()) {
                 return;

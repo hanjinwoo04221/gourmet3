@@ -11,7 +11,6 @@ import net.minecraft.world.phys.Vec3;
 import org.example.hanjinwoo.gourmet2.fx.FxDispatch;
 import org.example.hanjinwoo.gourmet2.fx.SkillFx;
 import org.example.hanjinwoo.gourmet2.registry.ModDamageTypes;
-import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.registry.ModEntities;
 import org.example.hanjinwoo.gourmet2.skill.Hurt;
 
@@ -32,6 +31,11 @@ public class LegKnifeSlashEntity extends SkillProjectile {
 
     public void setDamage(float damage) {
         this.damage = damage;
+    }
+
+    @Override
+    protected float damage() {
+        return damage;
     }
 
     @Override
@@ -77,10 +81,14 @@ public class LegKnifeSlashEntity extends SkillProjectile {
         FxDispatch.at(serverLevel(), SkillFx.KNIFE_IMPACT, at, hitBlock ? 1.0F : 0.6F, getYRot(), getXRot());
     }
 
-    /** A crescent of cutting wind; it slices straight through foliage, glass and the like. */
+    /**
+     * A crescent of cutting wind. The tallest and widest of the three, so it spreads its force thinnest:
+     * it cuts through foliage and glass, but a charged kick widening it further buys damage, not penetration.
+     */
     @Override
     protected boolean tryBreakBlock(BlockHitResult hit) {
+        Vec3 blow = getDeltaMovement();
         return casterOrNull() instanceof ServerPlayer caster
-                && Hurt.breakByPower(caster, ModAttachments.of(caster).cellLevel(), level(), hit.getBlockPos());
+                && Hurt.breakThrough(caster, level(), hit.getBlockPos(), blow, damage, impactArea(blow));
     }
 }

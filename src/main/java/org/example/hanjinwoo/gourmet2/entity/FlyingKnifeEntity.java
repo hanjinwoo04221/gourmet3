@@ -11,7 +11,6 @@ import net.minecraft.world.phys.Vec3;
 import org.example.hanjinwoo.gourmet2.fx.FxDispatch;
 import org.example.hanjinwoo.gourmet2.fx.SkillFx;
 import org.example.hanjinwoo.gourmet2.registry.ModDamageTypes;
-import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.registry.ModEntities;
 import org.example.hanjinwoo.gourmet2.skill.Hurt;
 
@@ -34,6 +33,11 @@ public class FlyingKnifeEntity extends SkillProjectile {
 
     public void setDamage(float damage) {
         this.damage = damage;
+    }
+
+    @Override
+    protected float damage() {
+        return damage;
     }
 
     @Override
@@ -81,10 +85,14 @@ public class FlyingKnifeEntity extends SkillProjectile {
         }
     }
 
-    /** A crescent of cutting wind; it slices straight through foliage, glass and the like. */
+    /**
+     * A crescent of cutting wind with a wide fanned face: it shears foliage and glass apart, but against
+     * anything with real hardness the same force spread over that much area barely marks it.
+     */
     @Override
     protected boolean tryBreakBlock(BlockHitResult hit) {
+        Vec3 blow = getDeltaMovement();
         return casterOrNull() instanceof ServerPlayer caster
-                && Hurt.breakByPower(caster, ModAttachments.of(caster).cellLevel(), level(), hit.getBlockPos());
+                && Hurt.breakThrough(caster, level(), hit.getBlockPos(), blow, damage, impactArea(blow));
     }
 }

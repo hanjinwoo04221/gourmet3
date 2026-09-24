@@ -44,6 +44,8 @@ public final class ClientTorikoData {
         java.util.Arrays.fill(SKILL_SLOTS, -1);
     }
     private static int kiOutputSetting = CellEvolution.KI_OUTPUT_BASE;
+    private static float attackDamageSetting = CellEvolution.ATTACK_DAMAGE_BASE;
+    private static float leapDistanceSetting = CellEvolution.LEAP_DISTANCE_BASE;
 
     /** Ticks left on the "a skill was just selected" HUD expansion. */
     private static int selectionHighlight;
@@ -78,6 +80,8 @@ public final class ClientTorikoData {
         combatMode = payload.combatMode();
         combatStyle = payload.combatStyle();
         kiOutputSetting = payload.kiOutputSetting();
+        attackDamageSetting = payload.attackDamageSetting();
+        leapDistanceSetting = payload.leapDistanceSetting();
 
         int[] incoming = payload.cooldowns();
         System.arraycopy(incoming, 0, COOLDOWNS, 0, Math.min(incoming.length, COOLDOWNS.length));
@@ -173,9 +177,6 @@ public final class ClientTorikoData {
 
     public static float cellLevelProgress() {
         int level = cellLevel();
-        if (level >= CellEvolution.MAX_LEVEL) {
-            return 1.0F;
-        }
         long into = CellEvolution.xpIntoLevel(cellXp, level);
         long need = CellEvolution.xpForNextLevel(level);
         return need <= 0 ? 0.0F : Mth.clamp((float) into / need, 0.0F, 1.0F);
@@ -208,8 +209,10 @@ public final class ClientTorikoData {
 
     /** 0..1 progress toward the player's current Nail Punch combo ceiling, for the HUD bar. */
     public static float chargeProgress() {
+        // A Nail Punch charge is spent at a rate set by the combo dialled in, so however long that combo is it
+        // fills the bar in the same ticks; the rest charge to Charge.MAX_TICKS whatever their settings.
         int maxTicks = chargingSkill == SkillType.NAIL_PUNCH.ordinal()
-                ? Math.max(1, (nailComboSetting - 1) * CellEvolution.NAIL_CHARGE_TICKS_PER_HIT)
+                ? CellEvolution.NAIL_CHARGE_TICKS
                 : Charge.MAX_TICKS;
         return Mth.clamp((float) chargeTicks / maxTicks, 0.0F, 1.0F);
     }
@@ -274,6 +277,14 @@ public final class ClientTorikoData {
 
     public static int kiOutputSetting() {
         return kiOutputSetting;
+    }
+
+    public static float attackDamageSetting() {
+        return attackDamageSetting;
+    }
+
+    public static float leapDistanceSetting() {
+        return leapDistanceSetting;
     }
 
     public static float flyingSizeSetting() {

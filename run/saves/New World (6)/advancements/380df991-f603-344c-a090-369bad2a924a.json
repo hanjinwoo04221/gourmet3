@@ -10,7 +10,9 @@
       "minecraft:badlands": "2026-09-24 02:13:50 +0900",
       "minecraft:eroded_badlands": "2026-09-24 02:29:26 +0900",
       "minecraft:desert": "2026-09-24 02:41:51 +0900",
+      "minecraft:forest": "2026-09-24 09:00:24 +0900",
       "minecraft:river": "2026-09-24 02:29:25 +0900",
+      "minecraft:dripstone_caves": "2026-09-24 08:59:05 +0900",
       "minecraft:wooded_badlands": "2026-09-24 02:41:48 +0900"
     },
     "done": false
@@ -24,6 +26,7 @@
   "minecraft:adventure/kill_all_mobs": {
     "criteria": {
       "minecraft:skeleton": "2026-09-24 03:08:39 +0900",
+      "minecraft:spider": "2026-09-24 08:43:09 +0900",
       "minecraft:zombie": "2026-09-24 03:08:35 +0900",
       "minecraft:creeper": "2026-09-24 03:17:12 +0900",
       "minecraft:husk": "2026-09-24 02:48:49 +0900"
@@ -183,6 +186,247 @@
   "minecraft:recipes/transportation/dark_oak_boat": {
     "criteria": {
       "in_water": "2026-09-24 03:57:20 +0900"
+    },
+    "done": true
+  },
+  "minecraft:husbandry/balanced_diet": {
+    "criteria": {
+      "rotten_flesh": "2026-09-24 08:39:37 +0900",
+      "rabbit_stew": "2026-09-24 08:40:25 +0900"
+    },
+    "done": false
+  },
+  "minecraft:husbandry/root": {
+    "criteria": {
+      "consumed_item": "2026-09-24 08:39:37 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/iron_sword": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/iron_pickaxe": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/iron_leggings": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/shield": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/hopper": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "epicfight:recipes/combat/iron_greatsword": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/iron_bars": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/iron_boots": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/iron_chestplate": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/lantern": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_nugget": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/bucket": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/iron_helmet": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "epicfight:recipes/combat/iron_longsword": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/minecart": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/iron_hoe": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/iron_shovel": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:story/smelt_iron": {
+    "criteria": {
+      "iron": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/chest": {
+    "criteria": {
+      "has_lots_of_items": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "epicfight:recipes/combat/iron_spear": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/shears": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/iron_trapdoor": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/chain": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "epicfight:recipes/combat/iron_tachi": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/iron_block": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/red_dye_from_poppy": {
+    "criteria": {
+      "has_poppy": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/iron_axe": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/crossbow": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/smithing_table": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "epicfight:recipes/combat/iron_dagger": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/iron_door": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/heavy_weighted_pressure_plate": {
+    "criteria": {
+      "has_iron_ingot": "2026-09-24 08:40:59 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/bow": {
+    "criteria": {
+      "has_string": "2026-09-24 08:43:10 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/fishing_rod": {
+    "criteria": {
+      "has_string": "2026-09-24 08:43:10 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/white_wool_from_string": {
+    "criteria": {
+      "has_string": "2026-09-24 08:43:10 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/tripwire_hook": {
+    "criteria": {
+      "has_string": "2026-09-24 08:43:10 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/candle": {
+    "criteria": {
+      "has_string": "2026-09-24 08:43:10 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/loom": {
+    "criteria": {
+      "has_string": "2026-09-24 08:43:10 +0900"
     },
     "done": true
   },

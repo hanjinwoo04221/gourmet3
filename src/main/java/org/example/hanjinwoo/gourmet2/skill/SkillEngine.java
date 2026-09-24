@@ -18,6 +18,7 @@ import org.example.hanjinwoo.gourmet2.network.S2CSyncTorikoData;
 import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.compat.CombatAnimations;
 import org.example.hanjinwoo.gourmet2.skill.combat.CombatEngine;
+import org.example.hanjinwoo.gourmet2.skill.impl.KiReleaseSkill;
 
 /**
  * The server-side heart of the mod: validates skill activations, charges Appetite, runs cooldowns,
@@ -80,7 +81,8 @@ public final class SkillEngine {
 
     /** Applies the settings GUI's requested power tuning, clamped server-side to the player's cap. */
     public static void updateSettings(ServerPlayer player, int nailCombo, int forkProjectiles,
-                                      int knifeWaves, float flyingDamage, float flyingSize, int kiOutput) {
+                                      int knifeWaves, float flyingDamage, float flyingSize, int kiOutput,
+                                      float attackDamage, float leapDistance) {
         TorikoData data = ModAttachments.of(player);
         data.setNailComboSetting(nailCombo);
         data.setForkProjectileSetting(forkProjectiles);
@@ -88,6 +90,8 @@ public final class SkillEngine {
         data.setFlyingDamageSetting(flyingDamage);
         data.setFlyingSizeSetting(flyingSize);
         data.setKiOutputSetting(kiOutput);
+        data.setAttackDamageSetting(attackDamage);
+        data.setLeapDistanceSetting(leapDistance);
         sync(player, data);
     }
 
@@ -341,7 +345,7 @@ public final class SkillEngine {
         SkillContext ctx = new SkillContext(player, (ServerLevel) player.level(), data);
         SkillBehavior behavior = SkillRegistry.get(SkillType.KI_RELEASE);
         if (player.tickCount % 20 == 0) {
-            int drain = Config.kiDrainPerSecond * data.kiOutputSetting();
+            int drain = KiReleaseSkill.drainPerSecond(data);
             if (drain > 0 && !data.spend(drain)) {
                 behavior.deactivateToggle(ctx);
                 data.setKiActive(false);
@@ -462,9 +466,17 @@ public final class SkillEngine {
         TorikoData data = ModAttachments.of(player);
         data.addAppetite((int) Math.round(nutrition * Config.appetitePerNutrition));
         long xpGain = Math.round(nutrition * Config.cellXpPerNutrition);
-        if (data.addCellXp(xpGain)) {
+        int levels = data.addCellXp(xpGain);
+        if (levels > 0) {
+            int level = data.cellLevel();
             player.displayClientMessage(Component.translatable(
-                    "message." + Gourmet2.MODID + ".cell_level_up", data.cellLevel()), true);
+                    "message." + Gourmet2.MODID + ".cell_level_up", level), true);
+            // Evolving changes the body as well as the headroom: what it raised is worth saying, since the
+            // player never chose it and would otherwise have to go and read their attribute screen to find it.
+            Component grown = CellGrowth.grow(player, level - levels, level);
+            if (grown != null) {
+                player.displayClientMessage(grown, false);
+            }
             player.level().playSound(null, player.blockPosition(),
                     SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 1.0F);
         }

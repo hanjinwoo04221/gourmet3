@@ -1,6 +1,8 @@
 package org.example.hanjinwoo.gourmet2.skill.impl;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -14,6 +16,7 @@ import org.example.hanjinwoo.gourmet2.Gourmet2;
 import org.example.hanjinwoo.gourmet2.compat.CombatAnimations;
 import org.example.hanjinwoo.gourmet2.data.TorikoData;
 import org.example.hanjinwoo.gourmet2.entity.ShockwaveRingEntity;
+import org.example.hanjinwoo.gourmet2.entity.UpheavalEntity;
 import org.example.hanjinwoo.gourmet2.fx.FxDispatch;
 import org.example.hanjinwoo.gourmet2.fx.SkillFx;
 import org.example.hanjinwoo.gourmet2.skill.ActiveSkill;
@@ -56,15 +59,26 @@ public class NailPunchSkill implements SkillBehavior {
     private static final int COST_PER_HIT = 4;
     private static final int FINISHER_COST = 10;
 
-    /** How many charge ticks it takes to reach the player's current combo ceiling. */
-    public static int maxChargeTicks(TorikoData data) {
-        return (data.nailComboSetting() - 1) * CellEvolution.NAIL_CHARGE_TICKS_PER_HIT;
-    }
+    /**
+     * What a combo costs in breathing room and in mobility, as a share of the skill's own cooldown and as a
+     * Slowness level, both reached only at a <i>full</i> combo — one that spends every hit the caster's own
+     * ceiling allows. Committing to a long combo is a commitment, not a punishment: the ceiling is a dial the
+     * player set, so a punch that uses all of it is doing what it was tuned to do.
+     */
+    private static final float MAX_COOLDOWN_SHARE = 1.0F;
+    private static final int PLANT_SLOWNESS = 1;
+    private static final int PLANT_SLOWNESS_RAMP = 2;
 
+    /**
+     * How many hits a hold of {@code chargeTicksElapsed} has earned. The wind-up runs at a rate set by the
+     * combo ceiling ({@link CellEvolution#nailChargeRate}), so the same wait buys proportionally more hits the
+     * longer a combo is dialled in, and a full combo always takes the same wait to build — holding out for a
+     * 20-hit punch is not twenty times the wait of a single one, it is the same wait spent twenty times as fast.
+     */
     private static int hitsForCharge(TorikoData data, int chargeTicksElapsed) {
         int ceiling = data.nailComboSetting();
-        int hits = 1 + Math.max(0, chargeTicksElapsed) / CellEvolution.NAIL_CHARGE_TICKS_PER_HIT;
-        return Mth.clamp(hits, 1, ceiling);
+        int earned = 1 + (int) (Math.max(0, chargeTicksElapsed) * CellEvolution.nailChargeRate(ceiling));
+        return Mth.clamp(earned, 1, ceiling);
     }
 
     private static int costForHits(int hits) {
@@ -124,10 +138,25 @@ public class NailPunchSkill implements SkillBehavior {
         data.setCooldown(SkillType.NAIL_PUNCH, cooldownFor(ctx, hits));
     }
 
+    /**
+     * How much of the caster's own combo ceiling this punch spent: 0 for a single blow, 1 for every hit they
+     * had dialled in. This, rather than the raw hit count, is what the costs of committing are drawn from —
+     * 20 hits is a real combo at a ceiling of 20 and almost nothing at a ceiling of 200, and what should be
+     * paid for is how much of what they have they spent, not how big the number is.
+     */
+    private static float spentFraction(SkillContext ctx, int hits) {
+        int ceiling = ctx.data().nailComboSetting();
+        return ceiling <= 1 ? 0.0F : Mth.clamp((hits - 1) / (float) (ceiling - 1), 0.0F, 1.0F);
+    }
+
+    /**
+     * The breather a punch earns: the skill's own cooldown, up to twice that for one that spent the whole
+     * ceiling. Deliberately mild — a long combo no longer scales it up hit by hit, which at a high ceiling
+     * used to put the skill out of action for ten seconds at a time.
+     */
     private int cooldownFor(SkillContext ctx, int hits) {
-        // A bigger combo earns a longer breather; a single tap keeps its original quick cooldown.
         int base = SkillType.NAIL_PUNCH.cooldownTicks();
-        return base + (hits - 1) * (base / 6);
+        return base + Math.round(base * MAX_COOLDOWN_SHARE * spentFraction(ctx, hits));
     }
 
     // --------------------------------------------------------------- single punch (no charge)
@@ -145,20 +174,32 @@ public class NailPunchSkill implements SkillBehavior {
         if (target != null && Hurt.nail(ctx, target, SINGLE_DAMAGE, SINGLE_PIERCE_FRACTION)) {
             Vec3 knockDirection = direction.add(0.0, 0.22, 0.0);
             Hurt.launch(target, knockDirection, SINGLE_KNOCKBACK);
-            punchThroughWall(ctx, target, knockDirection, SINGLE_KNOCKBACK);
+            hitTerrain(ctx, target, knockDirection, SINGLE_KNOCKBACK, SINGLE_DAMAGE);
             Hurt.playSound(ctx, impact, SoundEvents.ANVIL_LAND, 0.5F, 1.7F);
         }
     }
 
     /**
-     * A hit that launches the victim also breaks whatever their Gourmet Cell level allows in the
-     * knockback's path (see {@link Hurt#breakByPower}) — hard enough a punch drives them straight
-     * through a wall instead of stopping dead against it. Harder knockback reaches further.
+     * The terrain side of one landed hit: the ground the victim is on and whatever they are pressed into comes
+     * apart, and the ground is thrown up (see {@link UpheavalEntity}). Called for <i>every</i> hit of a combo,
+     * not only the first and the last, so a long combo keeps breaking up the patch the target is being driven
+     * into. Note what gets through is the fist, not the body it is carrying: the blow is measured over a fist's
+     * contact patch, so a nail punch bites far deeper than a crescent of the same damage, which spreads the same
+     * force over its whole fanned face. The knockback's strength is the speed of the blow, and harder knockback
+     * reaches further — which is also what decides what the blow is worth against the blocks it hits.
      */
-    private void punchThroughWall(SkillContext ctx, LivingEntity target, Vec3 knockDirection, double strength) {
+    private void hitTerrain(SkillContext ctx, LivingEntity target, Vec3 knockDirection, double strength,
+            float damage) {
         Vec3 dir = knockDirection.lengthSqr() > 1.0E-6 ? knockDirection.normalize() : ctx.lookDirection();
-        AABB path = target.getBoundingBox().expandTowards(dir.scale(strength * 2.0));
-        Hurt.sweepBreak(ctx.player(), ctx.data().cellLevel(), ctx.level(), path);
+        // What the victim is up against, rather than only what is behind them: their own block, the ground they
+        // are standing on and the wall they are pressed into are the blocks a blow actually lands on.
+        AABB contact = target.getBoundingBox().expandTowards(dir.scale(strength * 2.0)).inflate(0.5);
+        float blow = ctx.damage(damage);
+        // The ground comes up where the victim is, whether or not anything gave way: a punch the hardness beats
+        // is still a punch, and the burst is what makes one hit read as a hit. Bursts do not stack on each other
+        // (see UpheavalEntity), so a fast combo churns the same patch instead of carpeting it.
+        UpheavalEntity.burst((ServerLevel) ctx.level(), BlockPos.containing(contact.getCenter()), dir, blow, strength);
+        Hurt.sweepBreak(ctx.player(), ctx.level(), contact, dir.scale(strength), blow, Hurt.FIST_AREA);
     }
 
     // ------------------------------------------------------------------------- combo (charged)
@@ -175,8 +216,11 @@ public class NailPunchSkill implements SkillBehavior {
         Hurt.playSound(ctx, player.position(), SoundEvents.PLAYER_ATTACK_STRONG, 1.0F, 0.6F);
 
         int duration = hits * HIT_INTERVAL;
-        // Committing to the combo plants the caster in place.
-        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration + 2, 5, false, false, false));
+        // Committing to the combo plants the caster in place for as long as it takes to land, and the further
+        // into their ceiling they went the deeper the plant — but a full combo is a plant, not a burial, so
+        // even the worst of it is a Slowness a player can still walk (and fight) through.
+        int plant = PLANT_SLOWNESS + Math.round(PLANT_SLOWNESS_RAMP * spentFraction(ctx, hits));
+        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration + 2, plant, false, false, false));
 
         ActiveSkill active = new ActiveSkill(SkillType.NAIL_PUNCH, duration, false, ctx.lookDirection(), player.position());
         active.targetId = target.getId();
@@ -204,14 +248,20 @@ public class NailPunchSkill implements SkillBehavior {
             if (Hurt.nail(ctx, target, COMBO_FINISHER_DAMAGE, COMBO_PIERCE_FRACTION)) {
                 Vec3 knockDirection = ctx.lookDirection().add(0.0, 0.55, 0.0);
                 Hurt.launch(target, knockDirection, FINISHER_KNOCKBACK);
-                punchThroughWall(ctx, target, knockDirection, FINISHER_KNOCKBACK);
+                hitTerrain(ctx, target, knockDirection, FINISHER_KNOCKBACK, COMBO_FINISHER_DAMAGE);
             }
             FxDispatch.at(ctx.level(), SkillFx.THIRTEEN_FINISH, center, 1.4F, ctx.player().getYRot(), 0.0F);
             spawnRing(ctx, target);
             Hurt.playSound(ctx, center, SoundEvents.GENERIC_EXPLODE.value(), 0.9F, 1.4F);
         } else {
             float damage = COMBO_FIRST_HIT_DAMAGE + COMBO_DAMAGE_RAMP * hitIndex;
-            Hurt.nail(ctx, target, damage, COMBO_PIERCE_FRACTION);
+            if (Hurt.nail(ctx, target, damage, COMBO_PIERCE_FRACTION)) {
+                // Every hit of the combo lands on the ground as well as on the victim, so a long combo keeps
+                // breaking up what the target is being driven into instead of marking it once and stopping.
+                // The fist is the same fist each time, so the blow's strength is the single punch's; what ramps
+                // is the damage behind it, and the terrain it can get through ramps with it.
+                hitTerrain(ctx, target, ctx.lookDirection(), SINGLE_KNOCKBACK, damage);
+            }
             // Scale the impact with the ramp so the combo visibly builds.
             float scale = 0.45F + 0.05F * hitIndex;
             FxDispatch.at(ctx.level(), SkillFx.THIRTEEN_IMPACT, center, scale, 0.0F, 0.0F);

@@ -12,7 +12,8 @@ import org.example.hanjinwoo.gourmet2.Gourmet2;
  */
 public record C2SUpdateSkillSettings(int nailComboSetting, int forkProjectileSetting, int knifeWaveSetting,
                                       float flyingDamageSetting, float flyingSizeSetting,
-                                      int kiOutputSetting)
+                                      int kiOutputSetting, float attackDamageSetting,
+                                      float leapDistanceSetting)
         implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<C2SUpdateSkillSettings> TYPE =
@@ -22,7 +23,8 @@ public record C2SUpdateSkillSettings(int nailComboSetting, int forkProjectileSet
             CustomPacketPayload.codec(C2SUpdateSkillSettings::write, C2SUpdateSkillSettings::new);
 
     private C2SUpdateSkillSettings(RegistryFriendlyByteBuf buf) {
-        this(buf.readVarInt(), buf.readVarInt(), buf.readVarInt(), buf.readFloat(), buf.readFloat(), buf.readVarInt());
+        this(buf.readVarInt(), buf.readVarInt(), buf.readVarInt(), buf.readFloat(), buf.readFloat(),
+                buf.readVarInt(), buf.readFloat(), buf.readFloat());
     }
 
     private void write(RegistryFriendlyByteBuf buf) {
@@ -32,6 +34,8 @@ public record C2SUpdateSkillSettings(int nailComboSetting, int forkProjectileSet
         buf.writeFloat(flyingDamageSetting);
         buf.writeFloat(flyingSizeSetting);
         buf.writeVarInt(kiOutputSetting);
+        buf.writeFloat(attackDamageSetting);
+        buf.writeFloat(leapDistanceSetting);
     }
 
     @Override

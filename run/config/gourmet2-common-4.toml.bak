@@ -38,6 +38,14 @@
 	# Default: 4
 	# Range: 0 ~ 1000
 	intimidationDrainPerSecond = 4
+	#Appetite drained per second per output level while Ki Release is on.
+	# Default: 2
+	# Range: 0 ~ 1000
+	kiDrainPerSecond = 2
+	#Intimidation does nothing to a target whose Capture Level is at least this much higher than the caster's.
+	# Default: 5
+	# Range: 1 ~ 1000
+	captureImmunityGap = 5
 
 [world]
 	#Let cutting skills (Knife / Flying Knife / Leg Knife) shear leaves and plants.

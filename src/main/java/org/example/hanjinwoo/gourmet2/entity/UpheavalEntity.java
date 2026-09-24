@@ -21,7 +21,9 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.example.hanjinwoo.gourmet2.data.HiddenBlocks;
 import org.example.hanjinwoo.gourmet2.registry.ModEntities;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -81,6 +83,64 @@ public class UpheavalEntity extends VisualEntity {
     private static final int STEP_BLEND = 2;
     /** Hard cap on the blocks one burst may use. */
     public static final int MAX_BLOCKS = 28;
+
+    /**
+     * What it takes to break ground up at all, and how much moving makes a difference: anything under this
+     * power leaves the ground alone, and speed counts up to a point — a leap carries more of it than a punch,
+     * but it should not dwarf one.
+     */
+    private static final double MIN_POWER = 4.0;
+    private static final double SPEED_WEIGHT = 4.0;
+    private static final double MAX_SPEED_FACTOR = 1.0;
+    /** How wide, how high and how many blocks a burst gets, as a base plus a share of the power over the bar. */
+    private static final double BASE_RADIUS = 1.2;
+    private static final double RADIUS_PER_POWER = 0.28;
+    private static final double MAX_RADIUS = 3.5;
+    private static final double BASE_LIFT = 1.0;
+    private static final double LIFT_PER_POWER = 0.12;
+    private static final double MAX_LIFT = 4.0;
+    private static final double BASE_BLOCKS = 6.0;
+    private static final double BLOCKS_PER_POWER = 0.8;
+    /** How close a new burst may land to one already going, and how many may be going at once nearby. */
+    private static final double MIN_SPACING = 2.0;
+    private static final double NEARBY_RANGE = 12.0;
+    private static final int MAX_NEARBY = 3;
+
+    /**
+     * Throws a burst up at {@code at}, if the blow was worth one. How wide, how high and how many blocks come
+     * from the damage of the blow and the speed it was thrown at — moving fast tears up more ground than
+     * standing still — and anything under {@link #MIN_POWER} leaves the ground alone. The attacks, the skills
+     * and the leap all come through here, so ground broken by any of them reads the same.
+     *
+     * @return whether one was thrown up
+     */
+    public static boolean burst(ServerLevel level, BlockPos at, Vec3 direction, double damage, double speed) {
+        double power = damage * (1.0 + Math.min(MAX_SPEED_FACTOR, Math.max(0.0, speed)) * SPEED_WEIGHT);
+        if (power < MIN_POWER) {
+            return false;
+        }
+        // Nothing where one is already breaking up, and only a few going at once: a technique sweeping through
+        // terrain would otherwise leave a burst every couple of blocks.
+        List<UpheavalEntity> live = level.getEntitiesOfClass(UpheavalEntity.class, new AABB(at).inflate(NEARBY_RANGE));
+        if (live.size() >= MAX_NEARBY) {
+            return false;
+        }
+        for (UpheavalEntity near : live) {
+            if (near.blockPosition().closerThan(at, MIN_SPACING)) {
+                return false;
+            }
+        }
+        double over = power - MIN_POWER;
+        double radius = Math.min(MAX_RADIUS, BASE_RADIUS + over * RADIUS_PER_POWER);
+        double lift = Math.min(MAX_LIFT, BASE_LIFT + over * LIFT_PER_POWER);
+        int blocks = (int) Math.round(BASE_BLOCKS + over * BLOCKS_PER_POWER);
+
+        UpheavalEntity burst = new UpheavalEntity(level);
+        burst.moveTo(at.getX() + 0.5, at.getY() + 1.0, at.getZ() + 0.5, 0.0F, 0.0F);
+        burst.setBurst(radius, lift, blocks, direction);
+        level.addFreshEntity(burst);
+        return true;
+    }
 
     /** One piece of ground coming apart: where it stays, how it is turned, and when it goes. */
     private static final class Piece {
@@ -317,6 +377,11 @@ public class UpheavalEntity extends VisualEntity {
             // keeps the light and the collision of the cell for the moment it is standing in for, and is put back
             // in remove() whatever happens to the effect.
             piece.hidden = level.setBlock(pos, Blocks.BARRIER.defaultBlockState(), 3);
+            if (piece.hidden) {
+                // Written down as well as done: a save landing mid-burst would otherwise leave the barrier in
+                // the world with nothing left to undo it. See HiddenBlocks.
+                HiddenBlocks.of(level).add(pos, state);
+            }
             pieces.add(piece);
         }
         // The hit itself throws dust: what the blow knocked off the ground it landed on.
@@ -330,9 +395,15 @@ public class UpheavalEntity extends VisualEntity {
      * there: anything a player has done to it since is theirs and is left alone.
      */
     private void restore(Piece piece) {
-        if (piece.hidden && level().getBlockState(piece.pos).is(Blocks.BARRIER)) {
+        if (!piece.hidden) {
+            return;
+        }
+        if (level().getBlockState(piece.pos).is(Blocks.BARRIER)) {
             level().setBlock(piece.pos, piece.state, 3);
         }
+        // Off the list either way: if the cell is no longer the placeholder, the block there is somebody
+        // else's now and there is nothing left for this to put back.
+        HiddenBlocks.of((ServerLevel) level()).remove(piece.pos);
         piece.hidden = false;
     }
 

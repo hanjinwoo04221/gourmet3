@@ -12,7 +12,6 @@ import net.minecraft.world.phys.Vec3;
 import org.example.hanjinwoo.gourmet2.fx.FxDispatch;
 import org.example.hanjinwoo.gourmet2.fx.SkillFx;
 import org.example.hanjinwoo.gourmet2.registry.ModDamageTypes;
-import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.registry.ModEntities;
 import org.example.hanjinwoo.gourmet2.registry.ModMobEffects;
 import org.example.hanjinwoo.gourmet2.skill.Hurt;
@@ -40,6 +39,11 @@ public class FlyingForkEntity extends SkillProjectile {
 
     public void setDamage(float damage) {
         this.damage = damage;
+    }
+
+    @Override
+    protected float damage() {
+        return damage;
     }
 
     @Override
@@ -79,10 +83,14 @@ public class FlyingForkEntity extends SkillProjectile {
         }
     }
 
-    /** A vacuum-pressure spear; it punches straight through foliage, glass and the like. */
+    /**
+     * A vacuum-pressure spear: a fingertip-wide prong throws everything it has at a single point, so it
+     * punches through what the wide crescents only scuff — and it only sharpens as it accelerates.
+     */
     @Override
     protected boolean tryBreakBlock(BlockHitResult hit) {
+        Vec3 blow = getDeltaMovement();
         return casterOrNull() instanceof ServerPlayer caster
-                && Hurt.breakByPower(caster, ModAttachments.of(caster).cellLevel(), level(), hit.getBlockPos());
+                && Hurt.breakThrough(caster, level(), hit.getBlockPos(), blow, damage, impactArea(blow));
     }
 }

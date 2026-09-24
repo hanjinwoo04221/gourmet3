@@ -42,14 +42,18 @@
 	# Default: 2
 	# Range: 0 ~ 1000
 	kiDrainPerSecond = 2
-	#Intimidation does nothing to a target whose Capture Level is at least this much higher than the caster's.
-	# Default: 5
-	# Range: 1 ~ 1000
-	captureImmunityGap = 5
+	#Intimidation only works on targets whose Capture Level is lower than the caster's by MORE than this.
+	#Equal, similar or higher Capture Levels shrug it off.
+	# Default: 2
+	# Range: 0 ~ 1000
+	captureSimilarityWindow = 2
 
 [world]
 	#Let cutting skills (Knife / Flying Knife / Leg Knife) shear leaves and plants.
 	cutVegetation = true
+	#Let thrown techniques punch straight through any block, not just weak ones, once the caster's Gourmet Cells have evolved enough for its hardness.
+	#See skill.CellEvolution#blockHardnessCap for the level curve.
+	cellPowerBreaksBlocks = true
 
 [gameplay]
 	#Require an empty main hand for the bare-handed skills (everything but Food Immersion).

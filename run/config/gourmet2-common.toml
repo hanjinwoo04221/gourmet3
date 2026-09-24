@@ -38,7 +38,8 @@
 	# Default: 4
 	# Range: 0 ~ 1000
 	intimidationDrainPerSecond = 4
-	#Appetite drained per second per output level while Ki Release is on.
+	#Appetite drained per second while Ki Release is on at the lowest output.
+	#The output dial takes it up to ten times this at the player's own ceiling, whatever the ceiling is.
 	# Default: 2
 	# Range: 0 ~ 1000
 	kiDrainPerSecond = 2
@@ -51,8 +52,8 @@
 [world]
 	#Let cutting skills (Knife / Flying Knife / Leg Knife) shear leaves and plants.
 	cutVegetation = true
-	#Let thrown techniques punch straight through any block, not just weak ones, once the caster's Gourmet Cells have evolved enough for its hardness.
-	#See skill.CellEvolution#blockHardnessCap for the level curve.
+	#Let techniques break the terrain they hit, instead of only passing through foliage and glass.
+	#What a technique can get through comes from how hard it actually hits: see skill.Hurt#impulse. Turning this off leaves the world untouched by blows.
 	cellPowerBreaksBlocks = true
 
 [gameplay]

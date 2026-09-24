@@ -21,6 +21,11 @@ import java.util.function.Function;
  * capped by {@link CellEvolution} at the player's current cell level, so dialling one up never
  * costs another. Turning any of them up raises the Appetite cost of the skill it belongs to (see
  * each skill's {@code extraAppetiteCost}), so this is a power/cost trade-off, not a free lunch.
+ *
+ * <p>Two of them run the other way. Attack damage and leap reach are throttles: their ceiling is 100%
+ * of whatever the player's own progress already earns them, and all their slider can do is hold that
+ * back down to {@link CellEvolution#ATTACK_DAMAGE_FLOOR}. Nothing about the level gates them, because
+ * there is nothing to unlock — the growth has already happened, and this is only how to run below it.
  */
 public class SkillSettingsScreen extends Screen {
     private static final int ROW_HEIGHT = 24;
@@ -33,6 +38,8 @@ public class SkillSettingsScreen extends Screen {
     private float flyingDamage;
     private float flyingSize;
     private int kiOutput;
+    private float attackDamage;
+    private float leapDistance;
 
     public SkillSettingsScreen() {
         super(Component.translatable("gui." + Gourmet2.MODID + ".skill_settings.title"));
@@ -42,6 +49,8 @@ public class SkillSettingsScreen extends Screen {
         this.flyingDamage = ClientTorikoData.flyingDamageSetting();
         this.flyingSize = ClientTorikoData.flyingSizeSetting();
         this.kiOutput = ClientTorikoData.kiOutputSetting();
+        this.attackDamage = ClientTorikoData.attackDamageSetting();
+        this.leapDistance = ClientTorikoData.leapDistanceSetting();
     }
 
     @Override
@@ -67,6 +76,14 @@ public class SkillSettingsScreen extends Screen {
         y += ROW_HEIGHT;
         addIntSlider(x, y, "ki_output", CellEvolution.KI_OUTPUT_BASE, CellEvolution.kiOutputCap(level),
                 kiOutput, v -> kiOutput = v);
+        y += ROW_HEIGHT;
+        // Throttles, not boosts: their own ends are 100%, so the whole range is how far back the player may
+        // hold the damage they already hit for and the reach their strength and speed already earn them.
+        addPercentSlider(x, y, "attack_damage", CellEvolution.ATTACK_DAMAGE_FLOOR,
+                CellEvolution.ATTACK_DAMAGE_BASE, attackDamage, v -> attackDamage = v);
+        y += ROW_HEIGHT;
+        addPercentSlider(x, y, "leap_distance", CellEvolution.LEAP_DISTANCE_FLOOR,
+                CellEvolution.LEAP_DISTANCE_BASE, leapDistance, v -> leapDistance = v);
         y += ROW_HEIGHT + 12;
 
         addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, b -> onDone())
@@ -92,7 +109,8 @@ public class SkillSettingsScreen extends Screen {
 
     private void onDone() {
         PacketDistributor.sendToServer(new C2SUpdateSkillSettings(
-                nailCombo, forkProjectiles, knifeWaves, flyingDamage, flyingSize, kiOutput));
+                nailCombo, forkProjectiles, knifeWaves, flyingDamage, flyingSize, kiOutput,
+                attackDamage, leapDistance));
         onClose();
     }
 

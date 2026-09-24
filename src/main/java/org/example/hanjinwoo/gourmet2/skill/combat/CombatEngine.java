@@ -86,31 +86,6 @@ public final class CombatEngine {
     private static final double BASE_ATTACK_DAMAGE = 1.0;
     private static final double STRENGTH_PER_DAMAGE = 0.25;
 
-    /**
-     * Striking terrain with a blow heaves it up. The heave is worth the player's strength times how fast they
-     * are actually moving — the length of their velocity, not the speed attribute — and it has to clear
-     * {@link #HEAVE_MIN_POWER} before anything moves at all, so a punch thrown at a wall while standing still
-     * is just a punch.
-     */
-    private static final double HEAVE_MIN_POWER = 2.5;
-    private static final double HEAVE_SPEED_WEIGHT = 6.0;
-    private static final double HEAVE_BASE_RADIUS = 1.2;
-    private static final double HEAVE_RADIUS_PER_POWER = 0.28;
-    /**
-     * The swell is kept to a few blocks across and a few high: the power shows in how tall and how uneven it
-     * comes up, and the whole thing stays a handful of block writes rather than a chunk of terrain rewritten
-     * on every blow.
-     */
-    private static final double HEAVE_MAX_RADIUS = 3.5;
-    private static final double HEAVE_BASE_RISE = 1.0;
-    private static final double HEAVE_RISE_PER_POWER = 0.12;
-    private static final double HEAVE_MAX_RISE = 4.0;
-    /** How many blocks the crater is made of, and how many more each point of power adds to it. */
-    private static final double HEAVE_BASE_BLOCKS = 6.0;
-    private static final double HEAVE_BLOCKS_PER_POWER = 0.8;
-    /** How close a new burst may land to one that is still breaking up before it is left out. */
-    private static final double HEAVE_MIN_SPACING = 2.0;
-
     private CombatEngine() {}
 
     /** @param group the attack group an {@link CombatAction#ATTACK} came from; ignored by every other action */
@@ -553,28 +528,13 @@ public final class CombatEngine {
         if (struck == null) {
             return;
         }
-        double power = player.getAttributeValue(Attributes.ATTACK_DAMAGE) * (1.0 + movingSpeed * HEAVE_SPEED_WEIGHT);
-        if (power < HEAVE_MIN_POWER) {
-            return;
-        }
-        double radius = Math.min(HEAVE_MAX_RADIUS, HEAVE_BASE_RADIUS + power * HEAVE_RADIUS_PER_POWER);
-        double rise = Math.min(HEAVE_MAX_RISE, HEAVE_BASE_RISE + power * HEAVE_RISE_PER_POWER);
-        int blocks = (int) Math.round(HEAVE_BASE_BLOCKS + power * HEAVE_BLOCKS_PER_POWER);
         ServerLevel level = (ServerLevel) player.level();
-        // One at a time in any one place: ground that is already coming apart there waits until it has settled
-        // before it can be broken open again, so hammering one spot does not stack craters on top of each other.
-        // Anything still breaking up nearby counts, whoever threw it.
-        if (!level.getEntitiesOfClass(UpheavalEntity.class,
-                new AABB(struck).inflate(HEAVE_MIN_SPACING)).isEmpty()) {
+        // The ground only gives way to a blow worth it: the player's strength, and how fast they were moving
+        // when they threw it. UpheavalEntity.burst decides how far that carries and whether it is enough at all.
+        if (!UpheavalEntity.burst(level, struck, player.getLookAngle(),
+                player.getAttributeValue(Attributes.ATTACK_DAMAGE), movingSpeed)) {
             return;
         }
-        // Block displays rather than terrain: the ground looks like it came up and settles back, and nothing is
-        // placed or broken. The crater puts itself away when its owner times out.
-        UpheavalEntity crater = new UpheavalEntity(level);
-        crater.moveTo(struck.getX() + 0.5, struck.getY() + 1.0, struck.getZ() + 0.5, 0.0F, 0.0F);
-        // The way the blow was thrown travels with it: what the ground does follows the strike's direction.
-        crater.setBurst(radius, rise, blocks, player.getLookAngle());
-        level.addFreshEntity(crater);
         level.playSound(null, struck.getX() + 0.5, struck.getY() + 1.0, struck.getZ() + 0.5,
                 SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 0.5F, 0.6F);
     }

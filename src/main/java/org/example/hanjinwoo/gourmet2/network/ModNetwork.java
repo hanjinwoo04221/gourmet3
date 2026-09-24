@@ -21,7 +21,7 @@ public final class ModNetwork {
      * {@link org.example.hanjinwoo.gourmet2.skill.SkillType} / {@link org.example.hanjinwoo.gourmet2.fx.SkillFx}
      * are reordered.
      */
-    public static final String VERSION = "8";
+    public static final String VERSION = "9";
 
     private ModNetwork() {}
 
@@ -84,7 +84,7 @@ public final class ModNetwork {
             if (context.player() instanceof ServerPlayer player) {
                 SkillEngine.updateSettings(player, payload.nailComboSetting(), payload.forkProjectileSetting(),
                         payload.knifeWaveSetting(), payload.flyingDamageSetting(), payload.flyingSizeSetting(),
-                        payload.kiOutputSetting());
+                        payload.kiOutputSetting(), payload.attackDamageSetting(), payload.leapDistanceSetting());
             }
         });
 

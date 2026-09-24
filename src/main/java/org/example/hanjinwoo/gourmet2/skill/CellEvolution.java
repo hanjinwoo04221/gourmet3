@@ -9,10 +9,12 @@ package org.example.hanjinwoo.gourmet2.skill;
  * locally instead of waiting on a round trip. Level 0's caps all match this mod's original fixed
  * values, so a fresh player sees no change in power until they actually level up and choose to
  * spend the new headroom (see the {@code *_BASE} constants, which double as the default settings).
+ *
+ * <p>There is no ceiling on the level itself: the curve keeps going and every cap here keeps opening
+ * up, so a player who keeps eating keeps evolving. The body is the exception — it converges instead
+ * (see {@link CellGrowth}).
  */
 public final class CellEvolution {
-    public static final int MAX_LEVEL = 10;
-
     /** Default/starting value for every tunable setting - also level 0's cap. */
     public static final int NAIL_COMBO_BASE = nailComboCap(0);
     public static final int FORK_PROJECTILE_BASE = forkProjectileCap(0);
@@ -20,31 +22,61 @@ public final class CellEvolution {
     public static final int KI_OUTPUT_BASE = kiOutputCap(0);
     public static final float DAMAGE_MULT_BASE = 1.0F;
     public static final float SIZE_MULT_BASE = 1.0F;
+    public static final float ATTACK_DAMAGE_BASE = 1.0F;
+    public static final float LEAP_DISTANCE_BASE = 1.0F;
 
-    /** Charge ticks needed per extra Nail Punch hit beyond the first. Shared by server and HUD. */
-    public static final int NAIL_CHARGE_TICKS_PER_HIT = 8;
+    /**
+     * How long a full Nail Punch charge takes, whatever combo the player has dialled in. The charge is spent
+     * at a rate proportional to that combo as a result — a 30-hit punch is not ten times the wait of a 3-hit
+     * one, it winds up ten times as fast — and either fills in these same ticks. Shared by server and HUD.
+     */
+    public static final int NAIL_CHARGE_TICKS = 16;
 
     private CellEvolution() {}
 
-    /** XP needed to go from {@code level} to {@code level + 1}. Undefined past {@link #MAX_LEVEL}. */
+    /** Nail Punch hits beyond the first earned per tick of charge, for a combo ceiling of {@code ceiling}. */
+    public static float nailChargeRate(int ceiling) {
+        return Math.max(0, ceiling - 1) / (float) NAIL_CHARGE_TICKS;
+    }
+
+    /**
+     * What a Gourmet Cell level is worth in skill damage: a couple of percent each, so the numbers drift up
+     * steadily as the cells evolve instead of jumping. Uncapped, like the level itself — every level makes
+     * every technique a little meaner, for as long as the eating continues. A player who finds that too much
+     * can wind it back down with {@link #ATTACK_DAMAGE_FLOOR}, without losing the level that earned it.
+     */
+    public static float skillDamageBonus(int level) {
+        return level * 0.02F;
+    }
+
+    /** XP needed to go from {@code level} to {@code level + 1}. Every level costs a little more than the last. */
     public static long xpForNextLevel(int level) {
         return 100L * (level + 1);
     }
 
-    /** Cumulative XP (from level 0) needed to be exactly at {@code level}. */
+    /**
+     * Cumulative XP (from level 0) needed to be exactly at {@code level}. Summed in closed form, since with no
+     * ceiling on the level this is asked for every single time the level is read.
+     */
     public static long xpForLevel(int level) {
-        long total = 0;
-        for (int i = 0; i < level; i++) {
-            total += xpForNextLevel(i);
-        }
-        return total;
+        return 50L * level * (level + 1);
     }
 
+    /**
+     * The level {@code totalXp} has earned. Uncapped: however much a player eats, there is always another
+     * level above the one they are on.
+     */
     public static int levelForXp(long totalXp) {
-        int level = 0;
-        long remaining = totalXp;
-        while (level < MAX_LEVEL && remaining >= xpForNextLevel(level)) {
-            remaining -= xpForNextLevel(level);
+        if (totalXp <= 0) {
+            return 0;
+        }
+        // Inverse of xpForLevel — the largest L with 50 * L * (L + 1) <= totalXp — then settled exactly on
+        // both sides, since a square root can land either way on the whole level it is meant to give.
+        int level = Math.max(0, (int) Math.floor((Math.sqrt(2500.0 + 200.0 * totalXp) - 50.0) / 100.0));
+        while (level > 0 && xpForLevel(level) > totalXp) {
+            level--;
+        }
+        while (xpForLevel(level + 1) <= totalXp) {
             level++;
         }
         return level;
@@ -93,14 +125,14 @@ public final class CellEvolution {
     }
 
     /**
-     * Highest block hardness a thrown technique can punch straight through instead of stopping
-     * against it. 0 at level 0 — a fresh Gourmet Cell only manages the always-weak blocks (see
-     * {@code Hurt.breakByPower}) — growing to 50 (obsidian) at max level. Unbreakable blocks
-     * (bedrock, barriers: negative hardness) are never affected, at any level.
+     * How far down the caster can dial their own attack damage and the reach of their leap. Those two dials are
+     * <i>throttles</i>, not boosts: 100% is whatever the caster's own progress already earns them — their Cell
+     * level and their growing body for one, their strength and speed for the other — and the only thing the
+     * dials do is hold them back from it. That way a player whose hits have outgrown what they wanted to fight
+     * with can wind them down without giving up the growth that got them there.
      */
-    public static float blockHardnessCap(int level) {
-        return level * 5.0F;
-    }
+    public static final float ATTACK_DAMAGE_FLOOR = 0.25F;
+    public static final float LEAP_DISTANCE_FLOOR = 0.25F;
 
     // ---------------------------------------------------------------- cost scaling
 

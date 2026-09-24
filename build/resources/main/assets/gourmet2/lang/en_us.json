@@ -47,6 +47,10 @@
   "message.gourmet2.armor_reduced_combo": "The target's armour cut your combo from %s to %s hits.",
   "message.gourmet2.awakened": "The Gourmet Cells awaken!",
   "message.gourmet2.cell_level_up": "Your Gourmet Cells evolve! (Level %s)",
+  "message.gourmet2.cell_growth": "Your body grows: %s",
+
+  "command.gourmet2.cell_level": "Cell Level %s (%s / %s XP to the next)",
+  "command.gourmet2.cell_level_set": "Cell Level %s (was %s)",
 
   "hud.gourmet2.capture_level": "Capture Level %s",
   "hud.gourmet2.capture_level_target": "Capture Level %s",
@@ -92,5 +96,7 @@
   "gui.gourmet2.skill_settings.knife_waves": "Flying Knife Fire Rate: %s / %s",
   "gui.gourmet2.skill_settings.flying_damage": "Flying Technique Damage: %s%% / %s%%",
   "gui.gourmet2.skill_settings.ki_output": "Ki Release Output: %s / %s",
-  "gui.gourmet2.skill_settings.flying_size": "Flying Technique Size: %s%% / %s%%"
+  "gui.gourmet2.skill_settings.flying_size": "Flying Technique Size: %s%% / %s%%",
+  "gui.gourmet2.skill_settings.attack_damage": "My Attack Damage: %s%% / %s%% (100%% is full)",
+  "gui.gourmet2.skill_settings.leap_distance": "Leap Reach: %s%% / %s%% (100%% is full)"
 }

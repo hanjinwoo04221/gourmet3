@@ -47,6 +47,10 @@
   "message.gourmet2.armor_reduced_combo": "상대의 방어력 때문에 연발수가 %s타에서 %s타로 줄었습니다.",
   "message.gourmet2.awakened": "구르메 세포가 각성한다!",
   "message.gourmet2.cell_level_up": "구르메 세포가 진화했다! (레벨 %s)",
+  "message.gourmet2.cell_growth": "몸이 성장했다: %s",
+
+  "command.gourmet2.cell_level": "세포 레벨 %s (다음 레벨까지 %s / %s XP)",
+  "command.gourmet2.cell_level_set": "세포 레벨 %s (이전 %s)",
 
   "hud.gourmet2.capture_level": "포획레벨 %s",
   "hud.gourmet2.capture_level_target": "포획레벨 %s",
@@ -92,5 +96,7 @@
   "gui.gourmet2.skill_settings.knife_waves": "플라잉 나이프 연사 속도: %s / %s",
   "gui.gourmet2.skill_settings.flying_damage": "비행 기술 데미지: %s%% / %s%%",
   "gui.gourmet2.skill_settings.ki_output": "기 방출량: %s / %s",
-  "gui.gourmet2.skill_settings.flying_size": "비행 기술 크기: %s%% / %s%%"
+  "gui.gourmet2.skill_settings.flying_size": "비행 기술 크기: %s%% / %s%%",
+  "gui.gourmet2.skill_settings.attack_damage": "내 공격 데미지: %s%% / %s%% (100%%가 기본)",
+  "gui.gourmet2.skill_settings.leap_distance": "도약 최대거리: %s%% / %s%% (100%%가 기본)"
 }

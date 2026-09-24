@@ -11,6 +11,9 @@ import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.example.hanjinwoo.gourmet2.Gourmet2;
+import org.example.hanjinwoo.gourmet2.command.CellLevelCommand;
+import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
+import org.example.hanjinwoo.gourmet2.skill.CellGrowth;
 import org.example.hanjinwoo.gourmet2.skill.SkillEngine;
 import org.example.hanjinwoo.gourmet2.skill.combat.CombatEngine;
 
@@ -39,6 +42,11 @@ public final class CommonEvents {
     }
 
     @SubscribeEvent
+    public static void onRegisterCommands(net.neoforged.neoforge.event.RegisterCommandsEvent event) {
+        CellLevelCommand.register(event.getDispatcher());
+    }
+
+    @SubscribeEvent
     public static void onIncomingDamage(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             CombatEngine.onIncomingDamage(player, event);
@@ -54,16 +62,36 @@ public final class CommonEvents {
         }
     }
 
+    /**
+     * A save that lands while a burst is out hides ground behind barriers with nothing to put it back, so
+     * whatever is still written down when a level loads is restored here (see {@code HiddenBlocks}).
+     */
     @SubscribeEvent
-    public static void onLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            SkillEngine.sync(player);
+    public static void onLevelLoad(net.neoforged.neoforge.event.level.LevelEvent.Load event) {
+        if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel level) {
+            org.example.hanjinwoo.gourmet2.data.HiddenBlocks.of(level).restore(level);
         }
     }
 
     @SubscribeEvent
+    public static void onLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            // The body is derived from the level, so it is rebuilt rather than stored: this is what hands a
+            // player who evolved before the body grew at all the one they had already earned.
+            CellGrowth.apply(player, ModAttachments.of(player).cellLevel());
+            SkillEngine.sync(player);
+        }
+    }
+
+    /**
+     * A new body — a respawn, or the trip back through the End — is handed only the old one's base attribute
+     * values, so the body the player grew into is rebuilt onto it (see {@code CellGrowth}, which derives the
+     * whole body from the level and so has nothing to carry across by hand).
+     */
+    @SubscribeEvent
     public static void onRespawn(PlayerEvent.PlayerRespawnEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
+            CellGrowth.apply(player, ModAttachments.of(player).cellLevel());
             SkillEngine.sync(player);
         }
     }
@@ -72,6 +100,7 @@ public final class CommonEvents {
     public static void onChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             SkillEngine.abortActive(player);
+            CellGrowth.apply(player, ModAttachments.of(player).cellLevel());
             SkillEngine.sync(player);
         }
     }

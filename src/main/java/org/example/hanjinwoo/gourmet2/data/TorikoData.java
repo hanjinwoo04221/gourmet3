@@ -34,6 +34,8 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     private static final String KEY_FLYING_DAMAGE = "FlyingDamageSetting";
     private static final String KEY_FLYING_SIZE = "FlyingSizeSetting";
     private static final String KEY_KI_OUTPUT = "KiOutputSetting";
+    private static final String KEY_ATTACK_DAMAGE = "AttackDamageSetting";
+    private static final String KEY_LEAP_DISTANCE = "LeapDistanceSetting";
     private static final String KEY_SKILL_SLOTS = "SkillSlots";
     private static final String KEY_COMBAT_STYLE = "CombatStyle";
     public static final int SLOT_COUNT = 9;
@@ -51,6 +53,8 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     private float flyingDamageSetting = CellEvolution.DAMAGE_MULT_BASE;
     private float flyingSizeSetting = CellEvolution.SIZE_MULT_BASE;
     private int kiOutputSetting = CellEvolution.KI_OUTPUT_BASE;
+    private float attackDamageSetting = CellEvolution.ATTACK_DAMAGE_BASE;
+    private float leapDistanceSetting = CellEvolution.LEAP_DISTANCE_BASE;
 
     private String combatStyle = CombatStyles.FIST.id();
 
@@ -274,15 +278,26 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         return CellEvolution.levelForXp(cellXp);
     }
 
-    /** @return true if this pushed the player up at least one level */
-    public boolean addCellXp(long amount) {
+    /**
+     * Sets the Cell XP outright. The level is derived from it, so this is how the level is set as well — by
+     * the food that earns it and by the cell-level command alike.
+     */
+    public void setCellXp(long value) {
+        long clamped = Math.max(0, value);
+        if (clamped != cellXp) {
+            cellXp = clamped;
+            dirty = true;
+        }
+    }
+
+    /** @return how many levels this pushed the player up, 0 if none */
+    public int addCellXp(long amount) {
         if (amount <= 0) {
-            return false;
+            return 0;
         }
         int before = cellLevel();
-        cellXp += amount;
-        dirty = true;
-        return cellLevel() > before;
+        setCellXp(cellXp + amount);
+        return cellLevel() - before;
     }
 
     // ------------------------------------------------------- tuned power settings
@@ -359,6 +374,30 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         }
     }
 
+    public float attackDamageSetting() {
+        return attackDamageSetting;
+    }
+
+    public void setAttackDamageSetting(float value) {
+        float clamped = Mth.clamp(value, CellEvolution.ATTACK_DAMAGE_FLOOR, CellEvolution.ATTACK_DAMAGE_BASE);
+        if (clamped != attackDamageSetting) {
+            attackDamageSetting = clamped;
+            dirty = true;
+        }
+    }
+
+    public float leapDistanceSetting() {
+        return leapDistanceSetting;
+    }
+
+    public void setLeapDistanceSetting(float value) {
+        float clamped = Mth.clamp(value, CellEvolution.LEAP_DISTANCE_FLOOR, CellEvolution.LEAP_DISTANCE_BASE);
+        if (clamped != leapDistanceSetting) {
+            leapDistanceSetting = clamped;
+            dirty = true;
+        }
+    }
+
     public boolean isKiActive() {
         return kiActive;
     }
@@ -378,8 +417,13 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         kiAuraId = id;
     }
 
-    /** Re-clamps every setting to the current cell level's caps. Caps only ever grow, so this is
-     * mostly a safety net for old save data rather than something that fires in normal play. */
+    /**
+     * Re-clamps every setting to the current cell level's caps — a safety net for old save data, and what the
+     * cell-level command calls when the level comes down. Nothing stops a player dialling a setting up to the
+     * cap of a level they no longer have, and a setting past its cap would still fire at full strength while
+     * only being charged the capped Appetite cost for it. Raising the level needs nothing: everything is
+     * already inside the wider caps.
+     */
     public void clampSettingsToLevel() {
         setNailComboSetting(nailComboSetting);
         setForkProjectileSetting(forkProjectileSetting);
@@ -387,6 +431,8 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         setFlyingDamageSetting(flyingDamageSetting);
         setFlyingSizeSetting(flyingSizeSetting);
         setKiOutputSetting(kiOutputSetting);
+        setAttackDamageSetting(attackDamageSetting);
+        setLeapDistanceSetting(leapDistanceSetting);
     }
 
     // ------------------------------------------------------------ active skill
@@ -658,6 +704,8 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         tag.putFloat(KEY_FLYING_DAMAGE, flyingDamageSetting);
         tag.putFloat(KEY_FLYING_SIZE, flyingSizeSetting);
         tag.putInt(KEY_KI_OUTPUT, kiOutputSetting);
+        tag.putFloat(KEY_ATTACK_DAMAGE, attackDamageSetting);
+        tag.putFloat(KEY_LEAP_DISTANCE, leapDistanceSetting);
         tag.putIntArray(KEY_SKILL_SLOTS, Arrays.copyOf(skillSlots, SLOT_COUNT));
         tag.putString(KEY_COMBAT_STYLE, combatStyle);
         return tag;
@@ -678,6 +726,8 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         flyingDamageSetting = tag.contains(KEY_FLYING_DAMAGE) ? tag.getFloat(KEY_FLYING_DAMAGE) : CellEvolution.DAMAGE_MULT_BASE;
         flyingSizeSetting = tag.contains(KEY_FLYING_SIZE) ? tag.getFloat(KEY_FLYING_SIZE) : CellEvolution.SIZE_MULT_BASE;
         kiOutputSetting = tag.contains(KEY_KI_OUTPUT) ? tag.getInt(KEY_KI_OUTPUT) : CellEvolution.KI_OUTPUT_BASE;
+        attackDamageSetting = tag.contains(KEY_ATTACK_DAMAGE) ? tag.getFloat(KEY_ATTACK_DAMAGE) : CellEvolution.ATTACK_DAMAGE_BASE;
+        leapDistanceSetting = tag.contains(KEY_LEAP_DISTANCE) ? tag.getFloat(KEY_LEAP_DISTANCE) : CellEvolution.LEAP_DISTANCE_BASE;
         Arrays.fill(skillSlots, -1);
         int[] savedSlots = tag.getIntArray(KEY_SKILL_SLOTS);
         for (int i = 0; i < Math.min(savedSlots.length, SLOT_COUNT); i++) {

@@ -14,13 +14,19 @@ public record SkillContext(ServerPlayer player, ServerLevel level, TorikoData da
     /** Damage bonus while the Gourmet Cells are awakened (Food Immersion). */
     public static final float AWAKENED_DAMAGE_BONUS = 0.4F;
 
-    /** Applies the config multiplier and the awakening bonus to a skill's base damage. */
+    /**
+     * Applies the config multiplier, the awakening bonus, the Gourmet Cell level and the player's own damage
+     * dial to a skill's base damage. Every technique a player has — and the blows of their bare hands as well
+     * as the techniques proper — comes through here, so evolving is felt across the whole kit rather than in
+     * one skill's numbers. The dial can only take away from that (see {@code CellEvolution#ATTACK_DAMAGE_FLOOR}):
+     * a player who has outgrown what they wanted to hit for can hold back without giving up the level.
+     */
     public float damage(float base) {
         float value = (float) (base * Config.damageMultiplier);
         if (data.isAwakened()) {
             value *= 1.0F + AWAKENED_DAMAGE_BONUS;
         }
-        return value;
+        return value * (1.0F + CellEvolution.skillDamageBonus(data.cellLevel())) * data.attackDamageSetting();
     }
 
     public Vec3 eyePosition() {

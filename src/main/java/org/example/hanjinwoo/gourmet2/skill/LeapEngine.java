@@ -64,25 +64,6 @@ public final class LeapEngine {
     private static final int FLY_HOLD_FROM_TICKS = 8;
     private static final int FLY_HOLD_REPLAY_TICKS = 6;
 
-    /**
-     * "힘" past {@link #GROUND_LIFT_MIN_DAMAGE} tears the launch point up: the surface around it is thrown
-     * upward and falls back into place, and both the area and the height grow with how far past the
-     * threshold the player's attack damage is. Nothing is destroyed — the blocks land back on the column
-     * they came from.
-     */
-    private static final double GROUND_LIFT_MIN_DAMAGE = 6.0;
-    private static final double GROUND_LIFT_BASE_RADIUS = 1.6;
-    private static final double GROUND_LIFT_RADIUS_PER_DAMAGE = 0.22;
-    private static final double GROUND_LIFT_MAX_RADIUS = 5.0;
-    private static final double GROUND_LIFT_BASE_RISE = 1.2;
-    private static final double GROUND_LIFT_RISE_PER_DAMAGE = 0.28;
-    private static final double GROUND_LIFT_MAX_RISE = 4.5;
-    /** How many blocks the burst is made of, and how many more each point of damage past the threshold adds. */
-    private static final double GROUND_LIFT_BASE_BLOCKS = 6.0;
-    private static final double GROUND_LIFT_BLOCKS_PER_DAMAGE = 0.8;
-    /** How close a new burst may land to one that is still breaking up before it is left out. */
-    private static final double GROUND_LIFT_MIN_SPACING = 2.0;
-
     /** How far ahead the crosshair can pick an entity to fly at. */
     private static final double TARGET_RANGE = 24.0;
     /** Blocks covered by a tap / by a full charge at baseline attributes. */
@@ -173,7 +154,7 @@ public final class LeapEngine {
         data.setLeapCharging(false);
 
         float fraction = Math.min(1.0F, chargeTicks / (float) MAX_CHARGE_TICKS);
-        double reach = Charge.lerp((float) MIN_DISTANCE, (float) maxDistance(player), fraction);
+        double reach = Charge.lerp((float) MIN_DISTANCE, (float) maxDistance(player, data), fraction);
 
         Entity target = aimedEntity(player);
         Vec3 aim = target == null
@@ -308,34 +289,18 @@ public final class LeapEngine {
     }
 
     /**
-     * Tears the launch point up when the player is strong enough to do it: the same burst a hard blow leaves on
-     * terrain, centred on the block the leap pushes off from, so both read the same way rather than one being
-     * displays and the other falling blocks. Both the area and the lift grow with how far past
-     * {@link #GROUND_LIFT_MIN_DAMAGE} the player's attack damage is.
+     * Tears the launch point up when the player is strong enough to do it: the same burst a blow leaves on
+     * terrain, centred on the block the leap pushed off from, so both read the same way. UpheavalEntity.burst
+     * decides how far the player's strength and their launch speed carry it, and whether it happens at all.
      */
     private static void liftGround(ServerPlayer player) {
-        double damage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        if (damage < GROUND_LIFT_MIN_DAMAGE) {
-            return;
-        }
-        double over = damage - GROUND_LIFT_MIN_DAMAGE;
-        double radius = Math.min(GROUND_LIFT_MAX_RADIUS,
-                GROUND_LIFT_BASE_RADIUS + over * GROUND_LIFT_RADIUS_PER_DAMAGE);
-        double rise = Math.min(GROUND_LIFT_MAX_RISE,
-                GROUND_LIFT_BASE_RISE + over * GROUND_LIFT_RISE_PER_DAMAGE);
-        int blocks = (int) Math.round(GROUND_LIFT_BASE_BLOCKS + over * GROUND_LIFT_BLOCKS_PER_DAMAGE);
-
         ServerLevel level = (ServerLevel) player.level();
         BlockPos under = player.blockPosition().below();
-        // Ground already coming apart there waits for it to settle, the same as a blow into it would.
-        if (!level.getEntitiesOfClass(UpheavalEntity.class,
-                new AABB(under).inflate(GROUND_LIFT_MIN_SPACING)).isEmpty()) {
+        if (!UpheavalEntity.burst(level, under, player.getLookAngle(),
+                player.getAttributeValue(Attributes.ATTACK_DAMAGE),
+                player.getDeltaMovement().horizontalDistance())) {
             return;
         }
-        UpheavalEntity burst = new UpheavalEntity(level);
-        burst.moveTo(under.getX() + 0.5, under.getY() + 1.0, under.getZ() + 0.5, 0.0F, 0.0F);
-        burst.setBurst(radius, rise, blocks, player.getLookAngle());
-        level.addFreshEntity(burst);
         ShockwaveRingEntity ring = new ShockwaveRingEntity(level);
         ring.moveTo(player.getX(), player.getY() + 0.1, player.getZ(), player.getYRot(), 0.0F);
         level.addFreshEntity(ring);
@@ -464,13 +429,19 @@ public final class LeapEngine {
         return travel / dashSpeed(travel) / (1.0 - AIR_DRAG / 2.0);
     }
 
-    /** Blocks a full charge reaches with this player's attributes. */
-    private static double maxDistance(ServerPlayer player) {
+    /**
+     * Blocks a full charge reaches: what this player's strength and speed earn them, held back by however far
+     * they have wound the leap dial down in the power settings GUI — which reaches 100%, the whole of what
+     * those attributes earn, and no further. Only the far end moves: the tap of a jump stays at
+     * {@link #MIN_DISTANCE} whatever the dial says.
+     */
+    private static double maxDistance(ServerPlayer player, TorikoData data) {
         double damage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
         double speed = player.getAttributeValue(Attributes.MOVEMENT_SPEED);
-        return MAX_DISTANCE
+        return (MAX_DISTANCE
                 + Math.max(0.0, damage - BASE_ATTACK_DAMAGE) * BLOCKS_PER_DAMAGE
-                + Math.max(0.0, speed - BASE_MOVEMENT_SPEED) * BLOCKS_PER_SPEED;
+                + Math.max(0.0, speed - BASE_MOVEMENT_SPEED) * BLOCKS_PER_SPEED)
+                * data.leapDistanceSetting();
     }
 
     /**

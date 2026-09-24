@@ -51,6 +51,9 @@
 [world]
 	#Let cutting skills (Knife / Flying Knife / Leg Knife) shear leaves and plants.
 	cutVegetation = true
+	#Let techniques break the terrain they hit, instead of only passing through foliage and glass.
+	#What a technique can get through comes from how hard it actually hits: see skill.Hurt#impulse. Turning this off leaves the world untouched by blows.
+	cellPowerBreaksBlocks = true
 
 [gameplay]
 	#Require an empty main hand for the bare-handed skills (everything but Food Immersion).

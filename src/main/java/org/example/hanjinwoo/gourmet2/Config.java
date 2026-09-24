@@ -57,7 +57,8 @@ public class Config {
             .defineInRange("balance.captureSimilarityWindow", 2, 0, 1000);
 
     private static final ModConfigSpec.IntValue KI_DRAIN_PER_SECOND = BUILDER
-            .comment("Appetite drained per second per output level while Ki Release is on.")
+            .comment("Appetite drained per second while Ki Release is on at the lowest output.",
+                    "The output dial takes it up to ten times this at the player's own ceiling, whatever the ceiling is.")
             .defineInRange("balance.kiDrainPerSecond", 2, 0, 1000);
 
     private static final ModConfigSpec.BooleanValue STARVATION_PENALTY = BUILDER
@@ -69,8 +70,8 @@ public class Config {
             .define("world.cutVegetation", true);
 
     private static final ModConfigSpec.BooleanValue CELL_POWER_BREAKS_BLOCKS = BUILDER
-            .comment("Let thrown techniques punch straight through any block, not just weak ones, once the caster's Gourmet Cells have evolved enough for its hardness.",
-                    "See skill.CellEvolution#blockHardnessCap for the level curve.")
+            .comment("Let techniques break the terrain they hit, instead of only passing through foliage and glass.",
+                    "What a technique can get through comes from how hard it actually hits: see skill.Hurt#impulse. Turning this off leaves the world untouched by blows.")
             .define("world.cellPowerBreaksBlocks", true);
 
     private static final ModConfigSpec.BooleanValue SKILLS_NEED_EMPTY_HAND = BUILDER

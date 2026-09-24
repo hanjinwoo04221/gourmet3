@@ -29,6 +29,19 @@
 	appetitePerNutrition = 4.0
 	#When Appetite hits zero, inflict Weakness/Slowness (Toriko's 'starving' state).
 	starvationPenalty = true
+	#Gourmet Cell evolution XP gained per point of food nutrition when eating.
+	#See skill.CellEvolution for the level curve this feeds into.
+	# Default: 3.0
+	# Range: 0.0 ~ 200.0
+	cellXpPerNutrition = 3.0
+	#Appetite drained per second while Intimidation's toggle is on.
+	# Default: 4
+	# Range: 0 ~ 1000
+	intimidationDrainPerSecond = 4
+	#Appetite drained per second per output level while Ki Release is on.
+	# Default: 2
+	# Range: 0 ~ 1000
+	kiDrainPerSecond = 2
 
 [world]
 	#Let cutting skills (Knife / Flying Knife / Leg Knife) shear leaves and plants.

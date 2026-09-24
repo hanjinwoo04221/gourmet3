@@ -42,6 +42,11 @@
 	# Default: 2
 	# Range: 0 ~ 1000
 	kiDrainPerSecond = 2
+	#Intimidation only works on targets whose Capture Level is lower than the caster's by MORE than this.
+	#Equal, similar or higher Capture Levels shrug it off.
+	# Default: 2
+	# Range: 0 ~ 1000
+	captureSimilarityWindow = 2
 
 [world]
 	#Let cutting skills (Knife / Flying Knife / Leg Knife) shear leaves and plants.
