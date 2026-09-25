@@ -251,8 +251,10 @@ public final class Hurt {
             // how much damage the technique carries and how fast it was thrown, and skipped when that is not
             // enough for one. Weighed the same way, so the crater it leaves is broken through under the very
             // impulse that just swept the corridor.
+            // The crater is held to what the technique actually reaches: the region it swept.
+            double reach = Math.max(region.getXsize(), Math.max(region.getYsize(), region.getZsize()));
             UpheavalEntity.burst(server, caster, BlockPos.containing(region.getCenter()), blow, damage,
-                    blow.length(), impulse, growth);
+                    blow.length(), impulse, growth, UpheavalEntity.contactRadius(reach));
         }
     }
 }

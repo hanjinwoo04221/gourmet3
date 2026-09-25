@@ -27,13 +27,15 @@ public class ThrownChopstickRenderer extends EntityRenderer<ThrownChopstickEntit
     @Override
     public void render(ThrownChopstickEntity entity, float entityYaw, float partialTick,
                        PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
-        float scale = Math.max(0.2F, entity.getBbWidth() / 0.3F);
+        float scale = entity.visualScale();
         float t = entity.thickness();
         poseStack.pushPose();
         poseStack.translate(0.0F, entity.getBbHeight() / 2.0F, 0.0F);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot())));
         poseStack.mulPose(Axis.XP.rotationDegrees(-Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
         poseStack.scale(scale, scale, scale);
+        // The tip of the stick is at the entity's position, so it hits and breaks exactly where it is seen to be.
+        poseStack.translate(0.0F, 0.0F, -LENGTH / 2.0F);
 
         PoseStack.Pose pose = poseStack.last();
         VertexConsumer vc = buffers.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
@@ -41,8 +43,9 @@ public class ThrownChopstickRenderer extends EntityRenderer<ThrownChopstickEntit
         ChopsticksRenderer.box(vc, pose, -0.02F * t, -0.02F * t, 0.0F, 0.02F * t, 0.02F * t, LENGTH / 2.0F, WOOD);
         // Fetched only after the solid part is written: a second buffer request closes the first.
         VertexConsumer halo = buffers.getBuffer(RenderType.entityTranslucent(TEXTURE));
-        ChopsticksRenderer.box(halo, pose, -0.09F * t, -0.09F * t, -LENGTH / 2.0F - 0.05F, 0.09F * t, 0.09F * t,
-                LENGTH / 2.0F + 0.05F, GLOW);
+        // The glow only slightly outgrows the stick, however thick the stick is drawn.
+        float g = 0.09F + 0.02F * (t - 1.0F);
+        ChopsticksRenderer.box(halo, pose, -g, -g, -LENGTH / 2.0F - 0.05F, g, g, LENGTH / 2.0F + 0.05F, GLOW);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTick, poseStack, buffers, packedLight);
     }

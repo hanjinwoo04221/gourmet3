@@ -23,22 +23,36 @@ import org.example.hanjinwoo.gourmet2.skill.SkillType;
  * they run into is broken and heaved up gently.
  */
 public class ChopstickAsuraSkill implements SkillBehavior {
-    private static final float VELOCITY = 2.6F;
+    private static final float VELOCITY = 1.5F;
+    /**
+     * Fastest launch speed, however far the reach setting and Cell level would push it. The sticks pick up speed as
+     * they fly (x1.8 over a full flight), and past about 3.9 blocks per tick the game's own tracking cannot keep up
+     * with them, so they would be seen to stutter.
+     */
+    private static final double MAX_LAUNCH_SPEED = 3.0;
     private static final float BASE_DAMAGE = 7.0F;
     /**
      * Half the size of the Single Chopstick (12 blocks long, drawn 2.2x as thick as a scale-1 pair): these are
      * scaled so their length is 6 blocks and their girth half the Single Chopstick's, both times the size setting.
      */
-    private static final float SIZE_FACTOR = 6.0F / 1.8F;
-    private static final float THICKNESS = 1.7F;
+    private static final float SIZE_FACTOR = 10.0F / 1.8F;
+    /**
+     * Drawn as thick as the box the stick actually hits and breaks blocks with (see {@code ThrownChopstickRenderer}):
+     * the hitbox is 0.3 blocks per unit of scale, the stick 0.04 per unit of thickness at its tip.
+     */
+    /** The hitbox (and so the blocks it breaks) is scaled by this: a little under the tip's drawn width. */
+    private static final float HIT_FACTOR = 3.0F;
+    private static final float THICKNESS = 4.0F;
     private static final int STICKS_PER_VOLLEY = 3;
-    private static final double SPREAD = 0.09;
-    private static final double SIDE_OFFSET = 0.35;
+    /** The sticks are centred on where they spawn, so they start this far ahead to keep their rear end off the caster. */
+    private static final double MUZZLE_OFFSET = 3.5;
+    private static final double SPREAD = 0.02;
+    private static final double SIDE_OFFSET = 0.15;
     /** A slow, heavy spray: each volley is followed by a long pause, and the sticks grow the longer the key is held. */
-    private static final int BASE_INTERVAL = 10;
-    private static final int MIN_INTERVAL = 5;
+    private static final int BASE_INTERVAL = 24;
+    private static final int MIN_INTERVAL = 14;
     /** Ticks of holding it takes to reach full growth, and how many times its size a stick is then. */
-    private static final int GROW_TICKS = 80;
+    private static final int GROW_TICKS = 300;
     private static final float MAX_GROWTH = 2.0F;
     private static final int VOLLEY_COST = 5;
     private static final int MAX_EXTRA_PER_VOLLEY = 6;
@@ -53,7 +67,7 @@ public class ChopstickAsuraSkill implements SkillBehavior {
 
     private static int fireInterval(TorikoData data) {
         int steps = data.forkProjectileSetting() - CellEvolution.FORK_PROJECTILE_BASE;
-        return Math.max(MIN_INTERVAL, BASE_INTERVAL - steps / 4);
+        return Math.max(MIN_INTERVAL, BASE_INTERVAL - steps / 3);
     }
 
     private static int volleyCost(TorikoData data) {
@@ -90,16 +104,17 @@ public class ChopstickAsuraSkill implements SkillBehavior {
         for (int i = 0; i < STICKS_PER_VOLLEY; i++) {
             Vec3 dir = look.add(right.scale((random.nextDouble() - 0.5) * 2.0 * SPREAD))
                     .add(up.scale((random.nextDouble() - 0.5) * 2.0 * SPREAD)).normalize();
-            Vec3 from = ctx.eyePosition().add(look.scale(0.8))
+            Vec3 from = ctx.eyePosition().add(look.scale(MUZZLE_OFFSET))
                     .add(right.scale((random.nextDouble() - 0.5) * 2.0 * SIDE_OFFSET))
                     .add(up.scale((random.nextDouble() - 0.5) * 2.0 * SIDE_OFFSET - 0.2));
             ThrownChopstickEntity stick = new ThrownChopstickEntity(ctx.level());
             stick.setOwner(player);
             stick.setDamage(ctx.damage(BASE_DAMAGE * data.flyingDamageSetting() * grow));
-            stick.setSizeScale(data.flyingSizeSetting() * SIZE_FACTOR * grow);
+            stick.setSizeScale(data.flyingSizeSetting() * HIT_FACTOR * grow);
+            stick.setVisualScale(data.flyingSizeSetting() * SIZE_FACTOR * grow);
             stick.setThickness(THICKNESS);
             stick.moveTo(from.x, from.y, from.z);
-            stick.launch(dir.scale(VELOCITY * data.rangeMultiplier()));
+            stick.launch(dir.scale(Math.min(MAX_LAUNCH_SPEED, VELOCITY * data.rangeMultiplier())));
             ctx.level().addFreshEntity(stick);
         }
         Hurt.playSound(ctx, player.position(), SoundEvents.TRIDENT_THROW.value(), 0.6F, 1.7F);

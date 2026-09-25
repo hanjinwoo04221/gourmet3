@@ -117,7 +117,7 @@ public final class ModEntities {
                     .<org.example.hanjinwoo.gourmet2.entity.ThrownChopstickEntity>of(
                             org.example.hanjinwoo.gourmet2.entity.ThrownChopstickEntity::new, MobCategory.MISC)
                     .sized(0.3F, 0.3F)
-                    .clientTrackingRange(8)
+                    .clientTrackingRange(24)
                     .updateInterval(2)
                     .noSummon()
                     .build("thrown_chopstick"));

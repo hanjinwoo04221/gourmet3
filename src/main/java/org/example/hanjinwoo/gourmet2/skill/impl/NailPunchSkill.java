@@ -206,7 +206,9 @@ public class NailPunchSkill implements SkillBehavior {
         // The burst is worth the punch, and the punch breaks the ground it lands on under the same impulse the
         // sweep below uses, so what is left standing and what is only heaved agree.
         UpheavalEntity.burst((ServerLevel) ctx.level(), ctx.player(), BlockPos.containing(contact.getCenter()),
-                ctx.lookDirection(), blow, strength, Hurt.impulse(dir.scale(strength), blow, Hurt.FIST_AREA));
+                ctx.lookDirection(), blow, strength, Hurt.impulse(dir.scale(strength), blow, Hurt.FIST_AREA),
+                UpheavalEntity.Growth.DEFAULT,
+                UpheavalEntity.contactRadius(Math.max(contact.getXsize(), Math.max(contact.getYsize(), contact.getZsize()))));
         Hurt.sweepBreak(ctx.player(), ctx.level(), contact, dir.scale(strength), blow, Hurt.FIST_AREA);
     }
 

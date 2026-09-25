@@ -1,20 +1,3 @@
-/kill @e[type=minecraft:item]
-/kill @e[type=minecraft:experience_orb]
-/summon husk ~ ~1 ~ {active_effects:[{id:resistance,duration:3000,amplifier:5}]}
-/gourmet2 celllevel set 1000
-/summon husk ~ ~1 ~ {active_effects:[{id:resistance,duration:3000,amplifier:5}]}
-/summon zombie ~ ~1 ~ {active_effects:[{id:resistance,duration:2000,amplifier:4}]}
-/summon minecraft:blaze
-/summon zombie ~ ~1 ~ {active_effects:[{id:resistance,duration:2000,amplifier:4}]}
-/summon minecraft:iron_golem
-/summon zombie ~ ~1 ~ {active_effects:[{id:resistance,duration:2000,amplifier:4}]}
-/gourmet2 celllevel set 10000
-/gourmet2 celllevel set 100
-/summon zombie ~ ~1 ~ {active_effects:[{id:resistance,duration:2000,amplifier:4}]}
-/gourmet2 celllevel set 20
-/gourmet2 celllevel set 500
-/summon zombie ~ ~1 ~ {active_effects:[{id:resistance,duration:2000,amplifier:4}]}
-/gourmet2 celllevel set 1000
 /gourmet2 celllevel set 3000
 /gourmet2 celllevel set 100
 /gourmet2 celllevel set 1
@@ -48,3 +31,20 @@
 /summon minecraft:ender_dragon
 /summon minecraft:iron_golem
 /summon minecraft:husk
+/summon minecraft:iron_golem
+/summon minecraft:ender_dragon
+/gourmet2 celllevel set 500
+/gourmet2 celllevel set 300
+/summon minecraft:iron_golem
+/gourmet2 celllevel set 500
+/summon minecraft:iron_golem
+/summon minecraft:warden
+/summon minecraft:iron_golem
+/summon minecraft:warden
+/summon minecraft:iron_golem
+/summon minecraft:warden
+/effect give Dev minecraft:instant_health 5 255
+/effect give Dev minecraft:regeneration 7 255
+/summon minecraft:warden
+/summon minecraft:iron_golem
+/summon minecraft:warden

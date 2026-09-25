@@ -227,6 +227,20 @@ public class UpheavalEntity extends VisualEntity {
     /** As {@link #burst(ServerLevel, ServerPlayer, BlockPos, Vec3, double, double, double)}, with its own growth rates. */
     public static boolean burst(ServerLevel level, ServerPlayer caster, BlockPos at, Vec3 direction,
             double damage, double speed, double impulse, Growth growth) {
+        return burst(level, caster, at, direction, damage, speed, impulse, growth, MAX_CRATER_RADIUS);
+    }
+
+    /**
+     * Widest crater for a technique whose reach is {@code contactSize} blocks across: no wider than what it touches
+     * (with a little margin, and never under a block's worth), however hard it hits.
+     */
+    public static double contactRadius(double contactSize) {
+        return Math.max(1.0, contactSize / 2.0 + 0.75);
+    }
+
+    /** As above, with the crater held to {@code maxRadius} however much power the blow has. */
+    public static boolean burst(ServerLevel level, ServerPlayer caster, BlockPos at, Vec3 direction,
+            double damage, double speed, double impulse, Growth growth, double maxRadius) {
         double power = damage * (1.0 + Math.min(MAX_SPEED_FACTOR, Math.max(0.0, speed)) * SPEED_WEIGHT);
         if (power < MIN_POWER) {
             return false;
@@ -244,7 +258,7 @@ public class UpheavalEntity extends VisualEntity {
         }
         double over = power - MIN_POWER;
         // As wide as the blow is worth, up to as wide as can be dug and shown block for block: see MAX_CRATER_RADIUS.
-        double radius = Math.min(MAX_CRATER_RADIUS, growth.baseRadius() + over * growth.radiusPerPower());
+        double radius = Math.min(Math.min(MAX_CRATER_RADIUS, maxRadius), growth.baseRadius() + over * growth.radiusPerPower());
         double lift = Math.min(MAX_LIFT, growth.baseLift() + over * growth.liftPerPower());
         UpheavalEntity burst = new UpheavalEntity(level);
         burst.moveTo(at.getX() + 0.5, at.getY() + 1.0, at.getZ() + 0.5, 0.0F, 0.0F);

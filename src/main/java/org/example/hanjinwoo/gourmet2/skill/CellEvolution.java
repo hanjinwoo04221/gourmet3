@@ -50,13 +50,13 @@ public final class CellEvolution {
     }
 
     /**
-     * What a Gourmet Cell level is worth in skill damage: a couple of percent each, so the numbers drift up
+     * What a Gourmet Cell level is worth in skill damage: five percent each, so the numbers climb
      * steadily as the cells evolve instead of jumping. Uncapped, like the level itself — every level makes
      * every technique a little meaner, for as long as the eating continues. A player who finds that too much
      * can wind it back down with {@link #ATTACK_DAMAGE_FLOOR}, without losing the level that earned it.
      */
     public static float skillDamageBonus(int level) {
-        return level * 0.02F;
+        return level * 0.05F;
     }
 
     /** XP needed to go from {@code level} to {@code level + 1}. Every level costs a little more than the last. */

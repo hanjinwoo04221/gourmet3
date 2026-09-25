@@ -43,7 +43,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class CellGrowth {
     /** How much of the body's remaining headroom one level is worth, in total. */
-    private static final double HEADROOM_PER_LEVEL = 0.10;
+    private static final double HEADROOM_PER_LEVEL = 0.02;
     /** At most this many attributes grow on any one level. */
     private static final int MAX_GROWTHS_PER_LEVEL = 2;
     /** Any attribute this close to its ceiling counts as full, so nothing divides by a sliver. */
@@ -61,7 +61,7 @@ public final class CellGrowth {
             new Growth(Attributes.MAX_HEALTH, Gourmet2.id("cell_health"),
                     AttributeModifier.Operation.ADD_VALUE, 40.0, false),
             new Growth(Attributes.ATTACK_DAMAGE, Gourmet2.id("cell_attack"),
-                    AttributeModifier.Operation.ADD_VALUE, 15.0, false),
+                    AttributeModifier.Operation.ADD_VALUE, 2.0, false),
             new Growth(Attributes.ARMOR, Gourmet2.id("cell_armor"),
                     AttributeModifier.Operation.ADD_VALUE, 12.0, true),
             new Growth(Attributes.ARMOR_TOUGHNESS, Gourmet2.id("cell_toughness"),
