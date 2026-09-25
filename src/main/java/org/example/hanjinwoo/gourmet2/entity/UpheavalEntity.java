@@ -52,16 +52,23 @@ import java.util.UUID;
  */
 public class UpheavalEntity extends VisualEntity {
     /**
-     * Blocks per tick the shock travels outward. A speed rather than a time, deliberately: a small crater then opens
-     * in an eye-blink and a wide one sweeps outward over a good part of a second, which is how a blow landing
-     * actually looks. Nothing happens all at once — a piece's block is only broken out of the ground when its own
-     * ring arrives, so the ground ahead of the wave is still whole and what it has passed is already settling — and
-     * spreading the work over the wave is also what keeps a wide crater affordable at any one moment.
+     * Rings the shock lays down per tick: one. A ring is a whole circle of the crater (see {@link #RING_SPACING})
+     * and every block of one is raised in the same tick, so the crater opens as circle after circle widening out
+     * from the mark — each one finished before the next begins — rather than as a wave that races around a ring
+     * before the one inside it is done. Nothing all at once, either: a piece's block is only broken out of the
+     * ground when its own ring's turn comes, so the ground ahead of the wave is still whole and what it has passed
+     * is already settling, and spreading the work over the rings is what keeps a wide crater affordable at any one
+     * moment.
+     *
+     * <p>One apiece is also as fast as whole circles can be laid: the rings are {@link #RING_SPACING} apart, so this
+     * is a block a tick across the ground. A crater with more rings than the shock is allowed ticks (see
+     * {@link #MAX_WAVE_TICKS}) has to bunch them, and then whole rings share a tick — still strictly in order, and
+     * with nothing of what makes a ring a ring given up.
      */
-    private static final double WAVE_SPEED = 1.5;
+    private static final double RINGS_PER_TICK = 1.0;
     /**
      * Longest the shock is allowed to take. Without it a crater a couple of hundred blocks across would still be
-     * opening seconds after the blow, so past this width the wave is simply made to move faster.
+     * opening seconds after the blow, so past this many rings the wave simply lays more than one to a tick.
      */
     private static final int MAX_WAVE_TICKS = 30;
     /**
@@ -127,8 +134,8 @@ public class UpheavalEntity extends VisualEntity {
      * is the number of entities a burst costs: at this width there are about four hundred, which is affordable, and
      * at twice the width there would be four times as many, which is not.
      *
-     * <p>The wave is what makes even this much affordable (see {@link #WAVE_SPEED}): the pieces are raised across its
-     * crossing rather than in the tick the blow lands, so what one tick pays for is a ring of the crater and not the
+     * <p>The wave is what makes even this much affordable (see {@link #RINGS_PER_TICK}): the pieces are raised ring
+     * by ring rather than in the tick the blow lands, so what one tick pays for is a ring of the crater and not the
      * whole of it. A blow worth more than this still breaks what it breaks and still tears up the ground it lands
      * on — it simply does so in a crater this size. Raising this is the one dial that buys a wider one.
      */
@@ -138,16 +145,11 @@ public class UpheavalEntity extends VisualEntity {
      * the whole disc out and does not leave one rim either: it leaves circle after circle widening from the impact,
      * each a couple of blocks thick, with the ground between them left standing. That is what the crater is made of,
      * and the spacing is what keeps a wide one affordable — the blocks involved are this share of the disc rather
-     * than all of it, however wide it gets.
+     * than all of it, however wide it gets. It is also the unit the shock is paced in: a ring is raised whole and the
+     * next one waits its turn, so this is how much ground one tick of the wave lays (see {@link #RINGS_PER_TICK}).
      */
     private static final double RIM_THICKNESS = 1.0;
     private static final double RING_SPACING = 1.0;
-    /**
-     * How much of a ring's own blocks are held back to be raised around the circle rather than all in the tick the
-     * wave gets there. A ring's worth of blocks arriving together is a spike in what one tick has to build, and the
-     * widest ring holds the most: this spreads each of them out without losing the order the rings come in.
-     */
-    private static final double RING_STAGGER = 0.5;
     /**
      * How thick the ground a wide burst takes is, in blocks either side of the mark along the axis the blow travels.
      * The crater is a disc across the face the blow opened: thin along the axis the blow travels and round in the
@@ -340,7 +342,11 @@ public class UpheavalEntity extends VisualEntity {
         private final Vector3f spinAxis;
         private final Vector3f offset = new Vector3f();
         private final Vector3f target;
-        /** Ticks after the burst started before the wave reaches this one, from how far out it is. */
+        /**
+         * Ticks after the burst was laid out before this one's ring has its turn: the circle it sits on, counted
+         * from the mark outward, times the ticks a ring gets (see {@link #RINGS_PER_TICK}). Every piece of a ring
+         * shares it, which is what raises a whole circle in one tick and starts the next only once it is done.
+         */
         private final int bornAt;
         private final int settleAt;
         private float spin;
@@ -396,9 +402,20 @@ public class UpheavalEntity extends VisualEntity {
      *  block by block, whether the ground is broken where it stands or only heaved up and put back. */
     private UUID casterId;
     private double impulse;
-    /** Ticks the shock takes to cross this crater: a speed, so wide craters take longer than small ones. */
+    /** How many whole rings the crater is cut in, counted from the mark out to its rim (see {@link #RING_SPACING}). */
+    private int rings = 1;
+    /**
+     * Ticks the shock takes to lay those rings down: one ring a tick, so a crater with more rings takes longer than
+     * a small one (see {@link #RINGS_PER_TICK}) — up to the cap, past which whole rings share a tick.
+     */
     private int waveTicks = 1;
     private boolean built;
+    /**
+     * The tick count the crater was laid out on. The wave is measured from here rather than from the entity's own
+     * count, so the mark's ring has its turn on the very next tick whatever tick this entity happened to start on —
+     * which is what keeps it at one ring a tick instead of the innermost two arriving together.
+     */
+    private int laidOutAt;
 
     public UpheavalEntity(EntityType<? extends UpheavalEntity> type, Level level) {
         super(type, level);
@@ -419,7 +436,10 @@ public class UpheavalEntity extends VisualEntity {
         this.direction = direction;
         this.casterId = casterId;
         this.impulse = impulse;
-        this.waveTicks = Mth.clamp((int) Math.ceil(radius / WAVE_SPEED), 1, MAX_WAVE_TICKS);
+        // Laid down ring by ring, so rings are what the shock is counted in: one a tick, and past the cap whole
+        // rings share a tick rather than the wave being made to run around them (see RINGS_PER_TICK).
+        this.rings = Math.max(1, (int) Math.floor(radius / RING_SPACING) + 1);
+        this.waveTicks = Mth.clamp((int) Math.ceil(rings / RINGS_PER_TICK), 1, MAX_WAVE_TICKS);
     }
 
     /**
@@ -440,26 +460,29 @@ public class UpheavalEntity extends VisualEntity {
         }
         if (!built) {
             built = true;
+            laidOutAt = tickCount;
             throwUp();
             return;
         }
-        // The shock travels outward: a piece's ground only gives way when the ring it sits on gets to it, so the
-        // crater opens from the mark outward and what the wave has passed is already settling behind it.
+        // The shock travels outward, a whole ring a tick: a piece's ground only gives way when its own ring's turn
+        // comes, so the crater opens circle by circle from the mark — each one finished before the next starts — and
+        // what the wave has passed is already settling behind it.
+        int wave = tickCount - laidOutAt;
         Random random = new Random(level().random.nextLong());
         for (Piece piece : pieces) {
-            if (tickCount < piece.bornAt) {
+            if (wave < piece.bornAt) {
                 continue;
             }
             if (!piece.born) {
                 piece.born = true;
                 raise(piece);
             }
-            if (tickCount <= piece.bornAt + FLY_TICKS) {
+            if (wave <= piece.bornAt + FLY_TICKS) {
                 // Coming apart: it moves a good share of the way to its own place every tick and is still within a few.
                 piece.drift(random);
                 send(piece, piece.turn, piece.offset, PIECE_SCALE, STEP_BLEND);
                 // Dust shaken loose as it comes apart, a little at a time rather than one cloud.
-                if ((tickCount + piece.bornAt) % 4 == 0) {
+                if ((wave + piece.bornAt) % 4 == 0) {
                     dust(piece, 1, 1);
                 }
                 continue;
@@ -468,12 +491,12 @@ public class UpheavalEntity extends VisualEntity {
             // so it simply stays where it came apart — eases back into its own cell and straightens up, and shrinks
             // away once that easing is done. Each one starts at a different tick, so the patch goes a piece at a
             // time rather than in one blink.
-            if (!piece.settling && tickCount >= piece.settleAt) {
+            if (!piece.settling && wave >= piece.settleAt) {
                 piece.settling = true;
                 send(piece, new Quaternionf(), new Vector3f(), PIECE_SCALE, RETURN_TICKS);
                 dust(piece, 1, 1);
             }
-            if (piece.settling && !piece.settled && tickCount >= piece.settleAt + RETURN_TICKS) {
+            if (piece.settling && !piece.settled && wave >= piece.settleAt + RETURN_TICKS) {
                 piece.settled = true;
                 // Home again and about to fade: the ground goes back now, so there is never a moment where the
                 // piece has gone and the cell it came from is still empty.
@@ -601,15 +624,17 @@ public class UpheavalEntity extends VisualEntity {
             // where it is, until the ring this piece sits on reaches it (see tick). What a wide crater shows at any
             // one moment is then the band the wave is passing over, not every block of it standing open at once.
             Display.BlockDisplay display = new Display.BlockDisplay(EntityType.BLOCK_DISPLAY, level);
-            // Outward with the wave, and part of the way around the circle as well: the rings go down one after
-            // another from the mark — which is what the eye follows — and the turn keeps one ring's worth of blocks
-            // from all being raised in the same tick (see RING_STAGGER).
-            double angle = ringAxis == Direction.Axis.X ? Math.atan2(dz, dy)
-                    : ringAxis == Direction.Axis.Y ? Math.atan2(dz, dx) : Math.atan2(dy, dx);
-            double around = (angle + Math.PI) / (2.0 * Math.PI);
+            // One circle at a time, outward from the mark: a piece's moment is its ring's and nothing else — none of
+            // it is left to how far around the circle the piece happens to sit — so every block of a ring is raised
+            // in the same tick, and no ring starts until the one inside it is complete (see RINGS_PER_TICK).
+            //
+            // The ring is counted the way the crater is cut, in bands of RING_SPACING back from the rim, so a ring
+            // here is exactly one of the circles the filter above left standing. The mark's own ring goes on wave
+            // one — the first tick after the crater is laid out — and the rim's on the last, waveTicks: a crater
+            // with more rings than the shock gets ticks has them bunched a few to a tick, still in this same order.
             double across = Math.sqrt(acrossSq(ringAxis, pos, centre));
-            double phase = across / Math.max(1.0E-4, radius) * (1.0 - RING_STAGGER) + around * RING_STAGGER;
-            int bornAt = (int) Math.round(phase * waveTicks);
+            int ring = rings - 1 - (int) Math.floor((radius - across) / RING_SPACING);
+            int bornAt = 1 + ring * waveTicks / rings;
             pieces.add(new Piece(display, state, pos.immutable(), turn, axis, spin, target, bornAt,
                     bornAt + FLY_TICKS + SETTLE_FROM + random.nextInt(SETTLE_SPREAD), broken));
         }

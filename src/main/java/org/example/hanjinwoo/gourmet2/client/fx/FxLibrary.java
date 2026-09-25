@@ -42,10 +42,14 @@ public final class FxLibrary {
                 FxPart.world(0.35F, Sample.RING_1));
 
         // -------------------------------------------------------------- Nail Punch
+        // The impact is deliberately small: a hit effect fires at a target being punched, often every other
+        // tick for a whole combo, and one sized like a single big blow blankets the body it lands on and
+        // everything behind it. Sized to read as a hard hit on the spot instead — the finisher, which lands
+        // once, is the only one of the three with any size to it.
         define(SkillFx.NAIL_PUNCH_CAST,
                 FxPart.onBody(0.09F, RIGHT_HAND, Custom.NAIL_PUNCH, Shape.NAIL, Sample.LASER_01));
         define(SkillFx.NAIL_PUNCH_IMPACT,
-                FxPart.world(0.55F, Custom.NAIL_IMPACT, Sample.TOON_HIT));
+                FxPart.world(0.20F, Custom.NAIL_IMPACT, Sample.TOON_HIT));
 
         // ---------------------------------------------------------------- Nail Gun
         define(SkillFx.NAIL_GUN_CAST,
@@ -59,13 +63,17 @@ public final class FxLibrary {
                 FxPart.onProjectile(0.35F, Vec3.ZERO, Custom.NAIL_GUN, Shape.NAIL, Sample.TRACK));
 
         // ------------------------------------------------- 13-hit Nail Punch combo
+        // Both of these are impacts on a body, so both are kept small for the same reason as NAIL_PUNCH_IMPACT:
+        // a combo's hits are two ticks apart and would otherwise stack a screenful of effect on one victim. The
+        // ramp in the skill still scales each hit up as the combo builds (see NailPunchSkill), and the finisher
+        // keeps its size because it is the one blow of the chain that lands alone.
         define(SkillFx.THIRTEEN_LOCK,
                 FxPart.onBody(0.5F, RIGHT_HAND, Custom.THIRTEEN_LOCK, Shape.NAIL, Sample.BARRIER_3));
         define(SkillFx.THIRTEEN_IMPACT,
-                FxPart.world(0.4F, Custom.NAIL_IMPACT, Sample.TOON_HIT));
+                FxPart.world(0.14F, Custom.NAIL_IMPACT, Sample.TOON_HIT));
         define(SkillFx.THIRTEEN_FINISH,
-                FxPart.world(1.2F, Custom.NAIL_FINISH, Sample.TOON_HIT),
-                FxPart.world(1.0F, Sample.RING_1));
+                FxPart.world(0.42F, Custom.NAIL_FINISH, Sample.TOON_HIT),
+                FxPart.world(0.35F, Sample.RING_1));
 
         // -------------------------------------------------------------------- Fork
         define(SkillFx.FORK_CAST,

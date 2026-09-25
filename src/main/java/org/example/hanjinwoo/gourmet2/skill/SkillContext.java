@@ -22,20 +22,30 @@ public record SkillContext(ServerPlayer player, ServerLevel level, TorikoData da
      * a player who has outgrown what they wanted to hit for can hold back without giving up the level.
      */
     public float damage(float base) {
-        float value = (float) (base * Config.damageMultiplier);
-        if (data.isAwakened()) {
-            value *= 1.0F + AWAKENED_DAMAGE_BONUS;
-        }
-        return value * (1.0F + CellEvolution.skillDamageBonus(data.cellLevel())) * data.attackDamageSetting();
+        return withProgress(base) * data.attackDamageSetting();
     }
 
     /**
      * What {@code base} is worth with the caster's own damage dial wide open — the damage a blow deals before
      * they hold any of it back. The power settings screen shows its damage dials in these terms, so what it
      * prints is the damage a blow actually deals rather than a share of one the player never sees.
+     *
+     * <p>Read off the bonuses rather than by dividing the dialled damage back out again: the dial reaches all the
+     * way to nothing ({@link CellEvolution#ATTACK_DAMAGE_FLOOR}), and a division by it would have nothing to
+     * divide by there — the settings screen would print a ceiling of zero for the player who had wound their
+     * damage all the way down, which is the one player who most needs to see what they are holding back from.
      */
     public float damageAtFullDial(float base) {
-        return damage(base) / Math.max(0.01F, data.attackDamageSetting());
+        return withProgress(base);
+    }
+
+    /** The config multiplier, the awakening bonus and the Cell level folded into {@code base}, the dial aside. */
+    private float withProgress(float base) {
+        float value = (float) (base * Config.damageMultiplier);
+        if (data.isAwakened()) {
+            value *= 1.0F + AWAKENED_DAMAGE_BONUS;
+        }
+        return value * (1.0F + CellEvolution.skillDamageBonus(data.cellLevel()));
     }
 
     public Vec3 eyePosition() {

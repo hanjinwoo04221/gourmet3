@@ -280,7 +280,7 @@ public final class CombatEngine {
 
         // A blow that lands on terrain heaves the ground around it up, scaled by strength and by how fast the
         // player was moving when they threw it.
-        upheave(player, group, movingSpeed);
+        upheave(ctx, group, movingSpeed);
 
         if (move.twoHits()) {
             data.setDelayedHitTicks(move.secondHitDelay());
@@ -609,15 +609,26 @@ public final class CombatEngine {
      * the impulse beats its hardness of is broken where it stood, and one it does not is only heaved and put back
      * (see {@link Hurt#impulse} and {@link UpheavalEntity}). Thrown from standing, a punch carries almost no speed
      * and mostly heaves; thrown at a run, it breaks what it lands on.
+     *
+     * <p>What the ground is asked to take follows the player's damage dial: the swell is the strength of the blow
+     * <i>as the player has dialled it</i>, so a blow held back at half lands with half the force behind it — a
+     * smaller crater, or none at all where that is under the bar — and one dialled all the way down leaves the
+     * ground alone rather than breaking it on damage nobody is dealing.
      */
-    private static void upheave(ServerPlayer player, AttackGroup group, double movingSpeed) {
+    private static void upheave(SkillContext ctx, AttackGroup group, double movingSpeed) {
+        ServerPlayer player = ctx.player();
         BlockPos struck = struckBlock(player, group);
         if (struck == null) {
             return;
         }
         ServerLevel level = (ServerLevel) player.level();
         Vec3 look = player.getLookAngle();
-        double damage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        // Held back by the player's own damage dial exactly as their blows are (see CellEvolution): the heave is
+        // the strength the limbs arrive with, and someone who has wound their damage down has wound this down with
+        // it. It is the attribute that gets scaled rather than the blow's own damage, because the attribute is the
+        // quantity the crater has always been measured in — the dial was the one thing missing from it, which is
+        // why a wound-down blow used to tear up the ground as if nothing had been held back at all.
+        double damage = player.getAttributeValue(Attributes.ATTACK_DAMAGE) * ctx.data().attackDamageSetting();
         // The blow is the strength behind the limb over the patch the limb struck with — a fist or a foot, not the
         // whole sweeping box a kick's arc spans, or a wide one would spread the same force thin enough to break
         // nothing at all.

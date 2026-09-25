@@ -23,11 +23,18 @@ import java.util.function.Function;
  * costs another. Turning any of them up raises the Appetite cost of the skill it belongs to (see
  * each skill's {@code extraAppetiteCost}), so this is a power/cost trade-off, not a free lunch.
  *
- * <p>Three of them run the other way. Attack damage, leap reach and the reach of the ranged techniques are
- * throttles: their ceiling is 100% of whatever the player's own progress already earns them, and all their
- * slider can do is hold that back down to its floor ({@link CellEvolution#ATTACK_DAMAGE_FLOOR}. Nothing about
- * the level gates them, because there is nothing to unlock — the growth has already happened, and this is only
- * how to run below it.
+ * <p>Every dial runs both ways. The level sets its ceiling, the setting's own floor ({@code *_FLOOR}) is how far
+ * back it may be held, and the bar between the two is the player's to place the handle on: the {@code *_BASE}
+ * default a skill has always had sits inside that range rather than at the bottom of it, so a technique that has
+ * outgrown what the player wanted to fight with can be reeled back in without giving up the level that earned it.
+ * A dial with nothing to spend is not a dead one either — on a fresh character the ceiling is the default and the
+ * floor is still below it, so there is always somewhere for the handle to go.
+ *
+ * <p>The three that are throttles first — attack damage, leap reach and the reach of the ranged techniques — are
+ * the same shape seen from the other end: their ceiling is 100% of whatever the player's own progress already
+ * earns them, and their floor is nothing at all ({@link CellEvolution#ATTACK_DAMAGE_FLOOR}), so a technique can be
+ * wound off entirely without ever leaving the hotbar. Nothing about the level gates them, because there is nothing
+ * to unlock — the growth has already happened, and this is only how to run below it.
  */
 public class SkillSettingsScreen extends Screen {
     private static final int ROW_HEIGHT = 24;
@@ -89,25 +96,29 @@ public class SkillSettingsScreen extends Screen {
         int x = width / 2 - (SLIDER_WIDTH + BOX_GAP + BOX_WIDTH) / 2;
         int y = panelTop;
 
-        addIntSlider(x, y, "nail_combo", CellEvolution.NAIL_COMBO_BASE, CellEvolution.nailComboCap(level),
+        // Every dial runs from its own floor up to the cap the Cell level has opened, with the default the skill
+        // has always had somewhere inside that range (see CellEvolution): a technique can be wound back below its
+        // default as well as pushed up, and on a fresh character — where the cap is the default — it is that floor
+        // below it that leaves the handle somewhere to go.
+        addIntSlider(x, y, "nail_combo", CellEvolution.NAIL_COMBO_FLOOR, CellEvolution.nailComboCap(level),
                 nailCombo, v -> nailCombo = v);
         y += rowHeight;
-        addIntSlider(x, y, "fork_projectiles", CellEvolution.FORK_PROJECTILE_BASE, CellEvolution.forkProjectileCap(level),
+        addIntSlider(x, y, "fork_projectiles", CellEvolution.FORK_PROJECTILE_FLOOR, CellEvolution.forkProjectileCap(level),
                 forkProjectiles, v -> forkProjectiles = v);
         y += rowHeight;
-        addIntSlider(x, y, "nail_gun_shots", CellEvolution.NAIL_GUN_SHOT_BASE, CellEvolution.nailGunShotCap(level),
+        addIntSlider(x, y, "nail_gun_shots", CellEvolution.NAIL_GUN_SHOT_FLOOR, CellEvolution.nailGunShotCap(level),
                 nailGunShots, v -> nailGunShots = v);
         y += rowHeight;
-        addIntSlider(x, y, "knife_waves", CellEvolution.KNIFE_WAVE_BASE, CellEvolution.knifeWaveCap(level),
+        addIntSlider(x, y, "knife_waves", CellEvolution.KNIFE_WAVE_FLOOR, CellEvolution.knifeWaveCap(level),
                 knifeWaves, v -> knifeWaves = v);
         y += rowHeight;
-        addScaledSlider(x, y, "flying_damage", CellEvolution.DAMAGE_MULT_BASE, CellEvolution.damageMultCap(level),
+        addScaledSlider(x, y, "flying_damage", CellEvolution.DAMAGE_MULT_FLOOR, CellEvolution.damageMultCap(level),
                 flyingDamage, ClientTorikoData.flyingDamageDialBase(), v -> flyingDamage = v);
         y += rowHeight;
-        addPercentSlider(x, y, "flying_size", CellEvolution.SIZE_MULT_BASE, CellEvolution.sizeMultCap(level),
+        addPercentSlider(x, y, "flying_size", CellEvolution.SIZE_MULT_FLOOR, CellEvolution.sizeMultCap(level),
                 flyingSize, v -> flyingSize = v);
         y += rowHeight;
-        addIntSlider(x, y, "ki_output", CellEvolution.KI_OUTPUT_BASE, CellEvolution.kiOutputCap(level),
+        addIntSlider(x, y, "ki_output", CellEvolution.KI_OUTPUT_FLOOR, CellEvolution.kiOutputCap(level),
                 kiOutput, v -> kiOutput = v);
         y += rowHeight;
         // Throttles, not boosts: their own ends are 100%, so the whole range is how far back the player may hold
@@ -129,21 +140,27 @@ public class SkillSettingsScreen extends Screen {
                 .bounds(width / 2 - 100, y, 200, 20).build());
     }
 
-    private void addIntSlider(int x, int y, String key, int base, int cap, int initial, java.util.function.IntConsumer onChange) {
+    /**
+     * A slider over a count — how many hits, shots or waves a technique puts out — running from the dial's own
+     * floor up to the cap this player's level has opened (see {@link CellEvolution}). The initial value is
+     * wherever the setting stands now, which may be anywhere in that range, its default included.
+     */
+    private void addIntSlider(int x, int y, String key, int floor, int cap, int initial, java.util.function.IntConsumer onChange) {
         Function<Double, Component> label = mapped -> Component.translatable(
                 "gui." + Gourmet2.MODID + ".skill_settings." + key, Math.round(mapped), cap);
-        PowerSlider slider = new PowerSlider(x, y, SLIDER_WIDTH, sliderHeight, base, cap, 1.0, initial, label,
+        PowerSlider slider = new PowerSlider(x, y, SLIDER_WIDTH, sliderHeight, floor, cap, 1.0, initial, label,
                 mapped -> onChange.accept((int) Math.round(mapped)));
         addRenderableWidget(slider);
         // A count, so the box shows the count itself.
         addValueBox(x, y, slider, 1.0);
     }
 
-    private void addPercentSlider(int x, int y, String key, float base, float cap, float initial, java.util.function.Consumer<Float> onChange) {
+    /** A slider over a multiplier, shown and typed as a whole percentage of its own scale. */
+    private void addPercentSlider(int x, int y, String key, float floor, float cap, float initial, java.util.function.Consumer<Float> onChange) {
         Function<Double, Component> label = mapped -> Component.translatable(
                 "gui." + Gourmet2.MODID + ".skill_settings." + key,
                 Math.round(mapped * 100), Math.round(cap * 100));
-        PowerSlider slider = new PowerSlider(x, y, SLIDER_WIDTH, sliderHeight, base, cap, 0.01, initial, label,
+        PowerSlider slider = new PowerSlider(x, y, SLIDER_WIDTH, sliderHeight, floor, cap, 0.01, initial, label,
                 mapped -> onChange.accept((float) mapped));
         addRenderableWidget(slider);
         // A percentage on the label, so the box is typed as the same whole percent: 1.85 reads 185% and takes 185.
@@ -161,12 +178,12 @@ public class SkillSettingsScreen extends Screen {
      *
      * @param basis what the dial's 100% is worth in the units its label is written in
      */
-    private void addScaledSlider(int x, int y, String key, float base, float cap, float initial, double basis,
+    private void addScaledSlider(int x, int y, String key, float floor, float cap, float initial, double basis,
             java.util.function.Consumer<Float> onChange) {
         Function<Double, Component> label = mapped -> Component.translatable(
                 "gui." + Gourmet2.MODID + ".skill_settings." + key,
                 format(mapped * basis), format(cap * basis));
-        PowerSlider slider = new PowerSlider(x, y, SLIDER_WIDTH, sliderHeight, base, cap, 0.01, initial, label,
+        PowerSlider slider = new PowerSlider(x, y, SLIDER_WIDTH, sliderHeight, floor, cap, 0.01, initial, label,
                 mapped -> onChange.accept((float) mapped));
         addRenderableWidget(slider);
         addValueBox(x, y, slider, basis);
@@ -200,9 +217,18 @@ public class SkillSettingsScreen extends Screen {
         }
     }
 
-    /** The number as the boxes and labels both show it: whole, every dial here being a count or a whole percent. */
+    /**
+     * The number as the boxes and labels both show it. Whole numbers stay whole — a count dial is one, and so is
+     * every percent — but a fraction is kept to a tenth instead of being rounded away: the dials read in damage
+     * and blocks, where a whole unit can be a fifth of the whole travel, and the box feeds back whatever it is
+     * showing. Rounded to whole numbers, the first point under one damage displayed as 0 and was sent back as 0,
+     * so the handle could not be put below that first whole point at all: drag it any lower and the slider
+     * snapped to the end of its travel, with nothing in between to set. A tenth of a unit is fine enough for
+     * every bar here, and still reads as a plain number.
+     */
     private static String format(double value) {
-        return String.valueOf(Math.round(value));
+        double tenths = Math.round(value * 10.0) / 10.0;
+        return tenths == Math.rint(tenths) ? String.valueOf((long) tenths) : String.valueOf(tenths);
     }
 
     private void onDone() {
@@ -228,9 +254,14 @@ public class SkillSettingsScreen extends Screen {
         return false;
     }
 
-    /** A slider over an arbitrary [base, cap] range, inactive (but still visible) when cap == base. */
+    /**
+     * A slider over an arbitrary [floor, cap] range. The bottom of its travel is the dial's own floor rather than
+     * the default the setting starts at, so the whole of the bar is usable — the handle sits where the setting
+     * stands and can be moved either way from there. Inactive (but still visible) only in the one case where
+     * there is nothing between the two ends at all.
+     */
     private static final class PowerSlider extends AbstractSliderButton {
-        private final double base;
+        private final double floor;
         private final double cap;
         private final double step;
         private final Function<Double, Component> labelFactory;
@@ -239,15 +270,15 @@ public class SkillSettingsScreen extends Screen {
          *  moves the slider without echoing back into the box, which would eat the keystrokes being typed. */
         private DoubleConsumer mirror = value -> {};
 
-        PowerSlider(int x, int y, int width, int height, double base, double cap, double step, double initial,
+        PowerSlider(int x, int y, int width, int height, double floor, double cap, double step, double initial,
                     Function<Double, Component> labelFactory, DoubleConsumer onChange) {
-            super(x, y, width, height, Component.empty(), normalize(initial, base, cap));
-            this.base = base;
+            super(x, y, width, height, Component.empty(), normalize(initial, floor, cap));
+            this.floor = floor;
             this.cap = cap;
             this.step = step;
             this.labelFactory = labelFactory;
             this.onChange = onChange;
-            this.active = cap > base;
+            this.active = cap > floor;
             updateMessage();
         }
 
@@ -260,22 +291,22 @@ public class SkillSettingsScreen extends Screen {
             if (Double.isNaN(typed)) {
                 return;
             }
-            double clamped = Mth.clamp(typed, Math.min(base, cap), Math.max(base, cap));
-            this.value = normalize(clamped, base, cap);
+            double clamped = Mth.clamp(typed, Math.min(floor, cap), Math.max(floor, cap));
+            this.value = normalize(clamped, floor, cap);
             updateMessage();
             onChange.accept(mappedValue());
         }
 
-        private static double normalize(double v, double base, double cap) {
-            return cap <= base ? 0.0 : Mth.clamp((v - base) / (cap - base), 0.0, 1.0);
+        private static double normalize(double v, double floor, double cap) {
+            return cap <= floor ? 0.0 : Mth.clamp((v - floor) / (cap - floor), 0.0, 1.0);
         }
 
         private double mappedValue() {
-            double raw = base + value * (cap - base);
+            double raw = floor + value * (cap - floor);
             if (step > 0) {
                 raw = Math.round(raw / step) * step;
             }
-            return Mth.clamp(raw, base, Math.max(base, cap));
+            return Mth.clamp(raw, floor, Math.max(floor, cap));
         }
 
         @Override

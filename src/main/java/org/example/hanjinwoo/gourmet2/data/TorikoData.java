@@ -343,7 +343,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     }
 
     public void setNailComboSetting(int value) {
-        int clamped = Mth.clamp(value, CellEvolution.NAIL_COMBO_BASE, CellEvolution.nailComboCap(cellLevel()));
+        int clamped = Mth.clamp(value, CellEvolution.NAIL_COMBO_FLOOR, CellEvolution.nailComboCap(cellLevel()));
         if (clamped != nailComboSetting) {
             nailComboSetting = clamped;
             dirty = true;
@@ -355,7 +355,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     }
 
     public void setForkProjectileSetting(int value) {
-        int clamped = Mth.clamp(value, CellEvolution.FORK_PROJECTILE_BASE, CellEvolution.forkProjectileCap(cellLevel()));
+        int clamped = Mth.clamp(value, CellEvolution.FORK_PROJECTILE_FLOOR, CellEvolution.forkProjectileCap(cellLevel()));
         if (clamped != forkProjectileSetting) {
             forkProjectileSetting = clamped;
             dirty = true;
@@ -367,7 +367,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     }
 
     public void setNailGunShotSetting(int value) {
-        int clamped = Mth.clamp(value, CellEvolution.NAIL_GUN_SHOT_BASE, CellEvolution.nailGunShotCap(cellLevel()));
+        int clamped = Mth.clamp(value, CellEvolution.NAIL_GUN_SHOT_FLOOR, CellEvolution.nailGunShotCap(cellLevel()));
         if (clamped != nailGunShotSetting) {
             nailGunShotSetting = clamped;
             dirty = true;
@@ -379,7 +379,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     }
 
     public void setKnifeWaveSetting(int value) {
-        int clamped = Mth.clamp(value, CellEvolution.KNIFE_WAVE_BASE, CellEvolution.knifeWaveCap(cellLevel()));
+        int clamped = Mth.clamp(value, CellEvolution.KNIFE_WAVE_FLOOR, CellEvolution.knifeWaveCap(cellLevel()));
         if (clamped != knifeWaveSetting) {
             knifeWaveSetting = clamped;
             dirty = true;
@@ -391,7 +391,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     }
 
     public void setFlyingDamageSetting(float value) {
-        float clamped = Mth.clamp(value, CellEvolution.DAMAGE_MULT_BASE, CellEvolution.damageMultCap(cellLevel()));
+        float clamped = Mth.clamp(value, CellEvolution.DAMAGE_MULT_FLOOR, CellEvolution.damageMultCap(cellLevel()));
         if (clamped != flyingDamageSetting) {
             flyingDamageSetting = clamped;
             dirty = true;
@@ -403,7 +403,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     }
 
     public void setFlyingSizeSetting(float value) {
-        float clamped = Mth.clamp(value, CellEvolution.SIZE_MULT_BASE, CellEvolution.sizeMultCap(cellLevel()));
+        float clamped = Mth.clamp(value, CellEvolution.SIZE_MULT_FLOOR, CellEvolution.sizeMultCap(cellLevel()));
         if (clamped != flyingSizeSetting) {
             flyingSizeSetting = clamped;
             dirty = true;
@@ -415,7 +415,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     }
 
     public void setKiOutputSetting(int value) {
-        int clamped = Mth.clamp(value, CellEvolution.KI_OUTPUT_BASE, CellEvolution.kiOutputCap(cellLevel()));
+        int clamped = Mth.clamp(value, CellEvolution.KI_OUTPUT_FLOOR, CellEvolution.kiOutputCap(cellLevel()));
         if (clamped != kiOutputSetting) {
             kiOutputSetting = clamped;
             dirty = true;
@@ -488,11 +488,11 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     }
 
     /**
-     * Re-clamps every setting to the current cell level's caps — a safety net for old save data, and what the
-     * cell-level command calls when the level comes down. Nothing stops a player dialling a setting up to the
-     * cap of a level they no longer have, and a setting past its cap would still fire at full strength while
-     * only being charged the capped Appetite cost for it. Raising the level needs nothing: everything is
-     * already inside the wider caps.
+     * Re-clamps every setting to the current cell level's caps and to its own floor — a safety net for old save
+     * data, and what the cell-level command calls when the level comes down. Nothing stops a player dialling a
+     * setting up to the cap of a level they no longer have, and a setting past its cap would still fire at full
+     * strength while only being charged the capped Appetite cost for it. Raising the level needs nothing:
+     * everything is already inside the wider caps, and a setting wound below its default stays where it was put.
      */
     public void clampSettingsToLevel() {
         setNailComboSetting(nailComboSetting);

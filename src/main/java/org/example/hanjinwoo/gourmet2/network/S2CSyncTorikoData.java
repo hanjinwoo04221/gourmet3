@@ -61,10 +61,13 @@ public record S2CSyncTorikoData(int appetite, int maxAppetite, int selected, int
                 // What the ratio dials are worth in their own units — damage, and blocks — worked out here with
                 // the very formulas the skills themselves use, so the settings screen can show real numbers and
                 // no formula has to exist twice.
-                // The attack dial's own number is what a blow is worth with *that* dial wide open; the flying dial's
-                // is what a prong is worth as things stand, since the attack dial is already applied under it.
+                // Both damage dials are shown against a blow with the attack dial wide open: the attack dial's own
+                // number is a bare-handed blow, and the flying dial's is a prong. Neither is scaled by anybody's
+                // current setting, so the ceiling the screen prints stays the ceiling — a player who has wound
+                // their damage all the way down still reads what it is they are holding back from.
                 CombatEngine.bareHandedBlow(player, data),
-                new SkillContext(player, (ServerLevel) player.level(), data).damage(FlyingForkSkill.BASE_DAMAGE),
+                new SkillContext(player, (ServerLevel) player.level(), data)
+                        .damageAtFullDial(FlyingForkSkill.BASE_DAMAGE),
                 (float) LeapEngine.maxDistance(player),
                 (float) FlyingForkSkill.reach(data.cellLevel()),
                 Arrays.copyOf(data.skillSlotsView(), data.skillSlotsView().length),

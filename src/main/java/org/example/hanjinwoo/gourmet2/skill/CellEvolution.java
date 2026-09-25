@@ -27,8 +27,13 @@ public final class CellEvolution {
     public static final float LEAP_DISTANCE_BASE = 1.0F;
     public static final float RANGE_BASE = 1.0F;
 
-    /** Lowest the reach of the ranged techniques can be dialled to. */
-    public static final float RANGE_FLOOR = 0.25F;
+    /**
+     * Lowest the reach of the ranged techniques can be dialled to: nothing at all. At zero the thrown techniques
+     * stop where they are thrown — a prong, a crescent or a round leaves the hand with no speed behind it and
+     * hangs in the air in front of the caster until it dissipates — so a technique can be taken out of a fight
+     * without being taken off the hotbar.
+     */
+    public static final float RANGE_FLOOR = 0.0F;
 
     /**
      * How long a full Nail Punch charge takes, whatever combo the player has dialled in. The charge is spent
@@ -135,14 +140,48 @@ public final class CellEvolution {
     }
 
     /**
-     * How far down the caster can dial their own attack damage and the reach of their leap. Those two dials are
-     * <i>throttles</i>, not boosts: 100% is whatever the caster's own progress already earns them — their Cell
-     * level and their growing body for one, their strength and speed for the other — and the only thing the
-     * dials do is hold them back from it. That way a player whose hits have outgrown what they wanted to fight
-     * with can wind them down without giving up the growth that got them there.
+     * How far down each setting may be wound. Every dial is a throttle as well as a boost: it starts at its
+     * {@code *_BASE} default, opens up with the Cell level, and can be held back <i>below</i> that default — so a
+     * player whose techniques have outgrown what they wanted to fight with can rein them in without giving up the
+     * level that earned them. A count bottoms out at the fewest that still does what the technique is for (one),
+     * the multipliers that shape the flying techniques at a quarter of the default they start from, and the three
+     * that throttle the growth itself — attack damage, leap reach and the reach of the ranged techniques — all
+     * the way at nothing ({@link #ATTACK_DAMAGE_FLOOR}).
+     *
+     * <p>Winding back is free: Appetite is charged by how far <i>up</i> its cap a dial has been pushed (see
+     * {@link #powerFraction}), so anything at or below its default fires at the ordinary price. A dial's floor is
+     * also what keeps it live on a fresh character: at level 0 the cap is the default, and without a floor below
+     * it there would be nowhere for the slider to go at all.
      */
-    public static final float ATTACK_DAMAGE_FLOOR = 0.25F;
-    public static final float LEAP_DISTANCE_FLOOR = 0.25F;
+    public static final int NAIL_COMBO_FLOOR = 1;
+    public static final int FORK_PROJECTILE_FLOOR = 1;
+    public static final int NAIL_GUN_SHOT_FLOOR = 1;
+    public static final int KNIFE_WAVE_FLOOR = 1;
+    /**
+     * Ki Release may be held at nothing at all: the aura still plays and its pressure still pushes, but it hurts
+     * nobody and burns Appetite at the slowest rate (see {@code KiReleaseSkill}). The other counts stop at one
+     * instead — a technique that does nothing at all is not a setting.
+     */
+    public static final int KI_OUTPUT_FLOOR = 0;
+    public static final float DAMAGE_MULT_FLOOR = 0.25F;
+    public static final float SIZE_MULT_FLOOR = 0.25F;
+
+    /**
+     * How far down the caster can dial their own attack damage, the reach of their leap, and the reach of their
+     * ranged techniques ({@link #RANGE_FLOOR}): nothing at all. Those three dials are <i>throttles</i>, not boosts
+     * — 100% is whatever the caster's own progress already earns them, their Cell level and their growing body
+     * for one, their strength and speed for the other — and the only thing the dials do is hold them back from
+     * it. That is why they are the ones let all the way to the bottom: a player whose hits have outgrown what
+     * they wanted to fight with can wind a blow down to nothing without giving up the growth that got them there.
+     *
+     * <p>Zero is a setting like any other, not a broken one. Damage that comes to nothing does nothing — every
+     * technique's damage is applied through {@code Hurt}, which drops anything that is not above zero — and a
+     * charged leap with no reach behind it has nothing to fly, so the wind-up simply does not spend itself on a
+     * launch (see {@code LeapEngine}). What is left of a zeroed dial is the technique's own shape: the knockback
+     * of a blow, the aura and pressure of Ki, and the little hop a leap key tap always throws.
+     */
+    public static final float ATTACK_DAMAGE_FLOOR = 0.0F;
+    public static final float LEAP_DISTANCE_FLOOR = 0.0F;
 
     /**
      * How far the ranged techniques reach at this Cell level, as a multiplier on what they always reached. The

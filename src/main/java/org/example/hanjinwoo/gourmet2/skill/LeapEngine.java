@@ -295,7 +295,14 @@ public final class LeapEngine {
         // plain distance the power settings screen can show.
         double reach = Charge.lerp((float) MIN_DISTANCE,
                 (float) (maxDistance(player) * data.leapDistanceSetting()), fraction);
-        launch(player, data, reach, aimedEntity(player), false);
+        if (!launch(player, data, reach, aimedEntity(player), false)) {
+            // Nothing to fly: the wind-up asked for less than half a block of travel, which is what a leap dialled
+            // right down does whenever it was held long enough for the dial to eat the whole of the charge — and
+            // what any leap does when it is aimed at a body standing underfoot. The key is up either way, so the
+            // coil is let go of here: a wind-up left running with nobody holding the key keeps replaying its hold
+            // pose, and every press after it is swallowed by a charge that is already under way (see charge).
+            data.stopLeap();
+        }
     }
 
     /**
@@ -484,7 +491,10 @@ public final class LeapEngine {
         // pushed off from, and the direction a burst is given is the line the blow went into the terrain along — it
         // is what decides whether the crater lies flat on the floor or stands on end on a wall.
         Vec3 down = new Vec3(0.0, -1.0, 0.0);
-        double damage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        // Held back by the damage dial the same way the leap's own blows are (see CellEvolution): the push-off is
+        // worth the legs behind it less whatever the player has wound off, so a leap thrown by someone holding
+        // their damage right back tears up no ground rather than cratering it as if the blow had been dealt.
+        double damage = player.getAttributeValue(Attributes.ATTACK_DAMAGE) * data.attackDamageSetting();
         // What the ground is asked to take is the push-off: the speed the dash leaves with, which is the whole of
         // this movement over the ticks it takes to fly it. Reading the player's own motion here instead left a leap
         // started from a standstill with nothing behind it — the ground came up and nothing under it gave way.
@@ -628,9 +638,10 @@ public final class LeapEngine {
 
     /**
      * Blocks a full charge reaches: what this player's strength and speed earn them, held back by however far
-     * they have wound the leap dial down in the power settings GUI — which reaches 100%, the whole of what
-     * those attributes earn, and no further. Only the far end moves: the tap of a jump stays at
-     * {@link #MIN_DISTANCE} whatever the dial says.
+     * they have wound the leap dial down in the power settings GUI — which reaches 100%, the whole of what those
+     * attributes earn, and no further, and at the dial's own floor reaches nothing at all. Only the far end
+     * moves: the tap of a jump stays at {@link #MIN_DISTANCE} whatever the dial says, so a leap wound right down
+     * is still a leap, just one that is nothing but the tap — a wind-up is not spent on a launch at all.
      *
      * <p>Without the dial, so this is a plain distance in blocks and the power settings screen can show its leap
      * dial in those terms.
