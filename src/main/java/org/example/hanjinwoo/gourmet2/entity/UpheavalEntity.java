@@ -12,6 +12,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Brightness;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Display;
@@ -25,13 +26,14 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.example.hanjinwoo.gourmet2.data.HiddenBlocks;
 import org.example.hanjinwoo.gourmet2.registry.ModEntities;
+import org.example.hanjinwoo.gourmet2.skill.Hurt;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * The burst a hard blow leaves where it lands on terrain: the ground blocks around the mark, copied in place
@@ -49,12 +51,23 @@ import java.util.Random;
  * {@code /summon} would write it. They are discarded with this entity, which is itself never saved.
  */
 public class UpheavalEntity extends VisualEntity {
-    /** About 3 s, counting the last piece to go: the last of them only starts fading at {@code SETTLE_FROM} + the
-     *  spread + RETURN_TICKS, and then takes SHRINK_TICKS to go. */
-    public static final int LIFETIME = 66;
     /**
-     * Ticks of coming apart, then the window pieces start going in. They do not all leave together: each one
-     * picks its own moment in that window, so the patch disappears piece by piece rather than in one blink.
+     * Blocks per tick the shock travels outward. A speed rather than a time, deliberately: a small crater then opens
+     * in an eye-blink and a wide one sweeps outward over a good part of a second, which is how a blow landing
+     * actually looks. Nothing happens all at once — a piece's block is only broken out of the ground when its own
+     * ring arrives, so the ground ahead of the wave is still whole and what it has passed is already settling — and
+     * spreading the work over the wave is also what keeps a wide crater affordable at any one moment.
+     */
+    private static final double WAVE_SPEED = 1.5;
+    /**
+     * Longest the shock is allowed to take. Without it a crater a couple of hundred blocks across would still be
+     * opening seconds after the blow, so past this width the wave is simply made to move faster.
+     */
+    private static final int MAX_WAVE_TICKS = 30;
+    /**
+     * Ticks of coming apart after a ring gets there, then the window pieces start going in. They do not all leave
+     * together: each one picks its own moment in that window, so the patch disappears piece by piece rather than in
+     * one blink.
      */
     private static final int FLY_TICKS = 12;
     private static final int SETTLE_FROM = 6;
@@ -88,6 +101,12 @@ public class UpheavalEntity extends VisualEntity {
      *  Kept short: every step is a fresh target and the interpolation restarts from it. */
     private static final int STEP_BLEND = 2;
     /**
+     * How big a piece is drawn: the block's own size, no more and no less. A piece here is not standing in for a
+     * patch of ground, it <i>is</i> the block it came out of, and the crater is covered by having one of them for
+     * every block of it rather than by a few of them being blown up to cover the rest.
+     */
+    private static final float PIECE_SCALE = 1.0F;
+    /**
      * Up to this wide, a crater is the small ball around the mark it always was — a bowl dug out of ground that is
      * not flat, following it up and down. Past it a ball stops being a crater and starts being a hole through
      * whatever the strike passed near, and a wider one is cut as a disc across the face the blow opened instead
@@ -103,27 +122,37 @@ public class UpheavalEntity extends VisualEntity {
      */
     private static final double WALL_ANGLE = 0.30;
     /**
-     * Pieces one burst may have, and the one thing about its size that is bounded at all. A piece is what a burst
-     * costs: an entity each, with a spawn and a dozen updates behind it. There is no ceiling on how wide a crater is
-     * cut — see {@link #PIECE_SPREAD} for how a bounded number of pieces covers an unbounded crater — and every
-     * piece is a block the crater took out, shown coming out of the hole it left. The ground in between is never
-     * hidden at all: it simply stands there, under the pieces, so there is no cell that is empty and then is not,
-     * which is what the wider craters used to look like — ground appearing out of nowhere.
+     * Widest crater one burst may dig, and the one thing about its size that is bounded. Every block of the crater is
+     * a piece — a display standing exactly where its own block was, no bigger and no smaller — so the crater's area
+     * is the number of entities a burst costs: at this width there are about four hundred, which is affordable, and
+     * at twice the width there would be four times as many, which is not.
+     *
+     * <p>The wave is what makes even this much affordable (see {@link #WAVE_SPEED}): the pieces are raised across its
+     * crossing rather than in the tick the blow lands, so what one tick pays for is a ring of the crater and not the
+     * whole of it. A blow worth more than this still breaks what it breaks and still tears up the ground it lands
+     * on — it simply does so in a crater this size. Raising this is the one dial that buys a wider one.
      */
-    private static final int MAX_PIECES = 250;
+    private static final double MAX_CRATER_RADIUS = 60.0;
     /**
-     * How far past the nearest piece beside it a piece is drawn, as a share of the distance to it (see
-     * {@link #pieceSizes}).
+     * How thick one ring of ground is, and how far apart the rings are laid. A shock crossing a floor does not dig
+     * the whole disc out and does not leave one rim either: it leaves circle after circle widening from the impact,
+     * each a couple of blocks thick, with the ground between them left standing. That is what the crater is made of,
+     * and the spacing is what keeps a wide one affordable — the blocks involved are this share of the disc rather
+     * than all of it, however wide it gets.
      */
-    private static final double PIECE_SPREAD = 1.4;
-    /** Safety on that: a piece with nothing else anywhere near it still only grows so far. */
-    private static final float MAX_PIECE_SCALE = 8.0F;
+    private static final double RIM_THICKNESS = 1.0;
+    private static final double RING_SPACING = 1.0;
+    /**
+     * How much of a ring's own blocks are held back to be raised around the circle rather than all in the tick the
+     * wave gets there. A ring's worth of blocks arriving together is a spike in what one tick has to build, and the
+     * widest ring holds the most: this spreads each of them out without losing the order the rings come in.
+     */
+    private static final double RING_STAGGER = 0.5;
     /**
      * How thick the ground a wide burst takes is, in blocks either side of the mark along the axis the blow travels.
      * The crater is a disc across the face the blow opened: thin along the axis the blow travels and round in the
      * two it does not, so a crater too wide for a ball does not reach into the ground under it or out around behind
-     * anything the blow merely passed near — ground with nothing to do with the hit, thrown up as if it had. Being
-     * a slab a few blocks thick, it can be walked block by block however wide it gets.
+     * anything the blow merely passed near — ground with nothing to do with the hit, thrown up as if it had.
      */
     private static final int CRATER_DEPTH = 3;
 
@@ -143,9 +172,8 @@ public class UpheavalEntity extends VisualEntity {
      */
     private static final double BASE_RADIUS = 2.5;
     /**
-     * Blocks of crater radius per point of power over the bar. The crater grows with the blow at this rate all the
-     * way up: a blow twice as hard leaves a crater twice as wide, and there is nothing here to stop it. What keeps a
-     * very wide one readable is that its pieces grow to keep covering it (see {@link #PIECE_SPREAD}).
+     * Blocks of crater radius per point of power over the bar. The crater grows with the blow at this rate until it
+     * reaches {@link #MAX_CRATER_RADIUS}, which is as wide as one can be dug and shown block for block.
      */
     private static final double RADIUS_PER_POWER = 0.20;
     private static final double BASE_LIFT = 1.0;
@@ -156,25 +184,6 @@ public class UpheavalEntity extends VisualEntity {
      * stops reading as a crater and starts reading as debris.
      */
     private static final double MAX_LIFT = 4.0;
-    private static final double BASE_BLOCKS = 6.0;
-    private static final double BLOCKS_PER_POWER = 0.8;
-    /**
-     * How tall a piece is ever drawn, however wide the crater. A chunk is grown to cover ground, not to stand up:
-     * past a couple of blocks, every extra block of width would otherwise add a block of height as well, and a
-     * crater of big cubes stacks up a hill of them where it should be laying ground over ground — most of which is
-     * buried anyway, since a piece is sunk until its top sits level with the surface. Flattening them that way is
-     * also what keeps the drawing cheap when the crater gets wide: the fill on screen follows the footprint of the
-     * slabs, and that is what it needs to be to cover the crater.
-     */
-    private static final float MAX_PIECE_HEIGHT = 2.0F;
-    /**
-     * How far proud of the ground a piece stands, on top of whatever its own size needs to sit level in its cell.
-     * Slightly above it, deliberately: a piece here is covering the ground it stands over as well as showing a block
-     * that came out of it, and one sunk below the surface is hidden by the very ground it was meant to hide — the
-     * ground between the pieces would all be on show with it. Standing just proud of the surface is still a good
-     * deal lower than these pieces sat before they had that job.
-     */
-    private static final float PIECE_REST = 0.1F;
     /** How close a new burst may land to one already going, and how many may be going at once nearby. */
     private static final double MIN_SPACING = 2.0;
     private static final double NEARBY_RANGE = 12.0;
@@ -186,9 +195,19 @@ public class UpheavalEntity extends VisualEntity {
      * standing still — and anything under {@link #MIN_POWER} leaves the ground alone. The attacks, the skills
      * and the leap all come through here, so ground broken by any of them reads the same.
      *
+     * <p>The same blow also decides what becomes of the ground it tears up: every block of the crater is put
+     * to {@link Hurt#givesWay} with {@code impulse} and, where the hardness gives, is broken for good rather
+     * than heaved up and put back. This is where the basic attacks' and the leap's terrain damage comes from —
+     * see {@link Hurt#impulse} for how a blow's impulse is weighed.
+     *
+     * @param caster whose blow this is; the crater's blocks are only broken where they may be
+     * @param damage what the blow does to a body it hits — with {@code speed}, how big the crater comes out
+     * @param speed how fast the blow was thrown, and so how much ground it tears up
+     * @param impulse what the blow is worth where it lands (see {@link Hurt#impulse}), against the hardness
      * @return whether one was thrown up
      */
-    public static boolean burst(ServerLevel level, BlockPos at, Vec3 direction, double damage, double speed) {
+    public static boolean burst(ServerLevel level, ServerPlayer caster, BlockPos at, Vec3 direction,
+            double damage, double speed, double impulse) {
         double power = damage * (1.0 + Math.min(MAX_SPEED_FACTOR, Math.max(0.0, speed)) * SPEED_WEIGHT);
         if (power < MIN_POWER) {
             return false;
@@ -205,15 +224,27 @@ public class UpheavalEntity extends VisualEntity {
             }
         }
         double over = power - MIN_POWER;
-        double radius = BASE_RADIUS + over * RADIUS_PER_POWER;
+        // As wide as the blow is worth, up to as wide as can be dug and shown block for block: see MAX_CRATER_RADIUS.
+        double radius = Math.min(MAX_CRATER_RADIUS, BASE_RADIUS + over * RADIUS_PER_POWER);
         double lift = Math.min(MAX_LIFT, BASE_LIFT + over * LIFT_PER_POWER);
-        int blocks = (int) Math.round(BASE_BLOCKS + over * BLOCKS_PER_POWER);
-
         UpheavalEntity burst = new UpheavalEntity(level);
         burst.moveTo(at.getX() + 0.5, at.getY() + 1.0, at.getZ() + 0.5, 0.0F, 0.0F);
-        burst.setBurst(radius, lift, blocks, direction);
+        burst.setBurst(radius, lift, direction, caster.getUUID(), impulse);
         level.addFreshEntity(burst);
         return true;
+    }
+
+    /**
+     * How far a block is from the middle of the crater <i>across the face the blow broke</i> — the ground distance,
+     * with the axis the blow travels down flat. The ring a block sits on is measured this way, so a crater on ground
+     * that rises and falls still comes out as circles seen from the strike rather than as spheres.
+     */
+    private static double acrossSq(Direction.Axis facing, BlockPos pos, BlockPos centre) {
+        double dx = pos.getX() - centre.getX();
+        double dy = pos.getY() - centre.getY();
+        double dz = pos.getZ() - centre.getZ();
+        return facing == Direction.Axis.X ? dy * dy + dz * dz
+                : facing == Direction.Axis.Y ? dx * dx + dz * dz : dx * dx + dy * dy;
     }
 
     /**
@@ -268,48 +299,36 @@ public class UpheavalEntity extends VisualEntity {
         Direction.Axis facing = surfaceAxis(direction);
         boolean thinX = facing == Direction.Axis.X;
         boolean thinY = facing == Direction.Axis.Y;
+        // Every block of the disc, no skipping: the crater is dug block for block with a piece for each of them, and
+        // the wave is what keeps that affordable — what one tick pays for is the ring it is on, not the whole crater.
+        int minX = centre.getX() - (thinX ? CRATER_DEPTH : r);
+        int maxX = centre.getX() + (thinX ? CRATER_DEPTH : r);
+        int minY = centre.getY() - (thinY ? CRATER_DEPTH : r);
+        int maxY = centre.getY() + (thinY ? CRATER_DEPTH : r);
+        int minZ = centre.getZ() - (thinX || thinY ? r : CRATER_DEPTH);
+        int maxZ = centre.getZ() + (thinX || thinY ? r : CRATER_DEPTH);
         double radiusSq = radius * radius;
         List<BlockPos> ground = new ArrayList<>();
-        for (BlockPos pos : BlockPos.betweenClosed(
-                centre.getX() - (thinX ? CRATER_DEPTH : r), centre.getY() - (thinY ? CRATER_DEPTH : r),
-                centre.getZ() - (thinX || thinY ? r : CRATER_DEPTH),
-                centre.getX() + (thinX ? CRATER_DEPTH : r), centre.getY() + (thinY ? CRATER_DEPTH : r),
-                centre.getZ() + (thinX || thinY ? r : CRATER_DEPTH))) {
-            double dx = pos.getX() - centre.getX();
-            double dy = pos.getY() - centre.getY();
-            double dz = pos.getZ() - centre.getZ();
-            double flat = thinX ? dy * dy + dz * dz : thinY ? dx * dx + dz * dz : dx * dx + dy * dy;
-            double thin = thinX ? dx : thinY ? dy : dz;
-            if (flat > radiusSq || Math.abs(thin) > CRATER_DEPTH) {
-                continue;
-            }
-            if (isLooseGround(level, pos)) {
-                ground.add(pos.immutable());
+        for (int x = minX; x <= maxX; x++) {
+            double dx = x - centre.getX();
+            for (int y = minY; y <= maxY; y++) {
+                double dy = y - centre.getY();
+                for (int z = minZ; z <= maxZ; z++) {
+                    double dz = z - centre.getZ();
+                    double across = thinX ? dy * dy + dz * dz
+                            : thinY ? dx * dx + dz * dz : dx * dx + dy * dy;
+                    double thin = thinX ? dx : thinY ? dy : dz;
+                    if (across > radiusSq || Math.abs(thin) > CRATER_DEPTH) {
+                        continue;
+                    }
+                    BlockPos pos = new BlockPos(x, y, z);
+                    if (isLooseGround(level, pos)) {
+                        ground.add(pos.immutable());
+                    }
+                }
             }
         }
         return ground;
-    }
-
-    /**
-     * How big each piece is drawn, one per block taken out: big enough to meet the piece nearest to it, and no
-     * bigger. Where pieces are thick on the ground they stay at their own block size and the ground between them is
-     * never seen at all; where one stands more or less alone it swells until it covers what is around it — the fewer
-     * neighbours a piece has, the bigger it comes out. That is what lets a crater be as wide as the blow is worth
-     * while still costing only a bounded number of pieces.
-     */
-    private static float[] pieceSizes(List<BlockPos> at) {
-        float[] sizes = new float[at.size()];
-        for (int i = 0; i < at.size(); i++) {
-            double nearest = Double.MAX_VALUE;
-            for (int j = 0; j < at.size(); j++) {
-                if (i != j) {
-                    nearest = Math.min(nearest, at.get(i).distSqr(at.get(j)));
-                }
-            }
-            sizes[i] = nearest == Double.MAX_VALUE ? MAX_PIECE_SCALE
-                    : (float) Mth.clamp(Math.sqrt(nearest) * PIECE_SPREAD, 1.0, MAX_PIECE_SCALE);
-        }
-        return sizes;
     }
 
     /** One piece of ground coming apart: where it stays, how it is turned, and when it goes. */
@@ -321,18 +340,26 @@ public class UpheavalEntity extends VisualEntity {
         private final Vector3f spinAxis;
         private final Vector3f offset = new Vector3f();
         private final Vector3f target;
+        /** Ticks after the burst started before the wave reaches this one, from how far out it is. */
+        private final int bornAt;
         private final int settleAt;
-        /** How big this one is drawn: enough to meet the pieces around it (see {@code throwUp}). */
-        private final float scale;
         private float spin;
         private float rattle = (float) JITTER;
+        /** Whether the wave has reached this one yet: until it has, its ground is whole and its display unplaced. */
+        private boolean born;
+        /**
+         * Whether the blow was worth this block: decided when the crater is laid out, from the block's own
+         * hardness against the blow's impulse. A beaten block is broken for good when the wave gets here and
+         * nothing is put back; a block merely heaved is swapped for a placeholder and returned (see hide).
+         */
+        private final boolean broken;
         /** Whether this piece's own block was taken out of the world to be shown lifted instead. */
         private boolean hidden;
         private boolean settling;
         private boolean settled;
 
         private Piece(Display.BlockDisplay display, BlockState state, BlockPos pos, Quaternionf turn,
-                      Vector3f spinAxis, float spin, Vector3f target, int settleAt, float scale) {
+                      Vector3f spinAxis, float spin, Vector3f target, int bornAt, int settleAt, boolean broken) {
             this.display = display;
             this.state = state;
             this.pos = pos;
@@ -340,8 +367,9 @@ public class UpheavalEntity extends VisualEntity {
             this.spinAxis = spinAxis;
             this.spin = spin;
             this.target = target;
+            this.bornAt = bornAt;
             this.settleAt = settleAt;
-            this.scale = scale;
+            this.broken = broken;
         }
 
         /**
@@ -363,8 +391,13 @@ public class UpheavalEntity extends VisualEntity {
     private final List<Piece> pieces = new ArrayList<>();
     private double radius = 2.0;
     private double rise = 2.0;
-    private int wanted = 12;
     private Vec3 direction = Vec3.ZERO;
+    /** Whose blow dug this crater, and what that blow was worth per block (see {@link Hurt#impulse}): what decides,
+     *  block by block, whether the ground is broken where it stands or only heaved up and put back. */
+    private UUID casterId;
+    private double impulse;
+    /** Ticks the shock takes to cross this crater: a speed, so wide craters take longer than small ones. */
+    private int waveTicks = 1;
     private boolean built;
 
     public UpheavalEntity(EntityType<? extends UpheavalEntity> type, Level level) {
@@ -376,19 +409,27 @@ public class UpheavalEntity extends VisualEntity {
     }
 
     /**
-     * How big the burst should be: how wide around the mark, how hard it lifts, how many blocks, and which way
-     * the blow was thrown — the direction the pieces come apart in follows it.
+     * How big the burst should be, and how hard the blow that dug it was: how wide around the mark, how hard it
+     * lifts, which way it was thrown — the direction the pieces come apart in follows it — and whose blow it was.
+     * How many blocks there are follows from the width and the ground: one piece for every block of the crater.
      */
-    public void setBurst(double radius, double rise, int blocks, Vec3 direction) {
+    public void setBurst(double radius, double rise, Vec3 direction, UUID casterId, double impulse) {
         this.radius = radius;
         this.rise = rise;
-        this.wanted = Math.max(4, blocks);
         this.direction = direction;
+        this.casterId = casterId;
+        this.impulse = impulse;
+        this.waveTicks = Mth.clamp((int) Math.ceil(radius / WAVE_SPEED), 1, MAX_WAVE_TICKS);
     }
 
+    /**
+     * Long enough for the slowest piece: the wave crossing the crater, then it coming apart, settling back, and
+     * fading (see {@link #SHRINK_TICKS}). Anything still out when this runs out is put back at once, so this has to
+     * stay ahead of the last piece rather than being a tidy number.
+     */
     @Override
     public int lifetime() {
-        return LIFETIME;
+        return waveTicks + FLY_TICKS + SETTLE_FROM + SETTLE_SPREAD + RETURN_TICKS + SHRINK_TICKS + 4;
     }
 
     @Override
@@ -402,28 +443,34 @@ public class UpheavalEntity extends VisualEntity {
             throwUp();
             return;
         }
-        if (tickCount <= FLY_TICKS) {
-            Random random = new Random(level().random.nextLong());
-            for (Piece piece : pieces) {
-                piece.drift(random);
-                send(piece, piece.turn, piece.offset, piece.scale, STEP_BLEND);
-            }
-            // Dust shaken loose as it comes apart, a little at a time rather than one cloud.
-            if (tickCount % 4 == 0 && !pieces.isEmpty()) {
-                for (int i = 0; i < 4; i++) {
-                    dust(pieces.get(random.nextInt(pieces.size())), 1, 1);
-                }
-            }
-            return;
-        }
-        // Then every piece is on its own clock. It sits there broken until its moment comes — nothing is sent
-        // in between, so it simply stays where it came apart — eases back into its own cell and straightens up,
-        // and shrinks away once that easing is done. Each one starts at a different tick, so the patch goes a
-        // piece at a time rather than in one blink.
+        // The shock travels outward: a piece's ground only gives way when the ring it sits on gets to it, so the
+        // crater opens from the mark outward and what the wave has passed is already settling behind it.
+        Random random = new Random(level().random.nextLong());
         for (Piece piece : pieces) {
+            if (tickCount < piece.bornAt) {
+                continue;
+            }
+            if (!piece.born) {
+                piece.born = true;
+                raise(piece);
+            }
+            if (tickCount <= piece.bornAt + FLY_TICKS) {
+                // Coming apart: it moves a good share of the way to its own place every tick and is still within a few.
+                piece.drift(random);
+                send(piece, piece.turn, piece.offset, PIECE_SCALE, STEP_BLEND);
+                // Dust shaken loose as it comes apart, a little at a time rather than one cloud.
+                if ((tickCount + piece.bornAt) % 4 == 0) {
+                    dust(piece, 1, 1);
+                }
+                continue;
+            }
+            // Then it is on its own clock. It sits there broken until its moment comes — nothing is sent in between,
+            // so it simply stays where it came apart — eases back into its own cell and straightens up, and shrinks
+            // away once that easing is done. Each one starts at a different tick, so the patch goes a piece at a
+            // time rather than in one blink.
             if (!piece.settling && tickCount >= piece.settleAt) {
                 piece.settling = true;
-                send(piece, new Quaternionf(), new Vector3f(), piece.scale, RETURN_TICKS);
+                send(piece, new Quaternionf(), new Vector3f(), PIECE_SCALE, RETURN_TICKS);
                 dust(piece, 1, 1);
             }
             if (piece.settling && !piece.settled && tickCount >= piece.settleAt + RETURN_TICKS) {
@@ -452,6 +499,9 @@ public class UpheavalEntity extends VisualEntity {
     /** Breaks the ground around the mark apart: every block of the crater is copied out over the block it came from. */
     private void throwUp() {
         ServerLevel level = (ServerLevel) level();
+        // Asked once, here, rather than kept: a crater is laid out on the burst's first tick, so the player whose
+        // blow this was is around to say whether the ground may be broken. Nothing is broken without them.
+        ServerPlayer caster = casterOrNull();
         int centreX = Mth.floor(getX());
         int centreY = Mth.floor(getY() - 0.5);
         int centreZ = Mth.floor(getZ());
@@ -460,14 +510,10 @@ public class UpheavalEntity extends VisualEntity {
         // How a crater is cut depends on how wide it is: a small one the way it always was, a wide one as a disc
         // across the face the blow opened instead. See the two below.
         BlockPos centre = new BlockPos(centreX, centreY, centreZ);
+        Random random = new Random(level.random.nextLong());
         List<BlockPos> ground = radius <= BALL_RADIUS
                 ? ballGround(level, centre, radius, r)
                 : faceGround(level, centre, radius, r, direction);
-
-        Random random = new Random(level.random.nextLong());
-        // Nearest first: if there is more ground here than one burst has pieces for (see MAX_PIECES), what falls off
-        // the end is the rim of the crater rather than blocks scattered through the middle of it.
-        ground.sort(Comparator.comparingDouble(pos -> pos.distSqr(centre)));
         // The way the blow was thrown: pieces come off the face it opened, and skid the way it was going.
         Vector3f strike = new Vector3f((float) direction.x, (float) direction.y, (float) direction.z);
         if (strike.lengthSquared() < 1.0E-4F) {
@@ -475,20 +521,26 @@ public class UpheavalEntity extends VisualEntity {
         }
         strike.normalize();
 
-        // Every piece is a block the crater takes out, shown coming out of the hole it leaves: one piece per hole, no
-        // exceptions. A hole with nothing standing over it is a block missing from the world with nothing to say
-        // what became of it, and the moment it comes back that is a block appearing out of nowhere — the ground
-        // between the pieces is never hidden at all, so nothing is ever seen filling back in.
-        List<BlockPos> shown = ground.subList(0, Math.min(ground.size(), MAX_PIECES));
-        float[] sizes = pieceSizes(shown);
-        for (int index = 0; index < shown.size(); index++) {
-            BlockPos pos = shown.get(index);
+        // Rings out from the mark rather than the whole disc or one rim: the ground on a series of circles, each a
+        // couple of blocks thick, everything between them left standing (see RIM_THICKNESS and RING_SPACING). Measured
+        // across the face the blow broke — so the circles are circles seen from the strike, and follow ground that
+        // rises and falls — and back from the rim, so the outermost one is the crater's edge exactly.
+        Direction.Axis ringAxis = surfaceAxis(direction);
+        double outerSq = radius * radius;
+        ground.removeIf(pos -> {
+            double away = acrossSq(ringAxis, pos, centre);
+            return away > outerSq || (radius - Math.sqrt(away)) % RING_SPACING > RIM_THICKNESS;
+        });
+
+        // One piece per block of the crater: each is the block itself, no bigger and no smaller, standing where its
+        // own cell was until the wave reaches it. Nothing is hidden without a piece over it, so nothing is ever seen
+        // filling back in, and the crater reads as ground coming apart block by block rather than as slabs laid over
+        // it.
+        for (BlockPos pos : ground) {
             BlockState state = level.getBlockState(pos);
-            // How big this one is drawn, and therefore how much of a move is a move: the offsets below are divided by
-            // it, because the same lift on a slab six blocks across would tear it out of the ground it is covering
-            // instead of shifting it in place.
-            float scale = sizes[index];
-            float motion = 1.0F / scale;
+            // Whether this one goes for good is the blow's impulse against its own hardness, settled here for the
+            // whole crater at once rather than block by block as the wave crawls over it.
+            boolean broken = Hurt.givesWay(caster, level, pos, impulse);
             double dx = pos.getX() - centreX;
             double dy = pos.getY() - centreY;
             double dz = pos.getZ() - centreZ;
@@ -508,9 +560,9 @@ public class UpheavalEntity extends VisualEntity {
             float heave = (float) Math.min(1.0, distance / Math.max(0.5, radius));
             heave *= heave;
             float lift = (float) (RISE_BASE + rise * RISE_PER_RISE)
-                    * (0.5F + random.nextFloat() * 0.7F) * heave * motion;
+                    * (0.5F + random.nextFloat() * 0.7F) * heave;
             float along = (float) (OUT_BASE + rise * OUT_PER_RISE)
-                    * (0.6F + random.nextFloat() * 0.8F) * heave * motion;
+                    * (0.6F + random.nextFloat() * 0.8F) * heave;
             Vector3f target = new Vector3f(
                     open.x * lift + skid.x * along,
                     open.y * lift + skid.y * along,
@@ -544,36 +596,71 @@ public class UpheavalEntity extends VisualEntity {
                             (float) (random.nextDouble() - 0.5) * 0.35F,
                             (float) (random.nextDouble() - 0.5) * 0.35F)).normalize();
             float spin = (float) ((0.35 + random.nextDouble() * 0.65) * SPIN * bite);
-            int settleAt = FLY_TICKS + SETTLE_FROM + random.nextInt(SETTLE_SPREAD);
 
+            // Built here, raised later: the display is made but not placed in the world, and this cell's block is left
+            // where it is, until the ring this piece sits on reaches it (see tick). What a wide crater shows at any
+            // one moment is then the band the wave is passing over, not every block of it standing open at once.
             Display.BlockDisplay display = new Display.BlockDisplay(EntityType.BLOCK_DISPLAY, level);
-            display.load(displayTag(state, pos, lightOf(level, pos), pose(turn, new Vector3f(), scale), 0));
-            level.addFreshEntity(display);
-            Piece piece = new Piece(display, state, pos.immutable(), turn, axis, spin, target, settleAt, scale);
-            // Take the real block out of the world and leave nothing visible in its place, so the display standing
-            // over that cell reads as the block itself lifting out of the ground. A barrier rather than air: it
-            // keeps the light and the collision of the cell for the moment it is standing in for, and is put back
-            // in remove() whatever happens to the effect.
-            piece.hidden = hide(level, pos, state);
-            pieces.add(piece);
+            // Outward with the wave, and part of the way around the circle as well: the rings go down one after
+            // another from the mark — which is what the eye follows — and the turn keeps one ring's worth of blocks
+            // from all being raised in the same tick (see RING_STAGGER).
+            double angle = ringAxis == Direction.Axis.X ? Math.atan2(dz, dy)
+                    : ringAxis == Direction.Axis.Y ? Math.atan2(dz, dx) : Math.atan2(dy, dx);
+            double around = (angle + Math.PI) / (2.0 * Math.PI);
+            double across = Math.sqrt(acrossSq(ringAxis, pos, centre));
+            double phase = across / Math.max(1.0E-4, radius) * (1.0 - RING_STAGGER) + around * RING_STAGGER;
+            int bornAt = (int) Math.round(phase * waveTicks);
+            pieces.add(new Piece(display, state, pos.immutable(), turn, axis, spin, target, bornAt,
+                    bornAt + FLY_TICKS + SETTLE_FROM + random.nextInt(SETTLE_SPREAD), broken));
         }
-        // The hit itself throws dust: what the blow knocked off the ground it landed on.
-        for (Piece piece : pieces) {
-            dust(piece, 2, 1);
+    }
+
+    /**
+     * The wave arriving at one piece: its block comes out of the ground and its display takes its place, from its
+     * own cell's light and at the pose it will drift away from.
+     */
+    private void raise(Piece piece) {
+        ServerLevel level = (ServerLevel) level();
+        piece.display.load(displayTag(piece.state, piece.pos, lightOf(level, piece.pos),
+                pose(piece.turn, new Vector3f(), PIECE_SCALE), 0));
+        level.addFreshEntity(piece.display);
+        // The blow has already had its say about this block: beaten, it is broken out of the ground for good and
+        // the piece simply stands over the hole it left — nothing hidden, nothing to put back. Only worth doing
+        // while the cell still holds the block the crater was cut from; anything that has happened to it since
+        // is not this effect's to undo.
+        if (piece.broken && level.getBlockState(piece.pos).equals(piece.state)) {
+            level.destroyBlock(piece.pos, false);
+            return;
         }
+        piece.hidden = hide(level, piece.pos, piece.state);
+    }
+
+    /** The player whose blow this was, if they are still in the world; null leaves the ground unbroken. */
+    private ServerPlayer casterOrNull() {
+        if (casterId == null || !(level() instanceof ServerLevel server) || server.getServer() == null) {
+            return null;
+        }
+        return server.getServer().getPlayerList().getPlayer(casterId);
     }
 
     /**
      * Takes a block out of the world and leaves nothing visible in its place — a barrier rather than air, so the
      * cell keeps its light and its collision for the moment it is standing in for. Written down as well as done:
      * a save landing mid-burst would otherwise leave the barrier in the world with nothing left to undo it.
+     *
+     * <p>Only if the cell still holds the block this crater was cut from. A block the same blow has already beaten
+     * (see {@link Piece#broken}) is gone rather than hidden, and standing a barrier over the hole would put it back
+     * again when the piece settled — which is exactly what stopped the terrain damage from being seen.
      */
     private boolean hide(ServerLevel level, BlockPos pos, BlockState state) {
-        boolean hidden = level.setBlock(pos, Blocks.BARRIER.defaultBlockState(), 3);
-        if (hidden) {
-            HiddenBlocks.of(level).add(pos, state);
+        if (!level.getBlockState(pos).equals(state)) {
+            return false;
         }
-        return hidden;
+        if (!level.setBlock(pos, Blocks.BARRIER.defaultBlockState(), 3)) {
+            return false;
+        }
+        HiddenBlocks.of(level).add(pos, state);
+        return true;
     }
 
     /**
@@ -623,19 +710,11 @@ public class UpheavalEntity extends VisualEntity {
      * turned block swings a whole block out of the cell it belongs to.
      */
     private static Transformation pose(Quaternionf turn, Vector3f offset, float scale) {
-        // As wide as the crater wants, and never taller than a couple of blocks (see MAX_PIECE_HEIGHT).
-        float height = Math.min(scale, MAX_PIECE_HEIGHT);
-        Vector3f middle = turn.transform(new Vector3f(0.5F * scale, 0.5F * height, 0.5F * scale));
-        // A piece grown to stand for more than its own block is centred lower by half of what it was grown by, so it
-        // sits in that block's cell with its top level with the ground instead of hanging over it — and then a little
-        // above that again, so it stands over the ground it is covering rather than being buried in it (see
-        // PIECE_REST). A piece on its way out is left where it is: standing proud is for standing, not for vanishing.
-        float sink = Math.max(0.0F, (height - 1.0F) * 0.5F) - (scale < 0.01F ? 0.0F : PIECE_REST);
+        Vector3f middle = turn.transform(new Vector3f(0.5F * scale, 0.5F * scale, 0.5F * scale));
         return new Transformation(
-                new Vector3f(0.5F - middle.x + offset.x, 0.5F - middle.y + offset.y - sink,
-                        0.5F - middle.z + offset.z),
+                new Vector3f(0.5F - middle.x + offset.x, 0.5F - middle.y + offset.y, 0.5F - middle.z + offset.z),
                 new Quaternionf(turn),
-                new Vector3f(scale, height, scale),
+                new Vector3f(scale, scale, scale),
                 new Quaternionf());
     }
 

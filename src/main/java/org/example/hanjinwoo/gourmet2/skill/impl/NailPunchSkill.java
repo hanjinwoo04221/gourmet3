@@ -203,8 +203,10 @@ public class NailPunchSkill implements SkillBehavior {
         // Aimed the way the caster was facing rather than the way the victim is thrown: the knock direction is lifted a
         // little to throw them up, which is not the line the blow went into the ground along, and that line is what
         // decides whether the crater lies flat on the floor or stands on end against a wall.
-        UpheavalEntity.burst((ServerLevel) ctx.level(), BlockPos.containing(contact.getCenter()),
-                ctx.lookDirection(), blow, strength);
+        // The burst is worth the punch, and the punch breaks the ground it lands on under the same impulse the
+        // sweep below uses, so what is left standing and what is only heaved agree.
+        UpheavalEntity.burst((ServerLevel) ctx.level(), ctx.player(), BlockPos.containing(contact.getCenter()),
+                ctx.lookDirection(), blow, strength, Hurt.impulse(dir.scale(strength), blow, Hurt.FIST_AREA));
         Hurt.sweepBreak(ctx.player(), ctx.level(), contact, dir.scale(strength), blow, Hurt.FIST_AREA);
     }
 

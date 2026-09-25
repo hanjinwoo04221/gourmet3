@@ -58,6 +58,7 @@ public final class ClientSetup {
     public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.FLYING_FORK.get(), FlyingForkRenderer::new);
         event.registerEntityRenderer(ModEntities.FLYING_KNIFE.get(), FlyingKnifeRenderer::new);
+        event.registerEntityRenderer(ModEntities.NAIL_SHOT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ModEntities.APPETITE_DEMON.get(), AppetiteDemonRenderer::new);
         event.registerEntityRenderer(ModEntities.LEG_KNIFE_SLASH.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ModEntities.KI_AURA.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);

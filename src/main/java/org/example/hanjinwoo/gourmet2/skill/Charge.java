@@ -2,7 +2,7 @@ package org.example.hanjinwoo.gourmet2.skill;
 
 import org.example.hanjinwoo.gourmet2.data.TorikoData;
 
-/** Shared maths for charge-and-release skills (Leg Knife, Flying Fork, Flying Knife). */
+/** Shared maths for charge-and-release skills (Leg Knife, Nail Gun, Flying Fork, Flying Knife). */
 public final class Charge {
     /** Ticks of holding the key that reach a full charge. */
     public static final int MAX_TICKS = 40;

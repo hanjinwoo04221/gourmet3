@@ -1,8 +1,3 @@
-/attribute Dev minecraft:generic.attack_damage base set 30
-/summon minecraft:husk
-/attribute Dev minecraft:generic.fall_damage_multiplier base set 1
-/summon minecraft:husk
-/summon minecraft:iron_golem
 /summon husk ~ ~1 ~ {Passengers:[{id:zombie,active_effects:[{id:resistance,duration:5000,amplifier:5}]}]}
 /summon minecraft:iron_golem
 /summon minecraft:husk
@@ -48,3 +43,8 @@
 /gourmet2 celllevel set 5000
 /gourmet2 celllevel set 100
 /gourmet2 celllevel set 1000
+/gourmet2 celllevel set 3000
+/gourmet2 celllevel set 100
+/gourmet2 celllevel set 20
+/gourmet2 celllevel set 1000
+/summon zombie ~ ~1 ~ {active_effects:[{id:resistance,duration:9999,amplifier:5}]}

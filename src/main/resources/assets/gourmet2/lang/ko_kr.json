@@ -15,7 +15,7 @@
   "skill.gourmet2.nail_punch": "네일 펀치",
   "skill.gourmet2.nail_punch.desc": "눌러서 충전하면 드릴 펀치 연타로 이어진다. 오래 충전할수록 더 많이 연타한다.",
   "skill.gourmet2.nail_gun": "네일 건",
-  "skill.gourmet2.nail_gun.desc": "네일 펀치를 기관총처럼 전방 부채꼴로 난사한다.",
+  "skill.gourmet2.nail_gun.desc": "충전해서 네일을 연사한다. 오래 충전할수록 많이 날아간다.",
   "skill.gourmet2.fork": "포크",
   "skill.gourmet2.fork.desc": "네 갈래로 동시에 찌르며 출혈을 유발하는 자상.",
   "skill.gourmet2.knife": "나이프",
@@ -94,10 +94,12 @@
   "gui.gourmet2.skill_settings.nail_combo": "네일 펀치 연타: %s / %s타",
   "gui.gourmet2.skill_settings.fork_projectiles": "플라잉 포크 연사 속도: %s / %s",
   "gui.gourmet2.skill_settings.knife_waves": "플라잉 나이프 연사 속도: %s / %s",
-  "gui.gourmet2.skill_settings.flying_damage": "비행 기술 데미지: %s%% / %s%%",
+  "gui.gourmet2.skill_settings.flying_damage": "비행 기술 데미지(포크): %s / %s",
   "gui.gourmet2.skill_settings.ki_output": "기 방출량: %s / %s",
   "gui.gourmet2.skill_settings.flying_size": "비행 기술 크기: %s%% / %s%%",
-  "gui.gourmet2.skill_settings.attack_damage": "내 공격 데미지: %s%% / %s%% (100%%가 기본)",
-  "gui.gourmet2.skill_settings.leap_distance": "도약 최대거리: %s%% / %s%% (100%%가 기본)",
-  "gui.gourmet2.skill_settings.range": "원거리 기술 사거리: %s%% / %s%% (100%%가 기본)"
+  "gui.gourmet2.skill_settings.attack_damage": "내 공격 데미지(맨손): %s / %s",
+  "gui.gourmet2.skill_settings.leap_distance": "도약 최대거리: %s / %s블록",
+  "gui.gourmet2.skill_settings.range": "원거리 사거리(포크): %s / %s블록",
+  "gui.gourmet2.skill_settings.nail_gun_shots": "네일 건 연사: %s / %s발",
+  "gui.gourmet2.skill_settings.value": "값"
 }

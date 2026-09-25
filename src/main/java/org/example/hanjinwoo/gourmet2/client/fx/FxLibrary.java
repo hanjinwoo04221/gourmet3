@@ -52,6 +52,11 @@ public final class FxLibrary {
                 FxPart.onBody(0.09F, RIGHT_HAND, Custom.NAIL_GUN, Shape.NAIL, Sample.TURBULENCE));
         define(SkillFx.NAIL_GUN_IMPACT,
                 FxPart.world(0.35F, Custom.NAIL_IMPACT, Sample.TOON_HIT));
+        // The round in flight, riding the entity it belongs to. Anchored like the other flying techniques (see
+        // FLYING_FORK_TRAIL) and not like the muzzle flash above: a body-anchored part only ever tracks yaw and
+        // treats pitch as level, which made a round fired up or down fly out flat and read as going the wrong way.
+        define(SkillFx.NAIL_SHOT_TRAIL,
+                FxPart.onProjectile(0.35F, Vec3.ZERO, Custom.NAIL_GUN, Shape.NAIL, Sample.TRACK));
 
         // ------------------------------------------------- 13-hit Nail Punch combo
         define(SkillFx.THIRTEEN_LOCK,

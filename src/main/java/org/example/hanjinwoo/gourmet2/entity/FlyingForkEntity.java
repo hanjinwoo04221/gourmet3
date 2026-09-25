@@ -51,9 +51,12 @@ public class FlyingForkEntity extends SkillProjectile {
         return ACCELERATION_PER_TICK;
     }
 
+    /** Ticks a prong flies before it dissipates: the flight the ranged dial is measured over. */
+    public static final int FLIGHT_TICKS = 30;
+
     @Override
     protected int maxLifeTicks() {
-        return 30;
+        return FLIGHT_TICKS;
     }
 
     @Override

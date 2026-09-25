@@ -194,7 +194,8 @@ public final class LeapEngine {
         if (mark == null) {
             return false;
         }
-        if (!launch(player, data, maxDistance(player, data), mark, true)) {
+        // The chase flies as far as a full charge would reach, held back by the same dial the charge is.
+        if (!launch(player, data, maxDistance(player) * data.leapDistanceSetting(), mark, true)) {
             return false;
         }
         hang(player, mark);
@@ -290,7 +291,10 @@ public final class LeapEngine {
         }
         int chargeTicks = data.leapChargeTicks();
         float fraction = Math.min(1.0F, chargeTicks / (float) MAX_CHARGE_TICKS);
-        double reach = Charge.lerp((float) MIN_DISTANCE, (float) maxDistance(player, data), fraction);
+        // The dial is applied here, over the whole of what the attributes earn, so that maxDistance() stays the
+        // plain distance the power settings screen can show.
+        double reach = Charge.lerp((float) MIN_DISTANCE,
+                (float) (maxDistance(player) * data.leapDistanceSetting()), fraction);
         launch(player, data, reach, aimedEntity(player), false);
     }
 
@@ -330,7 +334,7 @@ public final class LeapEngine {
         if (supported(player)) {
             // Only a leap with something under it tears that something up: a chase started in midair has no
             // ground to push off, and the burst would be thrown into empty air where nothing could be seen of it.
-            liftGround(player);
+            liftGround(player, data);
         }
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 0.9F, 1.4F);
@@ -468,17 +472,25 @@ public final class LeapEngine {
     /**
      * Tears the launch point up when the player is strong enough to do it: the same burst a blow leaves on
      * terrain, centred on the block the leap pushed off from, so both read the same way. UpheavalEntity.burst
-     * decides how far the player's strength and their launch speed carry it, and whether it happens at all.
+     * decides how far the player's strength and their launch speed carry it, whether it happens at all, and —
+     * under the same impulse rule as any other blow — which of the blocks it tears up are broken rather than only
+     * heaved. The blow is weighed on the speed the dash leaves with, so a long leap tears up more ground than a
+     * short hop and a strong pair of legs breaks what the ground is made of.
      */
-    private static void liftGround(ServerPlayer player) {
+    private static void liftGround(ServerPlayer player, TorikoData data) {
         ServerLevel level = (ServerLevel) player.level();
         BlockPos under = player.blockPosition().below();
         // Straight down, whatever way the caster was looking: what a leap tears up is the ground under the feet it
         // pushed off from, and the direction a burst is given is the line the blow went into the terrain along — it
         // is what decides whether the crater lies flat on the floor or stands on end on a wall.
-        if (!UpheavalEntity.burst(level, under, new Vec3(0.0, -1.0, 0.0),
-                player.getAttributeValue(Attributes.ATTACK_DAMAGE),
-                player.getDeltaMovement().horizontalDistance())) {
+        Vec3 down = new Vec3(0.0, -1.0, 0.0);
+        double damage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        // What the ground is asked to take is the push-off: the speed the dash leaves with, which is the whole of
+        // this movement over the ticks it takes to fly it. Reading the player's own motion here instead left a leap
+        // started from a standstill with nothing behind it — the ground came up and nothing under it gave way.
+        double speed = data.leapAim().subtract(player.position()).length() / Math.max(1, data.leapTicks());
+        if (!UpheavalEntity.burst(level, player, under, down, damage, speed,
+                Hurt.impulse(down.scale(speed), damage, Hurt.FIST_AREA))) {
             return;
         }
         ShockwaveRingEntity ring = new ShockwaveRingEntity(level);
@@ -619,14 +631,16 @@ public final class LeapEngine {
      * they have wound the leap dial down in the power settings GUI — which reaches 100%, the whole of what
      * those attributes earn, and no further. Only the far end moves: the tap of a jump stays at
      * {@link #MIN_DISTANCE} whatever the dial says.
+     *
+     * <p>Without the dial, so this is a plain distance in blocks and the power settings screen can show its leap
+     * dial in those terms.
      */
-    private static double maxDistance(ServerPlayer player, TorikoData data) {
+    public static double maxDistance(ServerPlayer player) {
         double damage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
         double speed = player.getAttributeValue(Attributes.MOVEMENT_SPEED);
-        return (MAX_DISTANCE
+        return MAX_DISTANCE
                 + Math.max(0.0, damage - BASE_ATTACK_DAMAGE) * BLOCKS_PER_DAMAGE
-                + Math.max(0.0, speed - BASE_MOVEMENT_SPEED) * BLOCKS_PER_SPEED)
-                * data.leapDistanceSetting();
+                + Math.max(0.0, speed - BASE_MOVEMENT_SPEED) * BLOCKS_PER_SPEED;
     }
 
     /**

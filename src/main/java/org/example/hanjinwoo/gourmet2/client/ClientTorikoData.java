@@ -4,6 +4,7 @@ import net.minecraft.util.Mth;
 import org.example.hanjinwoo.gourmet2.network.S2CSyncTorikoData;
 import org.example.hanjinwoo.gourmet2.skill.CellEvolution;
 import org.example.hanjinwoo.gourmet2.skill.Charge;
+import org.example.hanjinwoo.gourmet2.skill.impl.NailGunSkill;
 import org.example.hanjinwoo.gourmet2.skill.combat.CombatStyles;
 import org.example.hanjinwoo.gourmet2.skill.SkillType;
 import org.jetbrains.annotations.Nullable;
@@ -30,6 +31,7 @@ public final class ClientTorikoData {
 
     private static int nailComboSetting = CellEvolution.NAIL_COMBO_BASE;
     private static int forkProjectileSetting = CellEvolution.FORK_PROJECTILE_BASE;
+    private static int nailGunShotSetting = CellEvolution.NAIL_GUN_SHOT_BASE;
     private static int knifeWaveSetting = CellEvolution.KNIFE_WAVE_BASE;
     private static float flyingDamageSetting = CellEvolution.DAMAGE_MULT_BASE;
     private static float flyingSizeSetting = CellEvolution.SIZE_MULT_BASE;
@@ -47,6 +49,15 @@ public final class ClientTorikoData {
     private static float attackDamageSetting = CellEvolution.ATTACK_DAMAGE_BASE;
     private static float leapDistanceSetting = CellEvolution.LEAP_DISTANCE_BASE;
     private static float rangeSetting = CellEvolution.RANGE_BASE;
+    /**
+     * What each of those ratio dials is worth in its own units at 100% — real damage, and real blocks — worked
+     * out by the server from the very formulas the skills use, so the settings screen can show real numbers
+     * instead of percentages and no formula has to exist twice.
+     */
+    private static float attackDialBase;
+    private static float flyingDamageDialBase;
+    private static float leapDialBase;
+    private static float rangeDialBase;
 
     /** Ticks left on the "a skill was just selected" HUD expansion. */
     private static int selectionHighlight;
@@ -70,6 +81,7 @@ public final class ClientTorikoData {
         chargeTicks = payload.chargeTicks();
         nailComboSetting = payload.nailComboSetting();
         forkProjectileSetting = payload.forkProjectileSetting();
+        nailGunShotSetting = payload.nailGunShotSetting();
         knifeWaveSetting = payload.knifeWaveSetting();
         flyingDamageSetting = payload.flyingDamageSetting();
         flyingSizeSetting = payload.flyingSizeSetting();
@@ -84,6 +96,10 @@ public final class ClientTorikoData {
         attackDamageSetting = payload.attackDamageSetting();
         leapDistanceSetting = payload.leapDistanceSetting();
         rangeSetting = payload.rangeSetting();
+        attackDialBase = payload.attackDialBase();
+        flyingDamageDialBase = payload.flyingDamageDialBase();
+        leapDialBase = payload.leapDialBase();
+        rangeDialBase = payload.rangeDialBase();
 
         int[] incoming = payload.cooldowns();
         System.arraycopy(incoming, 0, COOLDOWNS, 0, Math.min(incoming.length, COOLDOWNS.length));
@@ -211,11 +227,17 @@ public final class ClientTorikoData {
 
     /** 0..1 progress toward the player's current Nail Punch combo ceiling, for the HUD bar. */
     public static float chargeProgress() {
-        // A Nail Punch charge is spent at a rate set by the combo dialled in, so however long that combo is it
-        // fills the bar in the same ticks; the rest charge to Charge.MAX_TICKS whatever their settings.
-        int maxTicks = chargingSkill == SkillType.NAIL_PUNCH.ordinal()
-                ? CellEvolution.NAIL_CHARGE_TICKS
-                : Charge.MAX_TICKS;
+        // A charged technique fills this bar over the ticks its own charge is worth: the Nail Punch's combo and the
+        // Nail Gun's magazine both charge at a rate set by what the player has dialled in, so however big either is
+        // it fills in the same ticks; the rest charge to Charge.MAX_TICKS whatever their settings.
+        int maxTicks;
+        if (chargingSkill == SkillType.NAIL_PUNCH.ordinal()) {
+            maxTicks = CellEvolution.NAIL_CHARGE_TICKS;
+        } else if (chargingSkill == SkillType.NAIL_GUN.ordinal()) {
+            maxTicks = Math.max(1, nailGunShotSetting * NailGunSkill.TICKS_PER_SHOT);
+        } else {
+            maxTicks = Charge.MAX_TICKS;
+        }
         return Mth.clamp((float) chargeTicks / maxTicks, 0.0F, 1.0F);
     }
 
@@ -227,6 +249,10 @@ public final class ClientTorikoData {
 
     public static int forkProjectileSetting() {
         return forkProjectileSetting;
+    }
+
+    public static int nailGunShotSetting() {
+        return nailGunShotSetting;
     }
 
     public static int knifeWaveSetting() {
@@ -287,6 +313,22 @@ public final class ClientTorikoData {
 
     public static float leapDistanceSetting() {
         return leapDistanceSetting;
+    }
+
+    public static float attackDialBase() {
+        return attackDialBase;
+    }
+
+    public static float flyingDamageDialBase() {
+        return flyingDamageDialBase;
+    }
+
+    public static float leapDialBase() {
+        return leapDialBase;
+    }
+
+    public static float rangeDialBase() {
+        return rangeDialBase;
     }
 
     public static float rangeSetting() {

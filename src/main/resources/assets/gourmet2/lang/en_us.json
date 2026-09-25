@@ -15,7 +15,7 @@
   "skill.gourmet2.nail_punch": "Nail Punch",
   "skill.gourmet2.nail_punch.desc": "Hold to wind up a drilling punch combo; the longer the charge, the more hits land.",
   "skill.gourmet2.nail_gun": "Nail Gun",
-  "skill.gourmet2.nail_gun.desc": "A machine-gun barrage of nail punches across a forward cone.",
+  "skill.gourmet2.nail_gun.desc": "Wind up a machine-gun burst of nails. The longer the charge, the more go out.",
   "skill.gourmet2.fork": "Fork",
   "skill.gourmet2.fork.desc": "Four parallel piercing stabs that make the target bleed.",
   "skill.gourmet2.knife": "Knife",
@@ -94,10 +94,12 @@
   "gui.gourmet2.skill_settings.nail_combo": "Nail Punch Combo: %s / %s hits",
   "gui.gourmet2.skill_settings.fork_projectiles": "Flying Fork Fire Rate: %s / %s",
   "gui.gourmet2.skill_settings.knife_waves": "Flying Knife Fire Rate: %s / %s",
-  "gui.gourmet2.skill_settings.flying_damage": "Flying Technique Damage: %s%% / %s%%",
+  "gui.gourmet2.skill_settings.flying_damage": "Flying Damage (fork): %s / %s",
   "gui.gourmet2.skill_settings.ki_output": "Ki Release Output: %s / %s",
   "gui.gourmet2.skill_settings.flying_size": "Flying Technique Size: %s%% / %s%%",
-  "gui.gourmet2.skill_settings.attack_damage": "My Attack Damage: %s%% / %s%% (100%% is full)",
-  "gui.gourmet2.skill_settings.leap_distance": "Leap Reach: %s%% / %s%% (100%% is full)",
-  "gui.gourmet2.skill_settings.range": "Ranged Technique Reach: %s%% / %s%% (100%% is full)"
+  "gui.gourmet2.skill_settings.attack_damage": "My Attack Damage (bare): %s / %s",
+  "gui.gourmet2.skill_settings.leap_distance": "Leap Reach: %s / %s blocks",
+  "gui.gourmet2.skill_settings.range": "Ranged Reach (fork): %s / %s blocks",
+  "gui.gourmet2.skill_settings.nail_gun_shots": "Nail Gun Burst: %s / %s rounds",
+  "gui.gourmet2.skill_settings.value": "Value"
 }

@@ -3,9 +3,14 @@ package org.example.hanjinwoo.gourmet2.network;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.example.hanjinwoo.gourmet2.Gourmet2;
 import org.example.hanjinwoo.gourmet2.data.TorikoData;
+import org.example.hanjinwoo.gourmet2.skill.LeapEngine;
+import org.example.hanjinwoo.gourmet2.skill.SkillContext;
+import org.example.hanjinwoo.gourmet2.skill.combat.CombatEngine;
+import org.example.hanjinwoo.gourmet2.skill.impl.FlyingForkSkill;
 
 import java.util.Arrays;
 
@@ -17,7 +22,9 @@ public record S2CSyncTorikoData(int appetite, int maxAppetite, int selected, int
                                 float flyingDamageSetting, float flyingSizeSetting,
                                 boolean kiActive, int kiOutputSetting,
                                 float attackDamageSetting, float leapDistanceSetting, float rangeSetting,
-                                int[] skillSlots, boolean combatMode, String combatStyle)
+                                float attackDialBase, float flyingDamageDialBase, float leapDialBase,
+                                float rangeDialBase,
+                                int[] skillSlots, boolean combatMode, String combatStyle, int nailGunShotSetting)
         implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<S2CSyncTorikoData> TYPE =
@@ -51,9 +58,19 @@ public record S2CSyncTorikoData(int appetite, int maxAppetite, int selected, int
                 data.attackDamageSetting(),
                 data.leapDistanceSetting(),
                 data.rangeSetting(),
+                // What the ratio dials are worth in their own units — damage, and blocks — worked out here with
+                // the very formulas the skills themselves use, so the settings screen can show real numbers and
+                // no formula has to exist twice.
+                // The attack dial's own number is what a blow is worth with *that* dial wide open; the flying dial's
+                // is what a prong is worth as things stand, since the attack dial is already applied under it.
+                CombatEngine.bareHandedBlow(player, data),
+                new SkillContext(player, (ServerLevel) player.level(), data).damage(FlyingForkSkill.BASE_DAMAGE),
+                (float) LeapEngine.maxDistance(player),
+                (float) FlyingForkSkill.reach(data.cellLevel()),
                 Arrays.copyOf(data.skillSlotsView(), data.skillSlotsView().length),
                 data.isCombatMode(),
-                data.combatStyle());
+                data.combatStyle(),
+                data.nailGunShotSetting());
     }
 
     private S2CSyncTorikoData(RegistryFriendlyByteBuf buf) {
@@ -79,9 +96,14 @@ public record S2CSyncTorikoData(int appetite, int maxAppetite, int selected, int
                 buf.readFloat(),
                 buf.readFloat(),
                 buf.readFloat(),
+                buf.readFloat(),
+                buf.readFloat(),
+                buf.readFloat(),
+                buf.readFloat(),
                 buf.readVarIntArray(),
                 buf.readBoolean(),
-                buf.readUtf());
+                buf.readUtf(),
+                buf.readVarInt());
     }
 
     private void write(RegistryFriendlyByteBuf buf) {
@@ -107,9 +129,14 @@ public record S2CSyncTorikoData(int appetite, int maxAppetite, int selected, int
         buf.writeFloat(attackDamageSetting);
         buf.writeFloat(leapDistanceSetting);
         buf.writeFloat(rangeSetting);
+        buf.writeFloat(attackDialBase);
+        buf.writeFloat(flyingDamageDialBase);
+        buf.writeFloat(leapDialBase);
+        buf.writeFloat(rangeDialBase);
         buf.writeVarIntArray(skillSlots);
         buf.writeBoolean(combatMode);
         buf.writeUtf(combatStyle);
+        buf.writeVarInt(nailGunShotSetting);
     }
 
     @Override

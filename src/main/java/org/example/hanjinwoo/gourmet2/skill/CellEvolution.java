@@ -18,6 +18,7 @@ public final class CellEvolution {
     /** Default/starting value for every tunable setting - also level 0's cap. */
     public static final int NAIL_COMBO_BASE = nailComboCap(0);
     public static final int FORK_PROJECTILE_BASE = forkProjectileCap(0);
+    public static final int NAIL_GUN_SHOT_BASE = nailGunShotCap(0);
     public static final int KNIFE_WAVE_BASE = knifeWaveCap(0);
     public static final int KI_OUTPUT_BASE = kiOutputCap(0);
     public static final float DAMAGE_MULT_BASE = 1.0F;
@@ -106,6 +107,11 @@ public final class CellEvolution {
     /** Highest number of Flying Fork prongs a single cast can launch. */
     public static int forkProjectileCap(int level) {
         return 4 + level / 2;
+    }
+
+    /** Highest number of Nail Gun rounds a full charge can put out. */
+    public static int nailGunShotCap(int level) {
+        return 4 + level;
     }
 
     /** Highest number of Flying Knife waves a single cast can launch. */

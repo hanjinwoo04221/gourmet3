@@ -2,78 +2,132 @@ package org.example.hanjinwoo.gourmet2.skill.impl;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.example.hanjinwoo.gourmet2.compat.CombatAnimations;
+import org.example.hanjinwoo.gourmet2.data.TorikoData;
+import org.example.hanjinwoo.gourmet2.entity.NailShotEntity;
 import org.example.hanjinwoo.gourmet2.fx.FxDispatch;
 import org.example.hanjinwoo.gourmet2.fx.SkillFx;
 import org.example.hanjinwoo.gourmet2.skill.ActiveSkill;
+import org.example.hanjinwoo.gourmet2.skill.Charge;
 import org.example.hanjinwoo.gourmet2.skill.Hurt;
 import org.example.hanjinwoo.gourmet2.skill.SkillBehavior;
 import org.example.hanjinwoo.gourmet2.skill.SkillContext;
+import org.example.hanjinwoo.gourmet2.skill.SkillEngine;
 import org.example.hanjinwoo.gourmet2.skill.SkillType;
-import org.example.hanjinwoo.gourmet2.skill.Targeting;
-
-import java.util.List;
 
 /**
- * ネイルガン Nail Gun — nail punches thrown fast enough to be a machine gun. Sprays a forward cone
- * for a second and a bit, so it clears a crowd rather than deleting one target.
+ * ネイルガン Nail Gun — nails driven out on a line of vacuum, one after another. Hold the key to wind the barrage
+ * up and let go to fire it: the longer the charge, the more rounds go out, and each one is a
+ * {@link NailShotEntity} with the gun's own effect riding it rather than a hitbox swept in front of the caster.
  *
- * <p>Unlike the single Nail Punch this keeps tracking: each volley re-reads where the player is
- * looking, which is what makes it feel like sweeping fire.
+ * <p>Every round is aimed afresh as it leaves, so a barrage can be walked across a crowd; and because they are
+ * real projectiles they carry past what the caster looked at, punch through leaves and glass, and reach further
+ * with every level evolved (see {@code TorikoData#rangeMultiplier}).
  */
 public class NailGunSkill implements SkillBehavior {
-    private static final int DURATION = 24;
-    /** Ticks between volleys. */
-    private static final int VOLLEY_INTERVAL = 2;
-    private static final double RANGE = 9.0;
-    private static final double HALF_ANGLE = 30.0;
-    private static final int TARGETS_PER_VOLLEY = 2;
-    private static final float DAMAGE_PER_HIT = 3.5F;
-    private static final float PIERCE_FRACTION = 0.3F;
+    /**
+     * Ticks of charge per round of the magazine, whatever its size, so a full charge is the same wait for a small
+     * magazine as for a large one — the same shape as the Nail Punch's combo charge. Public because the HUD's charge
+     * bar measures itself against it (see {@code ClientTorikoData#chargeProgress}).
+     */
+    public static final int TICKS_PER_SHOT = 4;
+    /** Ticks between rounds once the barrage is going. */
+    private static final int SHOT_INTERVAL = 2;
+    /** Launch speed of a round, and what one is worth in damage at the base setting. */
+    private static final float VELOCITY = 3.0F;
+    private static final float BASE_DAMAGE = 3.5F;
+    /**
+     * Appetite each round beyond the first costs, on top of the charge's share of the base cost. A bigger magazine
+     * is a bigger barrage, and the mod charges for every setting that is dialled up.
+     */
+    private static final int COST_PER_EXTRA_SHOT = 2;
 
+    /** Wind-up cue on key-press; the barrage itself fires from {@link #releaseCharge}. */
     @Override
     public boolean activate(SkillContext ctx) {
-        FxDispatch.on(ctx.level(), SkillFx.NAIL_GUN_CAST, ctx.player());
-        Hurt.playSound(ctx, ctx.player().position(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, 1.0F, 1.2F);
+        Hurt.playSound(ctx, ctx.player().position(), SoundEvents.PLAYER_ATTACK_SWEEP, 0.5F, 0.9F);
         return true;
     }
 
     @Override
-    public ActiveSkill startActive(SkillContext ctx) {
-        return new ActiveSkill(SkillType.NAIL_GUN, DURATION, false,
+    public void releaseCharge(SkillContext ctx, int chargeTicksElapsed) {
+        TorikoData data = ctx.data();
+        int base = SkillType.NAIL_GUN.appetiteCost();
+        // The charge the wallet can actually pay for, and so what the barrage is worth: a full wind-up
+        // the player cannot afford fires as a smaller one they can.
+        float power = Charge.affordable(data, base, chargeFraction(data, chargeTicksElapsed));
+        if (power < 0.0F) {
+            return;
+        }
+        int shots = shotsFor(data, power);
+        int cost = costFor(base, power, shots);
+        // A barrage the wallet cannot cover in full still goes out — just shorter, rather than not at all.
+        while (shots > 1 && !data.canAfford(cost)) {
+            shots--;
+            cost = costFor(base, power, shots);
+        }
+        if (!data.canAfford(cost)) {
+            return;
+        }
+        data.spend(cost);
+        data.setCooldown(SkillType.NAIL_GUN, SkillEngine.cooldownFor(SkillType.NAIL_GUN, data));
+        CombatAnimations.playSkill(ctx.player(), "nail_gun");
+        FxDispatch.on(ctx.level(), SkillFx.NAIL_GUN_CAST, ctx.player());
+
+        ActiveSkill active = new ActiveSkill(SkillType.NAIL_GUN, shots * SHOT_INTERVAL, false,
                 ctx.lookDirection(), ctx.player().position());
+        active.comboHits = shots;
+        data.setActive(active);
+    }
+
+    /** What the barrage costs: the charge's share of the base, plus a little for every round past the first. */
+    private static int costFor(int base, float power, int shots) {
+        return Charge.cost(base, power) + Math.max(0, shots - 1) * COST_PER_EXTRA_SHOT;
+    }
+
+    /** Ticks a full charge takes: the size of the magazine the caster has dialled in, at a fixed rate. */
+    private static int chargeTicks(TorikoData data) {
+        return Math.max(1, data.nailGunShotSetting() * TICKS_PER_SHOT);
+    }
+
+    /** 0 for a tap, 1 for a full wind-up; how many rounds come out follows this. */
+    private static float chargeFraction(TorikoData data, int chargeTicksElapsed) {
+        return Math.min(1.0F, Math.max(0, chargeTicksElapsed) / (float) chargeTicks(data));
+    }
+
+    /** How many rounds a charge is worth: one for a tap, the whole magazine for a full wind-up. */
+    private static int shotsFor(TorikoData data, float fraction) {
+        int ceiling = Math.max(1, data.nailGunShotSetting());
+        return Math.max(1, Math.min(ceiling, 1 + Math.round(fraction * (ceiling - 1))));
     }
 
     @Override
     public void tick(SkillContext ctx, ActiveSkill active) {
-        if (active.elapsed % VOLLEY_INTERVAL != 0) {
+        if (active.elapsed % SHOT_INTERVAL != 0 || active.hits >= active.comboHits) {
             return;
         }
+        active.hits++;
+        fire(ctx);
+    }
+
+    private void fire(SkillContext ctx) {
         ServerPlayer player = ctx.player();
+        // Re-aimed on every round, so a held barrage can be walked across whatever the caster is looking at.
         Vec3 direction = ctx.lookDirection();
+        Vec3 spawnAt = ctx.eyePosition().add(direction.scale(0.7));
+        float size = ctx.data().flyingSizeSetting();
 
-        // The barrage of an evolved caster sprays further (see TorikoData#rangeMultiplier), which is what the
-        // reach dial in the power settings is there to wind back in.
-        double range = RANGE * ctx.data().rangeMultiplier();
-        List<LivingEntity> victims = Targeting.inCone(player, direction, range, HALF_ANGLE, TARGETS_PER_VOLLEY);
-        if (victims.isEmpty()) {
-            // Still show the rounds landing on terrain so the burst reads as continuous fire.
-            FxDispatch.at(ctx.level(), SkillFx.NAIL_GUN_IMPACT,
-                    Targeting.impactPoint(player, direction, range), 0.5F, player.getYRot(), player.getXRot());
-        } else {
-            for (LivingEntity victim : victims) {
-                if (Hurt.nail(ctx, victim, DAMAGE_PER_HIT, PIERCE_FRACTION)) {
-                    Hurt.knockAway(victim, player.position(), 0.18);
-                    FxDispatch.at(ctx.level(), SkillFx.NAIL_GUN_IMPACT, victim.getBoundingBox().getCenter(), 0.6F, 0.0F, 0.0F);
-                }
-            }
-        }
+        NailShotEntity round = new NailShotEntity(ctx.level());
+        round.setOwner(player);
+        round.setDamage(ctx.damage(BASE_DAMAGE * ctx.data().flyingDamageSetting()));
+        round.setSizeScale(size);
+        round.moveTo(spawnAt.x, spawnAt.y, spawnAt.z, player.getYRot(), player.getXRot());
+        round.setDeltaMovement(direction.scale(VELOCITY * ctx.data().rangeMultiplier()));
+        ctx.level().addFreshEntity(round);
+        // The gun's effect rides the round itself, anchored like the thrown techniques so it keeps the angle it was
+        // fired at — the muzzle flash above is a body-anchored part and would flatten every round to level.
+        FxDispatch.on(ctx.level(), SkillFx.NAIL_SHOT_TRAIL, round, size);
         Hurt.playSound(ctx, player.position(), SoundEvents.CROSSBOW_SHOOT, 0.35F, 1.9F);
-
-        // Re-trigger the muzzle flash periodically; most Effekseer bursts are shorter than the barrage.
-        if (active.elapsed % 8 == 0) {
-            FxDispatch.on(ctx.level(), SkillFx.NAIL_GUN_CAST, player, 0.8F);
-        }
     }
 }

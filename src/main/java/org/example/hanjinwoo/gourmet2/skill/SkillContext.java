@@ -29,6 +29,15 @@ public record SkillContext(ServerPlayer player, ServerLevel level, TorikoData da
         return value * (1.0F + CellEvolution.skillDamageBonus(data.cellLevel())) * data.attackDamageSetting();
     }
 
+    /**
+     * What {@code base} is worth with the caster's own damage dial wide open — the damage a blow deals before
+     * they hold any of it back. The power settings screen shows its damage dials in these terms, so what it
+     * prints is the damage a blow actually deals rather than a share of one the player never sees.
+     */
+    public float damageAtFullDial(float base) {
+        return damage(base) / Math.max(0.01F, data.attackDamageSetting());
+    }
+
     public Vec3 eyePosition() {
         return player.getEyePosition();
     }

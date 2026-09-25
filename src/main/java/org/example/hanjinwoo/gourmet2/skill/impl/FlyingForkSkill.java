@@ -24,7 +24,17 @@ import org.example.hanjinwoo.gourmet2.skill.SkillType;
  */
 public class FlyingForkSkill implements SkillBehavior {
     private static final float VELOCITY = 2.2F;
-    private static final float BASE_DAMAGE = 7.0F;
+    /** What one prong is worth at the base damage setting, before the mod's own bonuses. */
+    public static final float BASE_DAMAGE = 7.0F;
+
+    /**
+     * How far one prong carries with the ranged dial wide open, in blocks: its launch speed over the flight it
+     * has, before the momentum it builds on the way. The power settings screen weighs its ranged dial on this, so
+     * the number it shows there is a distance rather than a share of one.
+     */
+    public static double reach(int cellLevel) {
+        return VELOCITY * CellEvolution.rangeLevelBonus(cellLevel) * FlyingForkEntity.FLIGHT_TICKS;
+    }
     /** Ticks between shots at the base fire rate (fork count setting at its level-0 floor). */
     private static final int BASE_INTERVAL = 8;
     private static final int MIN_INTERVAL = 3;

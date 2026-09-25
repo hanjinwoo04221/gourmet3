@@ -20,8 +20,11 @@ public enum SkillType {
      * ceiling, see {@link CellEvolution#nailComboCap}), releasing on key-up.
      */
     NAIL_PUNCH("nail_punch", 8, 40, 0, 0xFFD24B, InputMode.CHARGE),
-    /** ネイルガン — a machine-gun barrage of nail punches across a forward cone. */
-    NAIL_GUN("nail_gun", 26, 70, 0, 0xFFA630, InputMode.INSTANT),
+    /**
+     * ネイルガン — a machine-gun barrage of nails. Charged rather than instant: the wind-up is how long a
+     * burst the caster wants, and it fires that many rounds, each one a projectile of its own.
+     */
+    NAIL_GUN("nail_gun", 26, 70, 0, 0xFFA630, InputMode.CHARGE),
     /** フォーク — four parallel piercing stabs that make the target bleed. */
     FORK("fork", 12, 30, 0, 0x7FE3C8, InputMode.INSTANT),
     /** ナイフ — a clean horizontal sweep that cuts rather than bludgeons. */

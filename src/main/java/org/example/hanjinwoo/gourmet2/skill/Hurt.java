@@ -191,7 +191,26 @@ public final class Hurt {
      * @return true if the block was destroyed
      */
     public static boolean breakByImpulse(ServerPlayer caster, Level level, BlockPos pos, double impulse) {
-        if (!Config.cellPowerBreaksBlocks || !level.mayInteract(caster, pos)) {
+        if (!givesWay(caster, level, pos, impulse)) {
+            return false;
+        }
+        level.destroyBlock(pos, false, caster);
+        return true;
+    }
+
+    /**
+     * Whether {@code pos} would give way to that much impulse — the same test {@link #breakByImpulse} makes,
+     * for callers that need the answer <i>before</i> the block goes. The upheaval asks it while it is planning
+     * a crater, so each block of it is either broken where it stands or only heaved and put back, decided the
+     * moment the crater is laid out rather than while the wave is crossing it.
+     *
+     * <p>A null caster — a blow whose owner has since left — breaks nothing: who may build here is not
+     * something a stray effect can answer.
+     *
+     * @return true if the block is there to be broken and the blow is worth it
+     */
+    public static boolean givesWay(ServerPlayer caster, Level level, BlockPos pos, double impulse) {
+        if (!Config.cellPowerBreaksBlocks || caster == null || !level.mayInteract(caster, pos)) {
             return false;
         }
         BlockState state = level.getBlockState(pos);
@@ -199,11 +218,7 @@ public final class Hurt {
             return false;
         }
         float hardness = state.getDestroySpeed(level, pos);
-        if (hardness < 0.0F || impulse < hardness * IMPULSE_PER_HARDNESS) {
-            return false;
-        }
-        level.destroyBlock(pos, false, caster);
-        return true;
+        return hardness >= 0.0F && impulse >= hardness * IMPULSE_PER_HARDNESS;
     }
 
     /**
@@ -228,8 +243,10 @@ public final class Hurt {
         if (broke && level instanceof ServerLevel server) {
             // A technique tears the ground up as well as through it: the same burst a blow leaves, scaled by
             // how much damage the technique carries and how fast it was thrown, and skipped when that is not
-            // enough for one.
-            UpheavalEntity.burst(server, BlockPos.containing(region.getCenter()), blow, damage, blow.length());
+            // enough for one. Weighed the same way, so the crater it leaves is broken through under the very
+            // impulse that just swept the corridor.
+            UpheavalEntity.burst(server, caster, BlockPos.containing(region.getCenter()), blow, damage,
+                    blow.length(), impulse);
         }
     }
 }

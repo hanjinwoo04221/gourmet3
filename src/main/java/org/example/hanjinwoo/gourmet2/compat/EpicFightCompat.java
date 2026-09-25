@@ -58,7 +58,8 @@ public final class EpicFightCompat {
      */
     private static final Map<String, Integer> SKILL_CLIP_FRAMES = Map.ofEntries(
             Map.entry("nail_punch_charge", 56), Map.entry("nail_punch", 17),
-            Map.entry("nail_gun", 24), Map.entry("fork", 20), Map.entry("knife", 20), Map.entry("leg_knife", 20),
+            Map.entry("nail_gun_charge", 56), Map.entry("nail_gun_hold", 12), Map.entry("nail_gun", 24),
+            Map.entry("fork", 20), Map.entry("knife", 20), Map.entry("leg_knife", 20),
             Map.entry("leg_knife_charge", 56), Map.entry("flying_fork_charge", 56), Map.entry("flying_fork_shot", 10),
             Map.entry("flying_knife_charge", 56), Map.entry("flying_knife_shot", 12), Map.entry("intimidation", 34),
             Map.entry("demon_form", 46), Map.entry("ki_release", 40), Map.entry("food_immersion", 84),
@@ -218,6 +219,11 @@ public final class EpicFightCompat {
         } else {
             GUARD_STARTED.remove(player.getUUID());
         }
+    }
+
+    /** Whether a clip in {@code animations/skill/} was registered under that name. */
+    public static boolean hasSkillClip(String clip) {
+        return CLIPS.containsKey("skill/" + clip);
     }
 
     /** Plays the animation for a skill cast; the same for every combat style. */

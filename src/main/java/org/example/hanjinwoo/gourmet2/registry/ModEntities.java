@@ -11,6 +11,7 @@ import org.example.hanjinwoo.gourmet2.entity.FlyingForkEntity;
 import org.example.hanjinwoo.gourmet2.entity.FlyingKnifeEntity;
 import org.example.hanjinwoo.gourmet2.entity.KiAuraEntity;
 import org.example.hanjinwoo.gourmet2.entity.LegKnifeSlashEntity;
+import org.example.hanjinwoo.gourmet2.entity.NailShotEntity;
 import org.example.hanjinwoo.gourmet2.entity.ShockwaveRingEntity;
 import org.example.hanjinwoo.gourmet2.entity.UpheavalEntity;
 
@@ -30,6 +31,16 @@ public final class ModEntities {
                     .updateInterval(10)
                     .noSummon()
                     .build("flying_fork"));
+
+    /** One round of the Nail Gun: small, quick, and carrying the gun's own effect along with it. */
+    public static final DeferredHolder<EntityType<?>, EntityType<NailShotEntity>> NAIL_SHOT =
+            REGISTER.register("nail_shot", () -> EntityType.Builder
+                    .<NailShotEntity>of(NailShotEntity::new, MobCategory.MISC)
+                    .sized(0.3F, 0.3F)
+                    .clientTrackingRange(6)
+                    .updateInterval(5)
+                    .noSummon()
+                    .build("nail_shot"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<FlyingKnifeEntity>> FLYING_KNIFE =
             REGISTER.register("flying_knife", () -> EntityType.Builder

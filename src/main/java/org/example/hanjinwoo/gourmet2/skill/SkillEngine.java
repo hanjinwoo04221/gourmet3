@@ -44,7 +44,7 @@ public final class SkillEngine {
      * strike frame of its cast animation instead of before the animation has started.
      */
     private static final java.util.Map<SkillType, Integer> WINDUP_TICKS = java.util.Map.of(
-            SkillType.NAIL_GUN, 7, SkillType.FORK, 6, SkillType.KNIFE, 7);
+            SkillType.FORK, 6, SkillType.KNIFE, 7);
 
 
     private SkillEngine() {}
@@ -82,7 +82,7 @@ public final class SkillEngine {
     /** Applies the settings GUI's requested power tuning, clamped server-side to the player's cap. */
     public static void updateSettings(ServerPlayer player, int nailCombo, int forkProjectiles,
                                       int knifeWaves, float flyingDamage, float flyingSize, int kiOutput,
-                                      float attackDamage, float leapDistance, float range) {
+                                      float attackDamage, float leapDistance, float range, int nailGunShots) {
         TorikoData data = ModAttachments.of(player);
         data.setNailComboSetting(nailCombo);
         data.setForkProjectileSetting(forkProjectiles);
@@ -93,6 +93,7 @@ public final class SkillEngine {
         data.setAttackDamageSetting(attackDamage);
         data.setLeapDistanceSetting(leapDistance);
         data.setRangeSetting(range);
+        data.setNailGunShotSetting(nailGunShots);
         sync(player, data);
     }
 
@@ -311,8 +312,29 @@ public final class SkillEngine {
         if (skill.inputMode() == SkillType.InputMode.AUTO) {
             SkillContext ctx = new SkillContext(player, (ServerLevel) player.level(), data);
             SkillRegistry.get(skill).tickHeld(ctx, data.chargeTicks());
+            return;
+        }
+        int ticks = data.chargeTicks();
+        String hold = skill.id() + "_hold";
+        if (ticks >= CHARGE_HOLD_FROM_TICKS
+                && (ticks - CHARGE_HOLD_FROM_TICKS) % CHARGE_HOLD_REPLAY_TICKS == 0
+                && CombatAnimations.hasSkillClip(hold)) {
+            // The wind-up has run its course but the key is still down, so the pose it settles on is
+            // re-played under the charge: without it the stance would lapse and Epic Fight mode with it.
+            // Only charged skills that actually have a held pose have one to play (the Nail Gun's
+            // magazine, and so its charge, grows with the cell level); the rest just keep their wind-up.
+            CombatAnimations.playSkill(player, hold);
         }
     }
+
+    /**
+     * When a charged skill's held pose takes over from its wind-up clip, and how often that pose is
+     * re-played. Every wind-up clip is 56 frames at 24 fps (about 47 ticks), so the handover lands just
+     * before the clip would end; the interval is short enough that the next play always beats the
+     * previous one running out. The leap holds its coil the same way (see {@code LeapEngine}).
+     */
+    private static final int CHARGE_HOLD_FROM_TICKS = 44;
+    private static final int CHARGE_HOLD_REPLAY_TICKS = 6;
 
     /** Ticks between Intimidation's aura re-pulse while its toggle is on. */
     private static final int INTIMIDATION_PULSE_INTERVAL = 20;

@@ -57,6 +57,15 @@ public final class CombatAnimations {
         }
     }
 
+    /**
+     * Whether a skill clip of that name was registered. Callers that would otherwise play a clip that
+     * may not exist — a charged skill's held pose, which not every charged skill has — ask first, so a
+     * missing one is skipped rather than logged.
+     */
+    public static boolean hasSkillClip(String clip) {
+        return available() && EpicFightCompat.hasSkillClip(clip);
+    }
+
     public static void play(ServerPlayer player, String name) {
         if (available()) {
             EpicFightCompat.play(player, name);

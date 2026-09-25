@@ -32,6 +32,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     private static final String KEY_CELL_XP = "CellXp";
     private static final String KEY_NAIL_COMBO = "NailComboSetting";
     private static final String KEY_FORK_PROJECTILES = "ForkProjectileSetting";
+    private static final String KEY_NAIL_GUN_SHOTS = "NailGunShotSetting";
     private static final String KEY_KNIFE_WAVES = "KnifeWaveSetting";
     private static final String KEY_FLYING_DAMAGE = "FlyingDamageSetting";
     private static final String KEY_FLYING_SIZE = "FlyingSizeSetting";
@@ -52,6 +53,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     // ------------------------------------------------------- player-tuned power settings
     private int nailComboSetting = CellEvolution.NAIL_COMBO_BASE;
     private int forkProjectileSetting = CellEvolution.FORK_PROJECTILE_BASE;
+    private int nailGunShotSetting = CellEvolution.NAIL_GUN_SHOT_BASE;
     private int knifeWaveSetting = CellEvolution.KNIFE_WAVE_BASE;
     private float flyingDamageSetting = CellEvolution.DAMAGE_MULT_BASE;
     private float flyingSizeSetting = CellEvolution.SIZE_MULT_BASE;
@@ -360,6 +362,18 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         }
     }
 
+    public int nailGunShotSetting() {
+        return nailGunShotSetting;
+    }
+
+    public void setNailGunShotSetting(int value) {
+        int clamped = Mth.clamp(value, CellEvolution.NAIL_GUN_SHOT_BASE, CellEvolution.nailGunShotCap(cellLevel()));
+        if (clamped != nailGunShotSetting) {
+            nailGunShotSetting = clamped;
+            dirty = true;
+        }
+    }
+
     public int knifeWaveSetting() {
         return knifeWaveSetting;
     }
@@ -483,6 +497,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     public void clampSettingsToLevel() {
         setNailComboSetting(nailComboSetting);
         setForkProjectileSetting(forkProjectileSetting);
+        setNailGunShotSetting(nailGunShotSetting);
         setKnifeWaveSetting(knifeWaveSetting);
         setFlyingDamageSetting(flyingDamageSetting);
         setFlyingSizeSetting(flyingSizeSetting);
@@ -824,6 +839,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         tag.putLong(KEY_CELL_XP, cellXp);
         tag.putInt(KEY_NAIL_COMBO, nailComboSetting);
         tag.putInt(KEY_FORK_PROJECTILES, forkProjectileSetting);
+        tag.putInt(KEY_NAIL_GUN_SHOTS, nailGunShotSetting);
         tag.putInt(KEY_KNIFE_WAVES, knifeWaveSetting);
         tag.putFloat(KEY_FLYING_DAMAGE, flyingDamageSetting);
         tag.putFloat(KEY_FLYING_SIZE, flyingSizeSetting);
@@ -847,6 +863,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
 
         nailComboSetting = tag.contains(KEY_NAIL_COMBO) ? tag.getInt(KEY_NAIL_COMBO) : CellEvolution.NAIL_COMBO_BASE;
         forkProjectileSetting = tag.contains(KEY_FORK_PROJECTILES) ? tag.getInt(KEY_FORK_PROJECTILES) : CellEvolution.FORK_PROJECTILE_BASE;
+        nailGunShotSetting = tag.contains(KEY_NAIL_GUN_SHOTS) ? tag.getInt(KEY_NAIL_GUN_SHOTS) : CellEvolution.NAIL_GUN_SHOT_BASE;
         knifeWaveSetting = tag.contains(KEY_KNIFE_WAVES) ? tag.getInt(KEY_KNIFE_WAVES) : CellEvolution.KNIFE_WAVE_BASE;
         flyingDamageSetting = tag.contains(KEY_FLYING_DAMAGE) ? tag.getFloat(KEY_FLYING_DAMAGE) : CellEvolution.DAMAGE_MULT_BASE;
         flyingSizeSetting = tag.contains(KEY_FLYING_SIZE) ? tag.getFloat(KEY_FLYING_SIZE) : CellEvolution.SIZE_MULT_BASE;

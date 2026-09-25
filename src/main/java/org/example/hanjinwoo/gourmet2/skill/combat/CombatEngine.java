@@ -210,17 +210,20 @@ public final class CombatEngine {
     private static void spikeLanded(ServerPlayer player, LivingEntity body, TorikoData.Slam slam) {
         ServerLevel level = (ServerLevel) player.level();
         BlockPos at = body.blockPosition();
-        // The burst goes up first and unconditionally, so a slam reads as one whether or not the hardness gave way;
-        // the sweep that follows does the breaking, and a duplicate burst at the same spot is refused there anyway.
-        UpheavalEntity.burst(level, at, SPIKE_DIRECTION, slam.damage, slam.plunge);
-        if (slam.plunge < SPIKE_MIN_PLUNGE) {
-            return;
-        }
         // The sweep is the ground around the body, but the blow is weighed on the body's own footprint — that is
         // the contact patch the ground is asked to take, and a wide body spreads it thinner than a narrow one.
         AABB foot = body.getBoundingBox().inflate(0.25);
         Vec3 blow = SPIKE_DIRECTION.scale(slam.plunge);
-        Hurt.sweepBreak(player, level, foot, blow, slam.damage, Hurt.frontalArea(body.getBoundingBox(), blow));
+        double area = Hurt.frontalArea(body.getBoundingBox(), blow);
+        // The burst goes up first and unconditionally, so a slam reads as one whether or not the hardness gave way;
+        // the sweep that follows breaks what the blow actually reached, and the crater's own ground is broken or
+        // only heaved by the same impulse (see UpheavalEntity). A duplicate burst at the same spot is refused anyway.
+        UpheavalEntity.burst(level, player, at, SPIKE_DIRECTION, slam.damage, slam.plunge,
+                Hurt.impulse(blow, slam.damage, area));
+        if (slam.plunge < SPIKE_MIN_PLUNGE) {
+            return;
+        }
+        Hurt.sweepBreak(player, level, foot, blow, slam.damage, area);
     }
 
     // ------------------------------------------------------------------- actions
@@ -587,10 +590,25 @@ public final class CombatEngine {
     }
 
     /**
+     * The damage a bare-handed blow of the player's current style deals — the first move of their first attack
+     * group, at their strength, with every bonus the mod applies behind it. The power settings screen weighs its
+     * attack-damage dial on this, so the number it shows there is the damage a blow actually deals.
+     */
+    public static float bareHandedBlow(ServerPlayer player, TorikoData data) {
+        ComboMove move = CombatStyles.get(data.combatStyle()).groups().get(0).move(0);
+        float raw = (move.twoHits() ? move.damage() * 0.5F : move.damage()) * strengthScale(player);
+        return new SkillContext(player, (ServerLevel) player.level(), data).damageAtFullDial(raw);
+    }
+
+    /**
      * A blow that lands on terrain heaves it up. The swell is worth the player's strength times how fast they
      * were moving when they threw it, and every column comes up by its own amount — some not at all — so the
-     * ground rises at uneven angles instead of as one flat slab. Nothing is destroyed: each column swells
-     * upward in the material it already was.
+     * ground rises at uneven angles instead of as one flat slab.
+     *
+     * <p>What becomes of the ground afterwards follows the same rule as every other blow against terrain: a block
+     * the impulse beats its hardness of is broken where it stood, and one it does not is only heaved and put back
+     * (see {@link Hurt#impulse} and {@link UpheavalEntity}). Thrown from standing, a punch carries almost no speed
+     * and mostly heaves; thrown at a run, it breaks what it lands on.
      */
     private static void upheave(ServerPlayer player, AttackGroup group, double movingSpeed) {
         BlockPos struck = struckBlock(player, group);
@@ -598,10 +616,27 @@ public final class CombatEngine {
             return;
         }
         ServerLevel level = (ServerLevel) player.level();
+        Vec3 look = player.getLookAngle();
+        double damage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        // The blow is the strength behind the limb over the patch the limb struck with — a fist or a foot, not the
+        // whole sweeping box a kick's arc spans, or a wide one would spread the same force thin enough to break
+        // nothing at all.
+        //
+        // Its speed is what the limbs arrive with, which is the player's motion *including* the step-in the attack
+        // above has already added to it. Only the speed carried into the swing — the walk that led up to it — left
+        // a punch thrown from a standstill with no force at all, so a player with a mountain of strength behind
+        // them broke nothing whatever they hit: the ground heaved and nothing under it gave way.
+        double strikeSpeed = player.getDeltaMovement().horizontalDistance();
+        double impulse = Hurt.impulse(look.scale(strikeSpeed), damage, Hurt.FIST_AREA);
+        // The block the limbs actually reached gives way under that same blow, whether or not the ground around it
+        // comes up: the crater is cut in rings, and the mark itself falls between them.
+        Hurt.breakByImpulse(player, level, struck, impulse);
         // The ground only gives way to a blow worth it: the player's strength, and how fast they were moving
-        // when they threw it. UpheavalEntity.burst decides how far that carries and whether it is enough at all.
-        if (!UpheavalEntity.burst(level, struck, player.getLookAngle(),
-                player.getAttributeValue(Attributes.ATTACK_DAMAGE), movingSpeed)) {
+        // when they threw it. UpheavalEntity.burst decides how far that carries, whether it is enough at all, and
+        // which of the blocks it tears up the blow was actually worth breaking. How wide the crater comes out is
+        // still measured on the speed carried into the blow, not the step-in — that is the size the blow was
+        // thrown with, and it is not the strike's own force.
+        if (!UpheavalEntity.burst(level, player, struck, look, damage, movingSpeed, impulse)) {
             return;
         }
         level.playSound(null, struck.getX() + 0.5, struck.getY() + 1.0, struck.getZ() + 0.5,

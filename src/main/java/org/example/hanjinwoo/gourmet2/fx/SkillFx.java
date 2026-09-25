@@ -36,7 +36,12 @@ public enum SkillFx {
      * A blow landed in combat mode (any attack group, the launch and the spike). Kept separate from the
      * nail punch's impact so the bare-handed styles never borrow a skill's effect.
      */
-    COMBAT_IMPACT;
+    COMBAT_IMPACT,
+    /**
+     * A Nail Gun round in flight. Its own slot rather than the muzzle flash, because a round is thrown out
+     * with pitch as well as yaw — see {@code FxLibrary} for why that needs a different anchor.
+     */
+    NAIL_SHOT_TRAIL;
 
     public static final SkillFx[] VALUES = values();
 
