@@ -1,13 +1,13 @@
-[249월2026 10:25:44.470] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientdev, --version, 21.1.250, --assetIndex, 17, --assetsDir, C:\\Users\\hanjw\\.gradle\\caches\\neoformruntime\\assets, --gameDir, ., --fml.fmlVersion, 4.0.44, --fml.mcVersion, 1.21.1, --fml.neoForgeVersion, 21.1.250, --fml.neoFormVersion, 20240808.144430]
-[249월2026 10:25:44.470] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Oracle Corporation Java HotSpot(TM) 64-Bit Server VM 21.0.12.1+1-LTS-4
-[249월2026 10:25:44.475] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.12.1 by Oracle Corporation; OS Windows 11 arch amd64 version 10.0
-[249월2026 10:25:44.546] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
-[249월2026 10:25:44.613] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
-[249월2026 10:25:44.718] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
-[249월2026 10:25:44.771] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/C:/Users/hanjw/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/2af2f021d8e02a0220dc27a7a72b4666d66d44ca/sponge-mixin-0.15.2+mixin.0.8.7.jar%23138!/ Service=ModLauncher Env=CLIENT
-[249월2026 10:25:44.911] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce RTX 4060/PCIe/SSE2 GL version 4.6.0 NVIDIA 591.86, NVIDIA Corporation
-[249월2026 10:25:45.049] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 3 dependencies adding them to mods collection
-[249월2026 10:25:45.049] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: 
+[259월2026 09:47:46.997] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientdev, --version, 21.1.250, --assetIndex, 17, --assetsDir, C:\\Users\\hanjw\\.gradle\\caches\\neoformruntime\\assets, --gameDir, ., --fml.fmlVersion, 4.0.44, --fml.mcVersion, 1.21.1, --fml.neoForgeVersion, 21.1.250, --fml.neoFormVersion, 20240808.144430]
+[259월2026 09:47:46.999] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Oracle Corporation Java HotSpot(TM) 64-Bit Server VM 21.0.12.1+1-LTS-4
+[259월2026 09:47:46.999] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.12.1 by Oracle Corporation; OS Windows 11 arch amd64 version 10.0
+[259월2026 09:47:47.080] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
+[259월2026 09:47:47.151] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
+[259월2026 09:47:47.288] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
+[259월2026 09:47:47.336] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/C:/Users/hanjw/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/2af2f021d8e02a0220dc27a7a72b4666d66d44ca/sponge-mixin-0.15.2+mixin.0.8.7.jar%23138!/ Service=ModLauncher Env=CLIENT
+[259월2026 09:47:47.477] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce RTX 4060/PCIe/SSE2 GL version 4.6.0 NVIDIA 591.86, NVIDIA Corporation
+[259월2026 09:47:47.597] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 3 dependencies adding them to mods collection
+[259월2026 09:47:47.598] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: 
      Mod List:
 		Name Version (Mod Id)
 
@@ -19,57 +19,57 @@
 		gourmet2 1.0-SNAPSHOT (gourmet2)
 		Minecraft 1.21.1 (minecraft)
 		NeoForge 21.1.250 (neoforge)
-[249월2026 10:25:45.584] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
-[249월2026 10:25:45.585] [main/INFO] [mixin/]: Compatibility level set to JAVA_21
-[249월2026 10:25:45.594] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientdev' with arguments [--version, 21.1.250, --gameDir, ., --assetsDir, C:\Users\hanjw\.gradle\caches\neoformruntime\assets, --assetIndex, 17]
-[249월2026 10:25:45.633] [main/WARN] [mixin/]: Reference map 'geckolib.refmap.json' for geckolib.mixins.json could not be read. If this is a development environment you can ignore this message
-[249월2026 10:25:45.633] [main/WARN] [mixin/]: Reference map 'epicfight.mixins.refmap.json' for epicfight.mixins.json could not be read. If this is a development environment you can ignore this message
-[249월2026 10:25:45.915] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.3).
-[249월2026 10:25:46.756] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 229 Datafixer optimizations took 205 milliseconds
-[249월2026 10:25:49.440] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[249월2026 10:25:49.441] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
-[249월2026 10:25:49.442] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[249월2026 10:25:49.442] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[249월2026 10:25:49.442] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[249월2026 10:25:49.522] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/hanjw/Downloads/gourmet2-main/gourmet2-main/build/moddev/artifacts/neoforge-21.1.250.jar%23189!/assets/.mcassetsroot' uses unexpected schema
-[249월2026 10:25:49.522] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/hanjw/Downloads/gourmet2-main/gourmet2-main/build/moddev/artifacts/neoforge-21.1.250.jar%23189!/data/.mcassetsroot' uses unexpected schema
-[249월2026 10:25:49.537] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
-[249월2026 10:25:49.542] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
-[249월2026 10:25:49.596] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
-[249월2026 10:25:49.743] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.250, for MC 1.21.1
-[249월2026 10:25:49.769] [modloading-worker-0/INFO] [mod.chloeprime.aaaparticles.AAAParticles/]: Loading Effekseer native library at C:\Users\hanjw\Downloads\gourmet2-main\gourmet2-main\run\EffekseerNativeForJava.dll
-[249월2026 10:25:49.879] [modloading-worker-0/INFO] [epicfight/]: Loaded mod compatibility module: GeckolibCompat
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:combo_counter] for epicfight:combo_attacks
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:penalty, epicfight:penalty_restore_counter] for epicfight:guard
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:penalty, epicfight:penalty_restore_counter] for epicfight:impact_guard
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:parry_motion_counter, epicfight:penalty, epicfight:last_active, epicfight:penalty_restore_counter] for epicfight:parrying
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:tick_record, epicfight:resisting_damage_type, epicfight:stacks] for epicfight:adaptive_skin
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:tick_record] for epicfight:adrenaline_fiend
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:stacks, epicfight:entity_id] for epicfight:bonebreaker
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:tick_record, epicfight:entity_id] for epicfight:vengeance
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:fall_distance, epicfight:slam_protect_next_fall] for epicfight:meteor_slam
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:stacks] for epicfight:revelation
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:slam_protect_next_fall] for epicfight:demolition_leap
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:slam_protect_next_fall, epicfight:jump_key_pressed_last_tick, epicfight:jump_count] for epicfight:phantom_ascent
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:last_hit_count] for epicfight:grasping_spire
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:sheath] for epicfight:battojutsu
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:combo_counter] for epicfight:blade_rush
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:thrown_trident_entity_id] for epicfight:everlasting_allegiance
-[249월2026 10:25:50.062] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:sheath] for epicfight:battojutsu_passive
-[249월2026 10:25:50.078] [modloading-sync-worker/INFO] [epicfight/]: Epic Fight web server connection helper: Initialize
-[249월2026 10:25:50.100] [modloading-sync-worker/INFO] [epicfight/]: Epic Fight web server connection helper: supported
-[249월2026 10:25:50.381] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: [gourmet2]
-[249월2026 10:25:50.533] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/aaa_particles, mod/geckolib, mod/epicfight, mod/gourmet2, mod/architectury, mod/neoforge, mod/corelib
-[249월2026 10:25:50.625] [Worker-Main-6/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.05.hex, loading
-[249월2026 10:25:50.625] [Worker-Main-14/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.05.hex, loading
-[249월2026 10:25:50.694] [Render thread/INFO] [mod.chloeprime.aaaparticles.AAAParticles/]: Initializing framebuffers of RenderStateCapture
-[249월2026 10:25:50.726] [Worker-Main-6/WARN] [net.minecraft.client.renderer.texture.SpriteLoader/]: Texture epicfight:item/wooden_tachi with size 30x30 limits mip level from 4 to 1
-[249월2026 10:25:50.726] [Render thread/INFO] [mod.chloeprime.aaaparticles.AAAParticles/]: Initialized framebuffers of RenderStateCapture
-[249월2026 10:25:50.735] [Render thread/WARN] [epicfight/]: [Computer Shader Acceleration] OpenGL Version: 4.6.0 NVIDIA 591.86
-[249월2026 10:25:50.735] [Render thread/WARN] [epicfight/]: [Computer Shader Acceleration] Compute Shader: Supported
-[249월2026 10:25:52.360] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/03_Hanmado01/Effect/../Texture/black.png: Invalid segment '..' in path 'effeks/03_Hanmado01/Effect/../Texture/black.png'
-[249월2026 10:25:52.360] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/03_Hanmado01/Effect/hit_hanmado_0409/../Texture/black.png: Invalid segment '..' in path 'effeks/03_Hanmado01/Effect/hit_hanmado_0409/../Texture/black.png'
-[249월2026 10:25:52.360] [Render thread/ERROR] [mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader/]: Failed to load gourmet2:03_Hanmado01/Effect/hit_hanmado_0409
+[259월2026 09:47:48.182] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
+[259월2026 09:47:48.184] [main/INFO] [mixin/]: Compatibility level set to JAVA_21
+[259월2026 09:47:48.198] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientdev' with arguments [--version, 21.1.250, --gameDir, ., --assetsDir, C:\Users\hanjw\.gradle\caches\neoformruntime\assets, --assetIndex, 17]
+[259월2026 09:47:48.239] [main/WARN] [mixin/]: Reference map 'geckolib.refmap.json' for geckolib.mixins.json could not be read. If this is a development environment you can ignore this message
+[259월2026 09:47:48.239] [main/WARN] [mixin/]: Reference map 'epicfight.mixins.refmap.json' for epicfight.mixins.json could not be read. If this is a development environment you can ignore this message
+[259월2026 09:47:48.552] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.3).
+[259월2026 09:47:49.531] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 229 Datafixer optimizations took 216 milliseconds
+[259월2026 09:47:52.402] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[259월2026 09:47:52.403] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[259월2026 09:47:52.404] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[259월2026 09:47:52.404] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[259월2026 09:47:52.405] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[259월2026 09:47:52.481] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/hanjw/Downloads/gourmet2-main/gourmet2-main/build/moddev/artifacts/neoforge-21.1.250.jar%23189!/assets/.mcassetsroot' uses unexpected schema
+[259월2026 09:47:52.481] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/hanjw/Downloads/gourmet2-main/gourmet2-main/build/moddev/artifacts/neoforge-21.1.250.jar%23189!/data/.mcassetsroot' uses unexpected schema
+[259월2026 09:47:52.496] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[259월2026 09:47:52.499] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[259월2026 09:47:52.554] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
+[259월2026 09:47:52.714] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.250, for MC 1.21.1
+[259월2026 09:47:52.742] [modloading-worker-0/INFO] [mod.chloeprime.aaaparticles.AAAParticles/]: Loading Effekseer native library at C:\Users\hanjw\Downloads\gourmet2-main\gourmet2-main\run\EffekseerNativeForJava.dll
+[259월2026 09:47:52.850] [modloading-worker-0/INFO] [epicfight/]: Loaded mod compatibility module: GeckolibCompat
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:combo_counter] for epicfight:combo_attacks
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:penalty_restore_counter, epicfight:penalty] for epicfight:guard
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:penalty_restore_counter, epicfight:penalty] for epicfight:impact_guard
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:parry_motion_counter, epicfight:penalty_restore_counter, epicfight:penalty, epicfight:last_active] for epicfight:parrying
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:stacks, epicfight:tick_record, epicfight:resisting_damage_type] for epicfight:adaptive_skin
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:tick_record] for epicfight:adrenaline_fiend
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:stacks, epicfight:entity_id] for epicfight:bonebreaker
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:tick_record, epicfight:entity_id] for epicfight:vengeance
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:slam_protect_next_fall, epicfight:fall_distance] for epicfight:meteor_slam
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:stacks] for epicfight:revelation
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:slam_protect_next_fall] for epicfight:demolition_leap
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:slam_protect_next_fall, epicfight:jump_key_pressed_last_tick, epicfight:jump_count] for epicfight:phantom_ascent
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:last_hit_count] for epicfight:grasping_spire
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:sheath] for epicfight:battojutsu
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:combo_counter] for epicfight:blade_rush
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:thrown_trident_entity_id] for epicfight:everlasting_allegiance
+[259월2026 09:47:53.024] [modloading-sync-worker/INFO] [epicfight/]: Data keys [epicfight:sheath] for epicfight:battojutsu_passive
+[259월2026 09:47:53.039] [modloading-sync-worker/INFO] [epicfight/]: Epic Fight web server connection helper: Initialize
+[259월2026 09:47:53.060] [modloading-sync-worker/INFO] [epicfight/]: Epic Fight web server connection helper: supported
+[259월2026 09:47:53.332] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: [gourmet2]
+[259월2026 09:47:53.483] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/aaa_particles, mod/geckolib, mod/epicfight, mod/gourmet2, mod/architectury, mod/neoforge, mod/corelib
+[259월2026 09:47:53.578] [Worker-Main-17/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.05.hex, loading
+[259월2026 09:47:53.605] [Worker-Main-14/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.05.hex, loading
+[259월2026 09:47:53.662] [Render thread/INFO] [mod.chloeprime.aaaparticles.AAAParticles/]: Initializing framebuffers of RenderStateCapture
+[259월2026 09:47:53.704] [Render thread/INFO] [mod.chloeprime.aaaparticles.AAAParticles/]: Initialized framebuffers of RenderStateCapture
+[259월2026 09:47:53.707] [Render thread/WARN] [epicfight/]: [Computer Shader Acceleration] OpenGL Version: 4.6.0 NVIDIA 591.86
+[259월2026 09:47:53.707] [Render thread/WARN] [epicfight/]: [Computer Shader Acceleration] Compute Shader: Supported
+[259월2026 09:47:53.707] [Worker-Main-9/WARN] [net.minecraft.client.renderer.texture.SpriteLoader/]: Texture epicfight:item/wooden_tachi with size 30x30 limits mip level from 4 to 1
+[259월2026 09:47:55.347] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/03_Hanmado01/Effect/../Texture/black.png: Invalid segment '..' in path 'effeks/03_Hanmado01/Effect/../Texture/black.png'
+[259월2026 09:47:55.347] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/03_Hanmado01/Effect/hit_hanmado_0409/../Texture/black.png: Invalid segment '..' in path 'effeks/03_Hanmado01/Effect/hit_hanmado_0409/../Texture/black.png'
+[259월2026 09:47:55.347] [Render thread/ERROR] [mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader/]: Failed to load gourmet2:03_Hanmado01/Effect/hit_hanmado_0409
 java.io.FileNotFoundException: Failed to load gourmet2:effeks/03_Hanmado01/Effect/../Texture/black.png or gourmet2:effeks/03_Hanmado01/Effect/hit_hanmado_0409/../Texture/black.png
 	at TRANSFORMER/aaa_particles@1.21-1.4.15/mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader.lambda$load$2(EffekAssetLoader.java:111) ~[aaa-particles-neoforge-1.21-1.4.15.jar%23193!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
@@ -112,9 +112,9 @@ java.io.FileNotFoundException: Failed to load gourmet2:effeks/03_Hanmado01/Effec
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[249월2026 10:25:52.381] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/toriko/03_Hanmado01/Effect/../Texture/black.png: Invalid segment '..' in path 'effeks/toriko/03_Hanmado01/Effect/../Texture/black.png'
-[249월2026 10:25:52.381] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/toriko/03_Hanmado01/Effect/hit_hanmado_0409/../Texture/black.png: Invalid segment '..' in path 'effeks/toriko/03_Hanmado01/Effect/hit_hanmado_0409/../Texture/black.png'
-[249월2026 10:25:52.381] [Render thread/ERROR] [mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader/]: Failed to load gourmet2:toriko/03_Hanmado01/Effect/hit_hanmado_0409
+[259월2026 09:47:55.369] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/toriko/03_Hanmado01/Effect/../Texture/black.png: Invalid segment '..' in path 'effeks/toriko/03_Hanmado01/Effect/../Texture/black.png'
+[259월2026 09:47:55.369] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/toriko/03_Hanmado01/Effect/hit_hanmado_0409/../Texture/black.png: Invalid segment '..' in path 'effeks/toriko/03_Hanmado01/Effect/hit_hanmado_0409/../Texture/black.png'
+[259월2026 09:47:55.369] [Render thread/ERROR] [mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader/]: Failed to load gourmet2:toriko/03_Hanmado01/Effect/hit_hanmado_0409
 java.io.FileNotFoundException: Failed to load gourmet2:effeks/toriko/03_Hanmado01/Effect/../Texture/black.png or gourmet2:effeks/toriko/03_Hanmado01/Effect/hit_hanmado_0409/../Texture/black.png
 	at TRANSFORMER/aaa_particles@1.21-1.4.15/mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader.lambda$load$2(EffekAssetLoader.java:111) ~[aaa-particles-neoforge-1.21-1.4.15.jar%23193!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
@@ -157,7 +157,7 @@ java.io.FileNotFoundException: Failed to load gourmet2:effeks/toriko/03_Hanmado0
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[249월2026 10:25:52.382] [Render thread/ERROR] [mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader/]: Failed to load gourmet2:toriko/Texture/fork_impact
+[259월2026 09:47:55.370] [Render thread/ERROR] [mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader/]: Failed to load gourmet2:toriko/Texture/fork_impact
 java.io.FileNotFoundException: Failed to load gourmet2:effeks/toriko/Texture/01_NextSoft01/Line01.png or gourmet2:effeks/toriko/Texture/fork_impact/01_NextSoft01/Line01.png
 	at TRANSFORMER/aaa_particles@1.21-1.4.15/mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader.lambda$load$2(EffekAssetLoader.java:111) ~[aaa-particles-neoforge-1.21-1.4.15.jar%23193!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
@@ -200,9 +200,9 @@ java.io.FileNotFoundException: Failed to load gourmet2:effeks/toriko/Texture/01_
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[249월2026 10:25:52.555] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/toriko/../Texture/black.png: Invalid segment '..' in path 'effeks/toriko/../Texture/black.png'
-[249월2026 10:25:52.555] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/toriko/hit_hanmado_0409/../Texture/black.png: Invalid segment '..' in path 'effeks/toriko/hit_hanmado_0409/../Texture/black.png'
-[249월2026 10:25:52.555] [Render thread/ERROR] [mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader/]: Failed to load gourmet2:toriko/hit_hanmado_0409
+[259월2026 09:47:55.538] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/toriko/../Texture/black.png: Invalid segment '..' in path 'effeks/toriko/../Texture/black.png'
+[259월2026 09:47:55.540] [Render thread/ERROR] [net.minecraft.server.packs.PathPackResources/]: Invalid path gourmet2:effeks/toriko/hit_hanmado_0409/../Texture/black.png: Invalid segment '..' in path 'effeks/toriko/hit_hanmado_0409/../Texture/black.png'
+[259월2026 09:47:55.540] [Render thread/ERROR] [mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader/]: Failed to load gourmet2:toriko/hit_hanmado_0409
 java.io.FileNotFoundException: Failed to load gourmet2:effeks/toriko/../Texture/black.png or gourmet2:effeks/toriko/hit_hanmado_0409/../Texture/black.png
 	at TRANSFORMER/aaa_particles@1.21-1.4.15/mod.chloeprime.aaaparticles.client.loader.EffekAssetLoader.lambda$load$2(EffekAssetLoader.java:111) ~[aaa-particles-neoforge-1.21-1.4.15.jar%23193!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
@@ -245,230 +245,122 @@ java.io.FileNotFoundException: Failed to load gourmet2:effeks/toriko/../Texture/
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[249월2026 10:25:52.911] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='sfx.slam_light', args=[]} for sound event: epicfight:sfx.slam_light
-[249월2026 10:25:52.911] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.adrenaline', args=[]} for sound event: epicfight:skill.adrenaline
-[249월2026 10:25:52.911] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.endurance', args=[]} for sound event: epicfight:skill.endurance
-[249월2026 10:25:52.911] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.adaptive_skin_increase', args=[]} for sound event: epicfight:skill.adaptive_skin_increase
-[249월2026 10:25:52.911] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.stamina_pillager_death', args=[]} for sound event: epicfight:skill.stamina_pillager_death
-[249월2026 10:25:52.911] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='ui.hover', args=[]} for sound event: epicfight:ui.hover
-[249월2026 10:25:52.911] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.swordmaster', args=[]} for sound event: epicfight:skill.swordmaster
-[249월2026 10:25:52.911] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.vengeance', args=[]} for sound event: epicfight:skill.vengeance
-[249월2026 10:25:52.912] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.emergency_escape', args=[]} for sound event: epicfight:skill.emergency_escape
-[249월2026 10:25:52.912] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.technician', args=[]} for sound event: epicfight:skill.technician
-[249월2026 10:25:52.912] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.catharsis', args=[]} for sound event: epicfight:skill.catharsis
-[249월2026 10:25:52.912] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='entity.hit.old_fall', args=[]} for sound event: epicfight:entity.hit.old_fall
-[249월2026 10:25:52.912] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='sfx.slam_heavy', args=[]} for sound event: epicfight:sfx.slam_heavy
-[249월2026 10:25:52.912] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.adaptive_skin_decrease', args=[]} for sound event: epicfight:skill.adaptive_skin_decrease
-[249월2026 10:25:52.912] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='entity.wither.wither_spell_armor', args=[]} for sound event: epicfight:entity.wither.wither_spell_armor
-[249월2026 10:25:52.912] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.hypervitality', args=[]} for sound event: epicfight:skill.hypervitality
-[249월2026 10:25:52.912] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
-[249월2026 10:25:52.912] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
-[249월2026 10:25:52.912] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: epicfight:sfx.no_sound
-[249월2026 10:25:52.952] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device OpenAL Soft on 스피커(High Definition Audio Device)
-[249월2026 10:25:52.952] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
-[249월2026 10:25:52.994] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
-[249월2026 10:25:52.996] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
-[249월2026 10:25:52.996] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
-[249월2026 10:25:52.998] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
-[249월2026 10:25:52.998] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
-[249월2026 10:25:52.999] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
-[249월2026 10:25:52.999] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
-[249월2026 10:25:52.999] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
-[249월2026 10:25:52.999] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
-[249월2026 10:25:53.044] [Render thread/ERROR] [epicfight/]: Can't load layer file minecraft:animated_layers/player/waveycapes.json for entity.minecraft.player: dev.tr7zw.waveycapes.renderlayers.CustomCapeRenderLayer (This is develop-only message and neglectable if the resource is not belong to you)
-[249월2026 10:25:53.045] [Render thread/ERROR] [epicfight/]: Can't load layer file minecraft:animated_layers/player/waveycapes.json for entity.minecraft.player: dev.tr7zw.waveycapes.renderlayers.CustomCapeRenderLayer (This is develop-only message and neglectable if the resource is not belong to you)
-[249월2026 10:25:53.050] [Render thread/ERROR] [epicfight/]: Can't load layer file minecraft:animated_layers/player/waveycapes.json for entity.minecraft.player: dev.tr7zw.waveycapes.renderlayers.CustomCapeRenderLayer (This is develop-only message and neglectable if the resource is not belong to you)
-[249월2026 10:25:53.055] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 2048x1024x0 minecraft:textures/atlas/particles.png-atlas
-[249월2026 10:25:53.057] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
-[249월2026 10:25:53.057] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
-[249월2026 10:25:53.057] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
-[249월2026 10:25:53.058] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
-[249월2026 10:25:53.070] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
-[249월2026 10:25:53.350] [Render thread/ERROR] [epicfight/]: Datapack animation reading failed: No constructor information has provided: gourmet2:combat/heavy
-[249월2026 10:25:53.351] [Render thread/ERROR] [epicfight/]: Datapack animation reading failed: No constructor information has provided: gourmet2:combat_acrobatic/heavy
-[249월2026 10:25:53.352] [Render thread/ERROR] [epicfight/]: Datapack animation reading failed: No constructor information has provided: gourmet2:combat_swift/heavy
-[249월2026 10:25:53.372] [Render thread/INFO] [net.neoforged.neoforge.client.entity.animation.json.AnimationLoader/]: Loaded 0 entity animations
-[249월2026 10:25:58.194] [Worker-Main-3/INFO] [epicfight/]: Generated conditional modifier: epicfight:bokken/generated/modifier/ochs
-[249월2026 10:25:58.195] [Worker-Main-3/INFO] [epicfight/]: Generated moveset modifier: epicfight:bokken/generated/modifier/ochs
-[249월2026 10:25:58.279] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1321 recipes
-[249월2026 10:25:58.359] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1430 advancements
-[249월2026 10:25:58.362] [Render thread/WARN] [epicfight/]: Skill epicfight:air_slash doesn't exist in the registry.
-[249월2026 10:25:58.362] [Render thread/INFO] [epicfight/]: Pulling epicfight:fist from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:shovel from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:pickaxe from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:uchigatana from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:axe from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:bow from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:shield from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:spear from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:map from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:tachi from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:dagger from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:crossbow from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:bokken from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:sword from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:longsword from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:trident from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:greatsword from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:hoe from register
-[249월2026 10:25:58.363] [Render thread/INFO] [epicfight/]: Pulling epicfight:armor from register
-[249월2026 10:25:58.371] [Render thread/WARN] [epicfight/]: Error while deserializing datapack for minecraft:wooden_sword: No value present
-[249월2026 10:26:00.377] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.1
-[249월2026 10:26:00.377] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
-[249월2026 10:26:01.697] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
-[249월2026 10:26:01.725] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 2%
-[249월2026 10:26:02.214] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 2%
-[249월2026 10:26:02.715] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 51%
-[249월2026 10:26:03.018] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
-[249월2026 10:26:03.029] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 1321 ms
-[249월2026 10:26:03.055] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
-[249월2026 10:26:03.055] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
-[249월2026 10:26:03.504] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:a2f6430b] logged in with entity id 18 at (-24.5, 64.0, -44.5)
-[249월2026 10:26:03.554] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
-[249월2026 10:26:03.665] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 2 advancements
-[249월2026 10:26:03.805] [ForkJoinPool.commonPool-worker-1/ERROR] [epicfight/]: Failed at connecting Epic Fight web server: java.net.ConnectException
-[249월2026 10:26:14.182] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Cell Level 1000 (was 0)]
-[249월2026 10:26:14.187] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Cell Level 1000 (was 0)
-[249월2026 10:26:14.189] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your body grows: Max Health +1863.6, Attack Damage +738.1, Armor +12.0, Armor Toughness +8.0, Speed +35.0%, Knockback Resistance +0.5
-[249월2026 10:26:54.746] [Render thread/INFO] [mod.chloeprime.aaaparticles.client.Debug/]: ResDomains = [minecraft, aaa_particles, realms, controlify, c, simplytooltips, gourmet2, epicskins, epicfight, neoforge]
-[249월2026 10:26:56.551] [Render thread/INFO] [mod.chloeprime.aaaparticles.client.Debug/]: ResDomains = [minecraft, aaa_particles, realms, controlify, c, simplytooltips, gourmet2, epicskins, epicfight, neoforge]
-[249월2026 10:26:56.623] [Render thread/INFO] [org.example.hanjinwoo.gourmet2.Gourmet2/]: Effekseer effect '02_Tktk03/Light' will be used for toriko/food_immersion
-[249월2026 10:26:59.579] [Render thread/INFO] [org.example.hanjinwoo.gourmet2.Gourmet2/]: Effekseer effect '00_Version16/Barrior01' will be used for toriko/food_immersion_burst
-[249월2026 10:26:59.579] [Render thread/INFO] [org.example.hanjinwoo.gourmet2.Gourmet2/]: Effekseer effect '00_Basic/Simple_Turbulence_Fireworks' will be used for 00_Basic/Simple_Turbulence_Fireworks
-[249월2026 10:26:59.579] [Render thread/INFO] [org.example.hanjinwoo.gourmet2.Gourmet2/]: Effekseer effect '00_Version16/Aura01' will be used for toriko/awakened_aura
-[249월2026 10:27:14.076] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Summoned new Husk]
-[249월2026 10:27:14.081] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Summoned new Husk
-[249월2026 10:27:22.483] [Render thread/INFO] [org.example.hanjinwoo.gourmet2.Gourmet2/]: Effekseer effect 'toriko/combat_impact' will be used for toriko/combat_impact
-[249월2026 10:27:22.483] [Render thread/INFO] [org.example.hanjinwoo.gourmet2.Gourmet2/]: Effekseer effect '00_Basic/Simple_Ring_Shape1' will be used for 00_Basic/Simple_Ring_Shape1
-[249월2026 10:27:34.388] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 38 advancements
-[249월2026 10:27:34.829] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Acquire Hardware]
-[249월2026 10:27:34.843] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Acquire Hardware]
-[249월2026 10:27:34.889] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 77 advancements
-[249월2026 10:28:15.588] [Render thread/INFO] [mod.chloeprime.aaaparticles.client.Debug/]: ResDomains = [minecraft, aaa_particles, realms, controlify, c, simplytooltips, gourmet2, epicskins, epicfight, neoforge]
-[249월2026 10:28:15.645] [Render thread/INFO] [org.example.hanjinwoo.gourmet2.Gourmet2/]: Effekseer effect 'toriko/shapes/nail' will be used for toriko/nail_punch
-[249월2026 10:28:15.796] [Render thread/INFO] [org.example.hanjinwoo.gourmet2.Gourmet2/]: Effekseer effect 'toriko/nail_impact' will be used for toriko/nail_impact
-[249월2026 10:28:23.136] [Render thread/INFO] [mod.chloeprime.aaaparticles.client.Debug/]: ResDomains = [minecraft, aaa_particles, realms, controlify, c, simplytooltips, gourmet2, epicskins, epicfight, neoforge]
-[249월2026 10:28:25.866] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Set own game mode to Creative Mode]
-[249월2026 10:28:25.877] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Set own game mode to Creative Mode
-[249월2026 10:28:26.027] [Render thread/WARN] [org.example.hanjinwoo.gourmet2.Gourmet2/]: Effekseer effect 'toriko/nail_finish' exists but AAA Particles did not load it; trying the next candidate
-[249월2026 10:28:26.028] [Render thread/INFO] [org.example.hanjinwoo.gourmet2.Gourmet2/]: Effekseer effect '02_Tktk03/ToonHit' will be used for toriko/nail_finish
-[249월2026 10:28:30.928] [Render thread/INFO] [mod.chloeprime.aaaparticles.client.Debug/]: ResDomains = [minecraft, aaa_particles, realms, controlify, c, simplytooltips, gourmet2, epicskins, epicfight, neoforge]
-[249월2026 10:28:33.782] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.782] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.782] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.782] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.782] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.782] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.782] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.782] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.782] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.782] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.782] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.782] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.782] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.782] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.782] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.783] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.783] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.784] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.784] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.784] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.784] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.784] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.784] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.784] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.784] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.784] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.784] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:33.784] [Sound engine/WARN] [com.mojang.blaze3d.audio.Library/]: Maximum sound pool size 247 reached
-[249월2026 10:28:33.784] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Failed to create new sound handle
-[249월2026 10:28:39.539] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Summoned new Husk]
-[249월2026 10:28:39.548] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Summoned new Husk
-[249월2026 10:28:43.332] [Render thread/INFO] [mod.chloeprime.aaaparticles.client.Debug/]: ResDomains = [minecraft, aaa_particles, realms, controlify, c, simplytooltips, gourmet2, epicskins, epicfight, neoforge]
-[249월2026 10:28:47.938] [Render thread/INFO] [mod.chloeprime.aaaparticles.client.Debug/]: ResDomains = [minecraft, aaa_particles, realms, controlify, c, simplytooltips, gourmet2, epicskins, epicfight, neoforge]
-[249월2026 10:28:51.290] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Unable to play empty soundEvent: minecraft:entity.salmon.ambient
-[249월2026 10:28:56.520] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
-[249월2026 10:28:56.533] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[249월2026 10:28:56.546] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[249월2026 10:28:56.546] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[249월2026 10:28:56.906] [Render thread/ERROR] [epicfight/]: Can't load layer file minecraft:animated_layers/player/waveycapes.json for entity.minecraft.player: dev.tr7zw.waveycapes.renderlayers.CustomCapeRenderLayer (This is develop-only message and neglectable if the resource is not belong to you)
-[249월2026 10:28:56.927] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
-[249월2026 10:28:56.927] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
-[249월2026 10:28:56.945] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
-[249월2026 10:28:56.970] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
-[249월2026 10:28:56.970] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
-[249월2026 10:28:56.970] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
-[249월2026 10:28:57.132] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[249월2026 10:28:57.404] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[249월2026 10:28:57.409] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[249월2026 10:28:57.416] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World (8)): All chunks are saved
-[249월2026 10:28:57.416] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
-[249월2026 10:28:57.416] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
-[249월2026 10:28:57.416] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
-[249월2026 10:28:57.528] [Render thread/INFO] [epicfight/]: Data keys [epicfight:combo_counter] for epicfight:combo_attacks
-[249월2026 10:28:57.528] [Render thread/INFO] [epicfight/]: Data keys [epicfight:penalty, epicfight:penalty_restore_counter] for epicfight:guard
-[249월2026 10:28:57.528] [Render thread/INFO] [epicfight/]: Data keys [epicfight:penalty, epicfight:penalty_restore_counter] for epicfight:impact_guard
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:parry_motion_counter, epicfight:penalty, epicfight:last_active, epicfight:penalty_restore_counter] for epicfight:parrying
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:tick_record, epicfight:resisting_damage_type, epicfight:stacks] for epicfight:adaptive_skin
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:tick_record] for epicfight:adrenaline_fiend
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:stacks, epicfight:entity_id] for epicfight:bonebreaker
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:tick_record, epicfight:entity_id] for epicfight:vengeance
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:fall_distance, epicfight:slam_protect_next_fall] for epicfight:meteor_slam
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:stacks] for epicfight:revelation
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:slam_protect_next_fall] for epicfight:demolition_leap
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:slam_protect_next_fall, epicfight:jump_key_pressed_last_tick, epicfight:jump_count] for epicfight:phantom_ascent
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:last_hit_count] for epicfight:grasping_spire
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:sheath] for epicfight:battojutsu
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:combo_counter] for epicfight:blade_rush
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:thrown_trident_entity_id] for epicfight:everlasting_allegiance
-[249월2026 10:28:57.529] [Render thread/INFO] [epicfight/]: Data keys [epicfight:sheath] for epicfight:battojutsu_passive
-[249월2026 10:28:58.033] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='sfx.slam_light', args=[]} for sound event: epicfight:sfx.slam_light
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.adrenaline', args=[]} for sound event: epicfight:skill.adrenaline
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.endurance', args=[]} for sound event: epicfight:skill.endurance
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.adaptive_skin_increase', args=[]} for sound event: epicfight:skill.adaptive_skin_increase
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.stamina_pillager_death', args=[]} for sound event: epicfight:skill.stamina_pillager_death
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='ui.hover', args=[]} for sound event: epicfight:ui.hover
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.swordmaster', args=[]} for sound event: epicfight:skill.swordmaster
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.vengeance', args=[]} for sound event: epicfight:skill.vengeance
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.emergency_escape', args=[]} for sound event: epicfight:skill.emergency_escape
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.technician', args=[]} for sound event: epicfight:skill.technician
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.catharsis', args=[]} for sound event: epicfight:skill.catharsis
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='entity.hit.old_fall', args=[]} for sound event: epicfight:entity.hit.old_fall
+[259월2026 09:47:55.907] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='sfx.slam_heavy', args=[]} for sound event: epicfight:sfx.slam_heavy
+[259월2026 09:47:55.908] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.adaptive_skin_decrease', args=[]} for sound event: epicfight:skill.adaptive_skin_decrease
+[259월2026 09:47:55.908] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='entity.wither.wither_spell_armor', args=[]} for sound event: epicfight:entity.wither.wither_spell_armor
+[259월2026 09:47:55.908] [Render thread/ERROR] [net.minecraft.client.sounds.SoundManager/]: Missing subtitle translation{key='skill.hypervitality', args=[]} for sound event: epicfight:skill.hypervitality
+[259월2026 09:47:55.908] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[259월2026 09:47:55.908] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[259월2026 09:47:55.908] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: epicfight:sfx.no_sound
+[259월2026 09:47:55.947] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device OpenAL Soft on 스피커(High Definition Audio Device)
+[259월2026 09:47:55.948] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
+[259월2026 09:47:55.991] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[259월2026 09:47:55.994] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[259월2026 09:47:55.994] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[259월2026 09:47:55.994] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[259월2026 09:47:55.994] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[259월2026 09:47:55.996] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[259월2026 09:47:55.996] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[259월2026 09:47:55.996] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[259월2026 09:47:55.996] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[259월2026 09:47:56.038] [Render thread/ERROR] [epicfight/]: Can't load layer file minecraft:animated_layers/player/waveycapes.json for entity.minecraft.player: dev.tr7zw.waveycapes.renderlayers.CustomCapeRenderLayer (This is develop-only message and neglectable if the resource is not belong to you)
+[259월2026 09:47:56.039] [Render thread/ERROR] [epicfight/]: Can't load layer file minecraft:animated_layers/player/waveycapes.json for entity.minecraft.player: dev.tr7zw.waveycapes.renderlayers.CustomCapeRenderLayer (This is develop-only message and neglectable if the resource is not belong to you)
+[259월2026 09:47:56.043] [Render thread/ERROR] [epicfight/]: Can't load layer file minecraft:animated_layers/player/waveycapes.json for entity.minecraft.player: dev.tr7zw.waveycapes.renderlayers.CustomCapeRenderLayer (This is develop-only message and neglectable if the resource is not belong to you)
+[259월2026 09:47:56.047] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 2048x1024x0 minecraft:textures/atlas/particles.png-atlas
+[259월2026 09:47:56.051] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[259월2026 09:47:56.051] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[259월2026 09:47:56.051] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[259월2026 09:47:56.051] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[259월2026 09:47:56.064] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[259월2026 09:47:56.333] [Render thread/ERROR] [epicfight/]: Datapack animation reading failed: No constructor information has provided: gourmet2:combat/heavy
+[259월2026 09:47:56.334] [Render thread/ERROR] [epicfight/]: Datapack animation reading failed: No constructor information has provided: gourmet2:combat_acrobatic/heavy
+[259월2026 09:47:56.335] [Render thread/ERROR] [epicfight/]: Datapack animation reading failed: No constructor information has provided: gourmet2:combat_swift/heavy
+[259월2026 09:47:56.354] [Render thread/INFO] [net.neoforged.neoforge.client.entity.animation.json.AnimationLoader/]: Loaded 0 entity animations
+[259월2026 09:48:00.755] [Worker-Main-7/INFO] [epicfight/]: Generated conditional modifier: epicfight:bokken/generated/modifier/ochs
+[259월2026 09:48:00.757] [Worker-Main-7/INFO] [epicfight/]: Generated moveset modifier: epicfight:bokken/generated/modifier/ochs
+[259월2026 09:48:00.815] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1321 recipes
+[259월2026 09:48:00.897] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1430 advancements
+[259월2026 09:48:00.900] [Render thread/WARN] [epicfight/]: Skill epicfight:air_slash doesn't exist in the registry.
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:bow from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:shield from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:bokken from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:dagger from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:spear from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:pickaxe from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:shovel from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:greatsword from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:tachi from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:crossbow from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:trident from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:fist from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:longsword from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:map from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:axe from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:uchigatana from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:armor from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:hoe from register
+[259월2026 09:48:00.901] [Render thread/INFO] [epicfight/]: Pulling epicfight:sword from register
+[259월2026 09:48:00.906] [Render thread/WARN] [epicfight/]: Error while deserializing datapack for minecraft:wooden_sword: No value present
+[259월2026 09:48:01.160] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.1
+[259월2026 09:48:01.160] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[259월2026 09:48:01.637] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[259월2026 09:48:01.779] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[259월2026 09:48:01.851] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 199 ms
+[259월2026 09:48:01.851] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[259월2026 09:48:01.899] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
+[259월2026 09:48:01.899] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[259월2026 09:48:02.302] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:0d9d7da6] logged in with entity id 33 at (-771.1623969465626, 83.11246722258886, -1232.8910808999906)
+[259월2026 09:48:02.350] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[259월2026 09:48:02.581] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 145 advancements
+[259월2026 09:48:02.598] [ForkJoinPool.commonPool-worker-1/ERROR] [epicfight/]: Failed at connecting Epic Fight web server: java.net.ConnectException
+[259월2026 09:48:25.875] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Cell Level 1000 (was 100)]
+[259월2026 09:48:25.881] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Cell Level 1000 (was 100)
+[259월2026 09:48:25.882] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your body grows: Max Health +1757.4, Attack Damage +691.0
+[259월2026 09:49:25.303] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[259월2026 09:49:25.324] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[259월2026 09:49:25.343] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[259월2026 09:49:25.343] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[259월2026 09:49:26.068] [Render thread/ERROR] [epicfight/]: Can't load layer file minecraft:animated_layers/player/waveycapes.json for entity.minecraft.player: dev.tr7zw.waveycapes.renderlayers.CustomCapeRenderLayer (This is develop-only message and neglectable if the resource is not belong to you)
+[259월2026 09:49:26.112] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[259월2026 09:49:26.112] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[259월2026 09:49:26.124] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
+[259월2026 09:49:26.153] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[259월2026 09:49:26.154] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[259월2026 09:49:26.155] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[259월2026 09:49:26.317] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[259월2026 09:49:26.562] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[259월2026 09:49:26.564] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[259월2026 09:49:26.569] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World (8)): All chunks are saved
+[259월2026 09:49:26.569] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[259월2026 09:49:26.569] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[259월2026 09:49:26.570] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[259월2026 09:49:26.647] [Render thread/INFO] [epicfight/]: Data keys [epicfight:combo_counter] for epicfight:combo_attacks
+[259월2026 09:49:26.647] [Render thread/INFO] [epicfight/]: Data keys [epicfight:penalty_restore_counter, epicfight:penalty] for epicfight:guard
+[259월2026 09:49:26.647] [Render thread/INFO] [epicfight/]: Data keys [epicfight:penalty_restore_counter, epicfight:penalty] for epicfight:impact_guard
+[259월2026 09:49:26.647] [Render thread/INFO] [epicfight/]: Data keys [epicfight:parry_motion_counter, epicfight:penalty_restore_counter, epicfight:penalty, epicfight:last_active] for epicfight:parrying
+[259월2026 09:49:26.647] [Render thread/INFO] [epicfight/]: Data keys [epicfight:stacks, epicfight:tick_record, epicfight:resisting_damage_type] for epicfight:adaptive_skin
+[259월2026 09:49:26.647] [Render thread/INFO] [epicfight/]: Data keys [epicfight:tick_record] for epicfight:adrenaline_fiend
+[259월2026 09:49:26.647] [Render thread/INFO] [epicfight/]: Data keys [epicfight:stacks, epicfight:entity_id] for epicfight:bonebreaker
+[259월2026 09:49:26.647] [Render thread/INFO] [epicfight/]: Data keys [epicfight:tick_record, epicfight:entity_id] for epicfight:vengeance
+[259월2026 09:49:26.648] [Render thread/INFO] [epicfight/]: Data keys [epicfight:slam_protect_next_fall, epicfight:fall_distance] for epicfight:meteor_slam
+[259월2026 09:49:26.648] [Render thread/INFO] [epicfight/]: Data keys [epicfight:stacks] for epicfight:revelation
+[259월2026 09:49:26.648] [Render thread/INFO] [epicfight/]: Data keys [epicfight:slam_protect_next_fall] for epicfight:demolition_leap
+[259월2026 09:49:26.648] [Render thread/INFO] [epicfight/]: Data keys [epicfight:slam_protect_next_fall, epicfight:jump_key_pressed_last_tick, epicfight:jump_count] for epicfight:phantom_ascent
+[259월2026 09:49:26.648] [Render thread/INFO] [epicfight/]: Data keys [epicfight:last_hit_count] for epicfight:grasping_spire
+[259월2026 09:49:26.648] [Render thread/INFO] [epicfight/]: Data keys [epicfight:sheath] for epicfight:battojutsu
+[259월2026 09:49:26.648] [Render thread/INFO] [epicfight/]: Data keys [epicfight:combo_counter] for epicfight:blade_rush
+[259월2026 09:49:26.648] [Render thread/INFO] [epicfight/]: Data keys [epicfight:thrown_trident_entity_id] for epicfight:everlasting_allegiance
+[259월2026 09:49:26.648] [Render thread/INFO] [epicfight/]: Data keys [epicfight:sheath] for epicfight:battojutsu_passive
+[259월2026 09:49:27.151] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!

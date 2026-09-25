@@ -46,6 +46,7 @@ public final class ClientTorikoData {
     private static int kiOutputSetting = CellEvolution.KI_OUTPUT_BASE;
     private static float attackDamageSetting = CellEvolution.ATTACK_DAMAGE_BASE;
     private static float leapDistanceSetting = CellEvolution.LEAP_DISTANCE_BASE;
+    private static float rangeSetting = CellEvolution.RANGE_BASE;
 
     /** Ticks left on the "a skill was just selected" HUD expansion. */
     private static int selectionHighlight;
@@ -82,6 +83,7 @@ public final class ClientTorikoData {
         kiOutputSetting = payload.kiOutputSetting();
         attackDamageSetting = payload.attackDamageSetting();
         leapDistanceSetting = payload.leapDistanceSetting();
+        rangeSetting = payload.rangeSetting();
 
         int[] incoming = payload.cooldowns();
         System.arraycopy(incoming, 0, COOLDOWNS, 0, Math.min(incoming.length, COOLDOWNS.length));
@@ -285,6 +287,10 @@ public final class ClientTorikoData {
 
     public static float leapDistanceSetting() {
         return leapDistanceSetting;
+    }
+
+    public static float rangeSetting() {
+        return rangeSetting;
     }
 
     public static float flyingSizeSetting() {

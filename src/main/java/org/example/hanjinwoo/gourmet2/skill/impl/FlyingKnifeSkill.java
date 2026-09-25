@@ -85,7 +85,10 @@ public class FlyingKnifeSkill implements SkillBehavior {
         wave.setDamage(ctx.damage(damage));
         wave.setSizeScale(size);
         wave.moveTo(spawnAt.x, spawnAt.y, spawnAt.z, player.getYRot(), player.getXRot());
-        wave.setDeltaMovement(direction.scale(VELOCITY));
+        // Thrown harder with every level evolved (and held back by the reach dial): it is the launch speed that
+        // carries the throw further, since these waves gather pace as they fly and a longer flight would run away
+        // with the distance rather than add to it.
+        wave.setDeltaMovement(direction.scale(VELOCITY * data.rangeMultiplier()));
         ctx.level().addFreshEntity(wave);
         FxDispatch.on(ctx.level(), SkillFx.FLYING_KNIFE_TRAIL, wave, size);
     }

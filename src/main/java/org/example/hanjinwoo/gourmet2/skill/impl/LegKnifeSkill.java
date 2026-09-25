@@ -74,7 +74,9 @@ public class LegKnifeSkill implements SkillBehavior {
         slash.setDamage(ctx.damage(Charge.lerp(DAMAGE_MIN, DAMAGE_MAX, power)));
         slash.setSizeScale(scale);
         slash.moveTo(origin.x, origin.y, origin.z, player.getYRot(), player.getXRot());
-        slash.setDeltaMovement(direction.scale(VELOCITY));
+        // The crescent a kick throws is a ranged technique too: it is kicked harder as the caster evolves, and
+        // the speed is what carries it further (see FlyingKnifeSkill).
+        slash.setDeltaMovement(direction.scale(VELOCITY * ctx.data().rangeMultiplier()));
         ctx.level().addFreshEntity(slash);
         FxDispatch.on(ctx.level(), SkillFx.LEG_KNIFE_SLASH, slash, scale);
     }

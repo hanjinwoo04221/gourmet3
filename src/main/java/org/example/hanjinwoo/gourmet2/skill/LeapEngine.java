@@ -6,6 +6,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,6 +26,7 @@ import org.example.hanjinwoo.gourmet2.entity.ShockwaveRingEntity;
 import org.example.hanjinwoo.gourmet2.entity.UpheavalEntity;
 import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.registry.ModDamageTypes;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The charged leap: hold the leap key while supported by a surface to wind up, let go to launch at
@@ -66,6 +69,24 @@ public final class LeapEngine {
 
     /** How far ahead the crosshair can pick an entity to fly at. */
     private static final double TARGET_RANGE = 24.0;
+    /**
+     * How quickly the leap key has to come back down for the second press to read as a double tap rather than
+     * as the start of a wind-up, and what that double tap buys (see {@link #chaseAirborne}). A press with no
+     * airborne mark under the crosshair does nothing at all, so the only thing a stray double tap costs is the
+     * little hop the first tap would have thrown anyway.
+     */
+    private static final int DOUBLE_TAP_TICKS = 8;
+    /**
+     * How long one moment of Slow Falling lasts for both halves of an air duel — the one handed over as the
+     * chase arrives, and every one handed over after that as the two of them trade blows. Deliberately short:
+     * the duel hangs for exactly as long as they keep at each other, and starts coming down the moment they stop.
+     */
+    private static final int SKY_HANG_TICKS = 15;
+    /**
+     * How long after a launch a double tap can still follow that body up by memory, without the caster having to
+     * put the crosshair on it. Everything worth chasing has come back down well inside this.
+     */
+    private static final int LAUNCH_MEMORY_TICKS = 60;
     /** Blocks covered by a tap / by a full charge at baseline attributes. */
     private static final double MIN_DISTANCE = 2.0;
     private static final double MAX_DISTANCE = 9.0;
@@ -136,12 +157,129 @@ public final class LeapEngine {
     /** The leap key went down: plant and wind up, if there is a surface to push off from. */
     public static void charge(ServerPlayer player) {
         TorikoData data = ModAttachments.of(player);
-        if (data.isLeapCharging() || data.isLeaping() || !supported(player)) {
+        if (data.isLeapCharging()) {
+            return;
+        }
+        // A press hot on the heels of the last one is not a wind-up: it is the air chase. Read before the
+        // "already flying" guard below, because the little hop the first tap threw is exactly what it overtakes.
+        int sinceTap = player.tickCount - data.leapTapTick();
+        boolean doubleTap = sinceTap >= 0 && sinceTap <= DOUBLE_TAP_TICKS;
+        data.setLeapTapTick(player.tickCount);
+        if (doubleTap && chaseAirborne(player, data)) {
+            return;
+        }
+        if (data.isLeaping() || !supported(player)) {
             return;
         }
         data.setLeapCharging(true);
         data.setGuarding(false);
         CombatAnimations.playSkill(player, "leap_charge");
+    }
+
+    /**
+     * The double tap: go straight at whatever the crosshair is on, provided it is off the ground, at the full
+     * reach and with no wind-up at all. Launched prey is the whole point — the move is for catching something
+     * that has just been thrown into the air before it comes back down. The mark is remembered as the partner of
+     * the duel that follows ({@link #exchanged}), and the two of them open it on one short moment of Slow Falling
+     * rather than dropping past each other. It works whether or not the caster has a surface under them, since
+     * the ground they pushed off was left behind on the first tap.
+     *
+     * @return whether the chase happened; false (and nothing spent) if nothing airborne was under the crosshair
+     */
+    private static boolean chaseAirborne(ServerPlayer player, TorikoData data) {
+        LivingEntity mark = airborneAim(player);
+        if (mark == null) {
+            mark = airborneLaunch(player, data);
+        }
+        if (mark == null) {
+            return false;
+        }
+        if (!launch(player, data, maxDistance(player, data), mark, true)) {
+            return false;
+        }
+        hang(player, mark);
+        data.setSkyPartner(mark.getId());
+        return true;
+    }
+
+    /**
+     * A blow traded in the air between the caster and the body they chased up there, in either direction, or a
+     * guard raised against one. Every exchange buys both of them {@link #SKY_HANG_TICKS} more of falling very
+     * slowly, so the duel hangs up there for exactly as long as the two of them are actually at each other, and
+     * starts coming down the moment they stop — which is what keeps it a fight in the air rather than a pair of
+     * bodies parked in one.
+     */
+    public static void exchanged(ServerPlayer player, @Nullable Entity other) {
+        if (other != null && other.getId() == ModAttachments.of(player).skyPartnerId()) {
+            holdTheAir(player);
+        }
+    }
+
+    /** The caster raised a guard mid-duel, which is an exchange of its own. */
+    public static void guarded(ServerPlayer player) {
+        holdTheAir(player);
+    }
+
+    /**
+     * Hands both halves of an air duel another moment of Slow Falling, if there is a duel on: a partner still
+     * alive, both of them still off the ground, and the caster in the air to begin with. Once either of them is
+     * back on solid ground there is nothing left to hold up, and this quietly does nothing.
+     */
+    private static void holdTheAir(ServerPlayer player) {
+        TorikoData data = ModAttachments.of(player);
+        if (data.skyPartnerId() < 0 || !data.isSkyDuelAirborne() || player.onGround()
+                || !(player.level().getEntity(data.skyPartnerId()) instanceof LivingEntity mark)
+                || !mark.isAlive() || mark.onGround()) {
+            return;
+        }
+        hang(player, mark);
+    }
+
+    /**
+     * Closes an air duel the moment the caster is back on solid ground, however it ended. A duel that outlived the
+     * chase that opened it would keep paying out: the partner would stay remembered for the rest of the session,
+     * and then any later jump followed by an exchange of blows with that same body would start holding the two of
+     * them up again, out of nothing. Called every tick, from {@code SkillEngine}.
+     */
+    public static void tickDuel(ServerPlayer player, TorikoData data) {
+        if (data.skyPartnerId() < 0) {
+            return;
+        }
+        if (player.onGround()) {
+            if (data.isSkyDuelAirborne()) {
+                data.endSkyDuel();
+            }
+            return;
+        }
+        data.setSkyDuelAirborne(true);
+    }
+
+    /** One moment of Slow Falling for both of them, so neither drops out of the fight. */
+    private static void hang(ServerPlayer player, LivingEntity mark) {
+        mark.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, SKY_HANG_TICKS, 0, false, false, true));
+        player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, SKY_HANG_TICKS, 0, false, false, true));
+    }
+
+    /** Whatever airborne body is under the crosshair, or null. */
+    private static @Nullable LivingEntity airborneAim(ServerPlayer player) {
+        Entity aimed = aimedEntity(player);
+        return aimed instanceof LivingEntity mark && !mark.onGround() ? mark : null;
+    }
+
+    /**
+     * The body this player most recently threw into the air, if it is still up there and still within reach. A
+     * launched body is somewhere overhead, which is the worst place to ask anyone to aim, so for a moment after
+     * the launch the chase does not ask: it simply follows the last thing that was thrown.
+     */
+    private static @Nullable LivingEntity airborneLaunch(ServerPlayer player, TorikoData data) {
+        int age = player.tickCount - data.launchedTick();
+        if (data.launchedTargetId() < 0 || age < 0 || age > LAUNCH_MEMORY_TICKS) {
+            return null;
+        }
+        // Deliberately no range test: whether the launch threw them six blocks up or twenty, the chase flies
+        // as far towards them as the leap reaches and hangs there, and the falling body comes down to meet it.
+        return player.level().getEntity(data.launchedTargetId()) instanceof LivingEntity mark
+                && mark.isAlive() && !mark.onGround() ? mark : null;
     }
 
     /** The leap key came up: launch, however far the wind-up earned. */
@@ -151,21 +289,31 @@ public final class LeapEngine {
             return;
         }
         int chargeTicks = data.leapChargeTicks();
-        data.setLeapCharging(false);
-
         float fraction = Math.min(1.0F, chargeTicks / (float) MAX_CHARGE_TICKS);
         double reach = Charge.lerp((float) MIN_DISTANCE, (float) maxDistance(player, data), fraction);
+        launch(player, data, reach, aimedEntity(player), false);
+    }
 
-        Entity target = aimedEntity(player);
+    /**
+     * Flies the dash over {@code reach}, aimed at {@code target} if the crosshair picked one up and at a point
+     * that far ahead of the caster's eyes otherwise. Whatever the leap key was doing stops here.
+     *
+     * @param chase whether this is an air chase, which flies straight at the mark instead of solving an arc
+     * @return whether a dash actually started — there is nothing to fly if the aim is underfoot
+     */
+    private static boolean launch(ServerPlayer player, TorikoData data, double reach, @Nullable Entity target,
+            boolean chase) {
         Vec3 aim = target == null
                 ? player.getEyePosition().add(player.getLookAngle().scale(reach))
                 : stopPoint(player, target);
         Vec3 toAim = aim.subtract(player.position());
         double travel = Math.min(reach, toAim.length());
         if (travel < 0.5) {
-            return;
+            return false;
         }
 
+        data.setLeapCharging(false);
+        data.setLeapChasing(chase);
         data.setLeapAim(aim);
         data.setLeapTargetId(target == null ? -1 : target.getId());
         data.setLeapTravel(travel);
@@ -179,9 +327,14 @@ public final class LeapEngine {
         // about 35 degrees above level counts as a climb.
         double flatTravel = Math.sqrt(toAim.x * toAim.x + toAim.z * toAim.z);
         CombatAnimations.playSkill(player, toAim.y > flatTravel * 0.7 ? "leap_up" : "leap");
-        liftGround(player);
+        if (supported(player)) {
+            // Only a leap with something under it tears that something up: a chase started in midair has no
+            // ground to push off, and the burst would be thrown into empty air where nothing could be seen of it.
+            liftGround(player);
+        }
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 0.9F, 1.4F);
+        return true;
     }
 
     /** Winds the charge up while the key is held, then flies the dash a tick at a time. */
@@ -217,7 +370,9 @@ public final class LeapEngine {
                 aim = stopPoint(player, target);
                 data.setLeapAim(aim);
             } else {
+                // The mark left the world: fly out the rest of the dash straight, with nothing left to chase.
                 data.setLeapTargetId(-1);
+                data.setLeapChasing(false);
             }
         }
         Vec3 toAim = aim.subtract(player.position());
@@ -227,9 +382,22 @@ public final class LeapEngine {
             // Done: either the last step landed on the mark, or something got in the way and the ticks ran
             // out. This is the tick after that step, so taking the speed away now does not undo it; a little
             // of it is kept so the landing still slides.
+            Entity mark = data.isLeapChasing() ? player.level().getEntity(data.leapTargetId()) : null;
             data.stopLeap();
             Vec3 motion = player.getDeltaMovement();
-            player.setDeltaMovement(motion.x * SETTLE_TAKE, motion.y, motion.z * SETTLE_TAKE);
+            Vec3 settled;
+            if (mark instanceof LivingEntity living && !living.onGround()) {
+                // Arriving at a body in the air: carry on exactly as it is moving, so the two of them fall side
+                // by side rather than the caster sailing on past it on whatever climb the approach left them
+                // with, or drifting away from it on the speed they arrived at. Both are under Slow Falling from
+                // here, so from this tick on they descend together.
+                settled = living.getDeltaMovement();
+            } else {
+                // Onto a point in space: keep the slide and the fall, which is what carries the leap onto the
+                // ledge it was aimed at.
+                settled = new Vec3(motion.x * SETTLE_TAKE, motion.y, motion.z * SETTLE_TAKE);
+            }
+            player.setDeltaMovement(settled);
             player.hurtMarked = true;
             return;
         }
@@ -249,7 +417,16 @@ public final class LeapEngine {
         double rise = (toAim.y + 0.5 * GRAVITY * arcTicks * arcTicks) / arcTicks;
         double flat = Math.sqrt(toAim.x * toAim.x + toAim.z * toAim.z);
         Vec3 flatDirection = flat < 1.0E-4 ? Vec3.ZERO : new Vec3(toAim.x, 0.0, toAim.z).scale(1.0 / flat);
-        Vec3 motion = flatDirection.scale(Math.min(flat, speed)).add(0.0, rise, 0.0);
+        Vec3 motion;
+        if (data.isLeapChasing()) {
+            // A chase is an interception, not a crossing: straight at the mark, whose aim is being moved under
+            // them every tick. The arc solve below is for a fixed point a fixed distance away, and against a
+            // mark that is falling it answers by lifting the caster up and over them — which is how a chase used
+            // to end with the caster flying above the body they were trying to reach.
+            motion = toAim.scale(speed / remaining);
+        } else {
+            motion = flatDirection.scale(Math.min(flat, speed)).add(0.0, rise, 0.0);
+        }
 
         // A block in the way stops the leap outright — nothing is torn out of the way. Only bodies can be
         // flown through, and only by a dash that has the power for them.
@@ -296,7 +473,10 @@ public final class LeapEngine {
     private static void liftGround(ServerPlayer player) {
         ServerLevel level = (ServerLevel) player.level();
         BlockPos under = player.blockPosition().below();
-        if (!UpheavalEntity.burst(level, under, player.getLookAngle(),
+        // Straight down, whatever way the caster was looking: what a leap tears up is the ground under the feet it
+        // pushed off from, and the direction a burst is given is the line the blow went into the terrain along — it
+        // is what decides whether the crater lies flat on the floor or stands on end on a wall.
+        if (!UpheavalEntity.burst(level, under, new Vec3(0.0, -1.0, 0.0),
                 player.getAttributeValue(Attributes.ATTACK_DAMAGE),
                 player.getDeltaMovement().horizontalDistance())) {
             return;
@@ -352,6 +532,8 @@ public final class LeapEngine {
      *
      * <p>What counts as tough is the entity's armour: armour points, armour toughness, and a tenth of its
      * maximum health, so a bare mob is flown straight through and a plated one is not.
+     *
+     * <p>An air chase's mark is the one body a dash is not allowed to run into (see {@link #chaseAirborne}).
      */
     private static Impact plough(ServerPlayer player, TorikoData data, Vec3 motion, double speed, double power) {
         AABB swept = player.getBoundingBox()
@@ -360,8 +542,11 @@ public final class LeapEngine {
         SkillContext ctx = null;
         double drag = 0.0;
         boolean stopped = false;
+        // A chase is a pursuit, not a charge: the body it is chasing is passed through untouched, or the dash
+        // would knock away the very thing it flew up to fall alongside — and a tough one would stop it dead.
+        int markId = data.isLeapChasing() ? data.leapTargetId() : -1;
         for (LivingEntity victim : player.level().getEntitiesOfClass(LivingEntity.class, swept,
-                candidate -> candidate != player && candidate.isPickable())) {
+                candidate -> candidate != player && candidate.getId() != markId && candidate.isPickable())) {
             if (!victim.isAlive() || victim.invulnerableTime > 0) {
                 // Already hit on this pass; its own invulnerability keeps one leap to one hit each.
                 continue;

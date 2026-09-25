@@ -10,7 +10,7 @@
   "key.gourmet2.skill_settings": "Open Skill Power Settings",
   "key.gourmet2.attack_group_2": "2nd Attack Group (combat mode)",
   "key.gourmet2.attack_group_3": "3rd Attack Group (combat mode)",
-  "key.gourmet2.leap": "Charge Leap (hold, then release)",
+  "key.gourmet2.leap": "Charge Leap (hold & release / double-tap an airborne foe)",
 
   "skill.gourmet2.nail_punch": "Nail Punch",
   "skill.gourmet2.nail_punch.desc": "Hold to wind up a drilling punch combo; the longer the charge, the more hits land.",
@@ -98,5 +98,6 @@
   "gui.gourmet2.skill_settings.ki_output": "Ki Release Output: %s / %s",
   "gui.gourmet2.skill_settings.flying_size": "Flying Technique Size: %s%% / %s%%",
   "gui.gourmet2.skill_settings.attack_damage": "My Attack Damage: %s%% / %s%% (100%% is full)",
-  "gui.gourmet2.skill_settings.leap_distance": "Leap Reach: %s%% / %s%% (100%% is full)"
+  "gui.gourmet2.skill_settings.leap_distance": "Leap Reach: %s%% / %s%% (100%% is full)",
+  "gui.gourmet2.skill_settings.range": "Ranged Technique Reach: %s%% / %s%% (100%% is full)"
 }

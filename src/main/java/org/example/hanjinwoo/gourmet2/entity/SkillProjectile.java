@@ -117,6 +117,7 @@ public abstract class SkillProjectile extends Projectile {
         refreshDimensions();
     }
 
+
     @Override
     public EntityDimensions getDimensions(Pose pose) {
         return super.getDimensions(pose).scale(sizeScale);

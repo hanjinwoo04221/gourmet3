@@ -12,7 +12,9 @@ import org.example.hanjinwoo.gourmet2.skill.combat.CombatStyles;
 import org.example.hanjinwoo.gourmet2.skill.SkillType;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Per-player Gourmet Cell state: Appetite, per-skill cooldowns, the selected skill, the currently
@@ -36,6 +38,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     private static final String KEY_KI_OUTPUT = "KiOutputSetting";
     private static final String KEY_ATTACK_DAMAGE = "AttackDamageSetting";
     private static final String KEY_LEAP_DISTANCE = "LeapDistanceSetting";
+    private static final String KEY_RANGE = "RangeSetting";
     private static final String KEY_SKILL_SLOTS = "SkillSlots";
     private static final String KEY_COMBAT_STYLE = "CombatStyle";
     public static final int SLOT_COUNT = 9;
@@ -55,6 +58,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     private int kiOutputSetting = CellEvolution.KI_OUTPUT_BASE;
     private float attackDamageSetting = CellEvolution.ATTACK_DAMAGE_BASE;
     private float leapDistanceSetting = CellEvolution.LEAP_DISTANCE_BASE;
+    private float rangeSetting = CellEvolution.RANGE_BASE;
 
     private String combatStyle = CombatStyles.FIST.id();
 
@@ -104,6 +108,36 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     private transient Vec3 leapAim = Vec3.ZERO;
     /** The entity the dash is homing on, or -1 for "just fly where the crosshair pointed". */
     private transient int leapTargetId = -1;
+    /**
+     * Tick the leap key was last pressed on, so a second press right behind it can be told apart from a
+     * deliberate wind-up (see {@code LeapEngine#chaseAirborne}). Starts far in the past so the first press of a
+     * session never reads as one.
+     */
+    private transient int leapTapTick = Integer.MIN_VALUE / 2;
+    /**
+     * Whether the dash in flight is an air chase ({@code LeapEngine#chaseAirborne}) rather than a leap across
+     * a fixed distance. A chase flies straight at a body that is moving, which is not what the leap's ballistic
+     * arc is solved for, so the tick needs to know which of the two it is flying.
+     */
+    private transient boolean leapChasing;
+    /**
+     * The body the caster chased into the air and is still duelling there, or -1. While the two of them are off
+     * the ground together, every blow traded between them buys another moment of Slow Falling — see
+     * {@code LeapEngine#exchanged}, which is what makes the fight hang where it is.
+     */
+    private transient int skyPartnerId = -1;
+    /**
+     * Whether the caster has actually left the ground since the chase that opened the duel. The duel is only live
+     * from that moment until they touch the ground again — a chase starts with both feet still on the floor, so
+     * without this the very first tick would look like a landing and end it before it began.
+     */
+    private transient boolean skyDuelAirborne;
+    /**
+     * The body this player most recently threw into the air, and when. A chase falls back on it when nothing
+     * airborne is under the crosshair, since a body just launched is somewhere overhead and awkward to aim at.
+     */
+    private transient int launchedTargetId = -1;
+    private transient int launchedTick = Integer.MIN_VALUE / 2;
     private transient int dodgeTicks;
     private transient int fallImmuneTicks;
     private transient boolean guarding;
@@ -398,6 +432,28 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         }
     }
 
+    public float rangeSetting() {
+        return rangeSetting;
+    }
+
+    public void setRangeSetting(float value) {
+        float clamped = Mth.clamp(value, CellEvolution.RANGE_FLOOR, CellEvolution.RANGE_BASE);
+        if (clamped != rangeSetting) {
+            rangeSetting = clamped;
+            dirty = true;
+        }
+    }
+
+    /**
+     * How far this player's ranged techniques reach: what their Cell level has earned them, held back by however
+     * far they have wound the reach dial down. 1.0 is "as far as the level says", and the dial only ever takes
+     * away from that — a player whose knives now cross the whole valley can reel them back in without giving up
+     * the levels that got them there.
+     */
+    public float rangeMultiplier() {
+        return CellEvolution.rangeLevelBonus(cellLevel()) * rangeSetting;
+    }
+
     public boolean isKiActive() {
         return kiActive;
     }
@@ -433,6 +489,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         setKiOutputSetting(kiOutputSetting);
         setAttackDamageSetting(attackDamageSetting);
         setLeapDistanceSetting(leapDistanceSetting);
+        setRangeSetting(rangeSetting);
     }
 
     // ------------------------------------------------------------ active skill
@@ -620,6 +677,72 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     public void setLeapAim(Vec3 aim) { leapAim = aim; }
     public int leapTargetId() { return leapTargetId; }
     public void setLeapTargetId(int id) { leapTargetId = id; }
+    public int leapTapTick() { return leapTapTick; }
+    public void setLeapTapTick(int tick) { leapTapTick = tick; }
+    public boolean isLeapChasing() { return leapChasing; }
+    public void setLeapChasing(boolean chasing) { leapChasing = chasing; }
+    /**
+     * Bodies this player has driven into the ground and is waiting to hear land (see {@code CombatEngine#spike}).
+     * Transient and tiny: it only has to outlive the fall it is waiting for.
+     */
+    private transient final List<Slam> slams = new ArrayList<>();
+    /** How many slammed bodies one player can be waiting on at once — a spike catches a handful at most. */
+    private static final int MAX_SLAMS = 8;
+
+    /**
+     * One body on its way into the ground: the damage behind the blow that sent it there, the fastest it has been
+     * seen falling since, and how many ticks are left to keep watching. Mutable on purpose — the plunge is
+     * measured tick by tick, since a body that caught something on the way down arrives slower than one that did
+     * not, and it is the speed it actually lands with that the ground has to answer for.
+     */
+    public static final class Slam {
+        public final int targetId;
+        public final float damage;
+        public double plunge;
+        public int ticksLeft;
+
+        Slam(int targetId, float damage, int ticksLeft) {
+            this.targetId = targetId;
+            this.damage = damage;
+            this.ticksLeft = ticksLeft;
+        }
+    }
+
+    public List<Slam> slamsView() { return slams; }
+
+    /** Starts watching a body this player just drove downwards, replacing any earlier watch on that same body. */
+    public void watchSlam(int targetId, float damage, int ticks) {
+        slams.removeIf(slam -> slam.targetId == targetId);
+        while (slams.size() >= MAX_SLAMS) {
+            slams.remove(0);
+        }
+        slams.add(new Slam(targetId, damage, ticks));
+    }
+
+    public int skyPartnerId() { return skyPartnerId; }
+
+    /** Opens an air duel on this partner. Starts unarmed: the caster is still standing where they pushed off. */
+    public void setSkyPartner(int entityId) {
+        skyPartnerId = entityId;
+        skyDuelAirborne = false;
+    }
+
+    public boolean isSkyDuelAirborne() { return skyDuelAirborne; }
+    public void setSkyDuelAirborne(boolean airborne) { skyDuelAirborne = airborne; }
+
+    /** Ends the air duel: no partner, and nothing left to hold up. */
+    public void endSkyDuel() {
+        skyPartnerId = -1;
+        skyDuelAirborne = false;
+    }
+    public int launchedTargetId() { return launchedTargetId; }
+    public int launchedTick() { return launchedTick; }
+
+    /** Notes the body this player just threw into the air, for a double tap to follow up by memory later. */
+    public void rememberLaunched(int targetId, int tick) {
+        launchedTargetId = targetId;
+        launchedTick = tick;
+    }
     public double leapTravel() { return leapTravel; }
     public void setLeapTravel(double travel) { leapTravel = travel; }
     public int leapElapsed() { return leapElapsed; }
@@ -634,6 +757,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         leapChargeTicks = 0;
         leapTicks = NO_LEAP;
         leapTargetId = -1;
+        leapChasing = false;
         leapTravel = 0.0;
         leapElapsed = 0;
     }
@@ -706,6 +830,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         tag.putInt(KEY_KI_OUTPUT, kiOutputSetting);
         tag.putFloat(KEY_ATTACK_DAMAGE, attackDamageSetting);
         tag.putFloat(KEY_LEAP_DISTANCE, leapDistanceSetting);
+        tag.putFloat(KEY_RANGE, rangeSetting);
         tag.putIntArray(KEY_SKILL_SLOTS, Arrays.copyOf(skillSlots, SLOT_COUNT));
         tag.putString(KEY_COMBAT_STYLE, combatStyle);
         return tag;
@@ -728,6 +853,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         kiOutputSetting = tag.contains(KEY_KI_OUTPUT) ? tag.getInt(KEY_KI_OUTPUT) : CellEvolution.KI_OUTPUT_BASE;
         attackDamageSetting = tag.contains(KEY_ATTACK_DAMAGE) ? tag.getFloat(KEY_ATTACK_DAMAGE) : CellEvolution.ATTACK_DAMAGE_BASE;
         leapDistanceSetting = tag.contains(KEY_LEAP_DISTANCE) ? tag.getFloat(KEY_LEAP_DISTANCE) : CellEvolution.LEAP_DISTANCE_BASE;
+        rangeSetting = tag.contains(KEY_RANGE) ? tag.getFloat(KEY_RANGE) : CellEvolution.RANGE_BASE;
         Arrays.fill(skillSlots, -1);
         int[] savedSlots = tag.getIntArray(KEY_SKILL_SLOTS);
         for (int i = 0; i < Math.min(savedSlots.length, SLOT_COUNT); i++) {

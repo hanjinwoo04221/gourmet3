@@ -14,6 +14,7 @@ import org.example.hanjinwoo.gourmet2.Gourmet2;
 import org.example.hanjinwoo.gourmet2.command.CellLevelCommand;
 import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.skill.CellGrowth;
+import org.example.hanjinwoo.gourmet2.skill.LeapEngine;
 import org.example.hanjinwoo.gourmet2.skill.SkillEngine;
 import org.example.hanjinwoo.gourmet2.skill.combat.CombatEngine;
 
@@ -50,6 +51,21 @@ public final class CommonEvents {
     public static void onIncomingDamage(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             CombatEngine.onIncomingDamage(player, event);
+            // Being hit back is the other half of an air duel: either direction holds the two of them up
+            // (see LeapEngine#exchanged). Read from here rather than from any one skill so every kind of blow
+            // counts, and a blow the victim turns aside on a guard still counts as the exchange it was.
+            LeapEngine.exchanged(player, event.getSource().getEntity());
+        }
+    }
+
+    /** A blow the player lands on somebody else, for that same air duel when it is the body they chased up. */
+    @SubscribeEvent
+    public static void onIncomingDamageToOther(LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof ServerPlayer) {
+            return;
+        }
+        if (event.getSource().getEntity() instanceof ServerPlayer player) {
+            LeapEngine.exchanged(player, event.getEntity());
         }
     }
 

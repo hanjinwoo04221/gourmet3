@@ -88,7 +88,9 @@ public class FlyingForkSkill implements SkillBehavior {
         prong.setDamage(ctx.damage(damage));
         prong.setSizeScale(size);
         prong.moveTo(spawnAt.x, spawnAt.y, spawnAt.z, player.getYRot(), player.getXRot());
-        prong.setDeltaMovement(direction.scale(VELOCITY));
+        // Thrown harder with every level evolved (see FlyingKnifeSkill): the launch speed is what carries a
+        // prong further, not a longer flight.
+        prong.setDeltaMovement(direction.scale(VELOCITY * data.rangeMultiplier()));
         ctx.level().addFreshEntity(prong);
         FxDispatch.on(ctx.level(), SkillFx.FLYING_FORK_TRAIL, prong, size);
     }

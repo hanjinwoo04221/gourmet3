@@ -82,7 +82,7 @@ public final class SkillEngine {
     /** Applies the settings GUI's requested power tuning, clamped server-side to the player's cap. */
     public static void updateSettings(ServerPlayer player, int nailCombo, int forkProjectiles,
                                       int knifeWaves, float flyingDamage, float flyingSize, int kiOutput,
-                                      float attackDamage, float leapDistance) {
+                                      float attackDamage, float leapDistance, float range) {
         TorikoData data = ModAttachments.of(player);
         data.setNailComboSetting(nailCombo);
         data.setForkProjectileSetting(forkProjectiles);
@@ -92,6 +92,7 @@ public final class SkillEngine {
         data.setKiOutputSetting(kiOutput);
         data.setAttackDamageSetting(attackDamage);
         data.setLeapDistanceSetting(leapDistance);
+        data.setRangeSetting(range);
         sync(player, data);
     }
 
@@ -265,6 +266,8 @@ public final class SkillEngine {
         tickIntimidation(player, data);
         tickKi(player, data);
         CombatEngine.tick(player, data);
+        // Before the leap, so a duel the caster has just landed out of is not still live for this tick's blows.
+        LeapEngine.tickDuel(player, data);
         LeapEngine.tick(player, data);
         CombatAnimations.tick(player, data.isGuarding(), data.isCombatMode());
 

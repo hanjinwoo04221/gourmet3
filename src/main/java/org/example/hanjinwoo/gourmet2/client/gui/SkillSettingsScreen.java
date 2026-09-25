@@ -22,15 +22,24 @@ import java.util.function.Function;
  * costs another. Turning any of them up raises the Appetite cost of the skill it belongs to (see
  * each skill's {@code extraAppetiteCost}), so this is a power/cost trade-off, not a free lunch.
  *
- * <p>Two of them run the other way. Attack damage and leap reach are throttles: their ceiling is 100%
- * of whatever the player's own progress already earns them, and all their slider can do is hold that
- * back down to {@link CellEvolution#ATTACK_DAMAGE_FLOOR}. Nothing about the level gates them, because
- * there is nothing to unlock — the growth has already happened, and this is only how to run below it.
+ * <p>Three of them run the other way. Attack damage, leap reach and the reach of the ranged techniques are
+ * throttles: their ceiling is 100% of whatever the player's own progress already earns them, and all their
+ * slider can do is hold that back down to its floor ({@link CellEvolution#ATTACK_DAMAGE_FLOOR}. Nothing about
+ * the level gates them, because there is nothing to unlock — the growth has already happened, and this is only
+ * how to run below it.
  */
 public class SkillSettingsScreen extends Screen {
     private static final int ROW_HEIGHT = 24;
     private static final int SLIDER_WIDTH = 220;
     private static final int SLIDER_HEIGHT = 20;
+    /** How many sliders there are, and the tightest they may be squeezed into when the screen is short. */
+    private static final int ROWS = 9;
+    private static final int MIN_ROW_HEIGHT = 16;
+
+    /** Where the rows were actually laid out, so the header can sit above them on any screen height. */
+    private int panelTop;
+    private int rowHeight = ROW_HEIGHT;
+    private int sliderHeight = SLIDER_HEIGHT;
 
     private int nailCombo;
     private int forkProjectiles;
@@ -40,6 +49,7 @@ public class SkillSettingsScreen extends Screen {
     private int kiOutput;
     private float attackDamage;
     private float leapDistance;
+    private float range;
 
     public SkillSettingsScreen() {
         super(Component.translatable("gui." + Gourmet2.MODID + ".skill_settings.title"));
@@ -51,40 +61,50 @@ public class SkillSettingsScreen extends Screen {
         this.kiOutput = ClientTorikoData.kiOutputSetting();
         this.attackDamage = ClientTorikoData.attackDamageSetting();
         this.leapDistance = ClientTorikoData.leapDistanceSetting();
+        this.range = ClientTorikoData.rangeSetting();
     }
 
     @Override
     protected void init() {
         int level = ClientTorikoData.cellLevel();
+        // The rows tighten up rather than run off the bottom: this has to fit an auto-scaled 1080p window, which is
+        // only 270 pixels of screen height, and it grew another row when the ranged reach dial moved in.
+        this.rowHeight = Math.min(ROW_HEIGHT, Math.max(MIN_ROW_HEIGHT, (height - 120) / ROWS));
+        this.sliderHeight = Math.min(SLIDER_HEIGHT, rowHeight - 2);
+        this.panelTop = height / 2 - (ROWS * rowHeight) / 2 - 4;
         int x = width / 2 - SLIDER_WIDTH / 2;
-        int y = height / 2 - 102;
+        int y = panelTop;
 
         addIntSlider(x, y, "nail_combo", CellEvolution.NAIL_COMBO_BASE, CellEvolution.nailComboCap(level),
                 nailCombo, v -> nailCombo = v);
-        y += ROW_HEIGHT;
+        y += rowHeight;
         addIntSlider(x, y, "fork_projectiles", CellEvolution.FORK_PROJECTILE_BASE, CellEvolution.forkProjectileCap(level),
                 forkProjectiles, v -> forkProjectiles = v);
-        y += ROW_HEIGHT;
+        y += rowHeight;
         addIntSlider(x, y, "knife_waves", CellEvolution.KNIFE_WAVE_BASE, CellEvolution.knifeWaveCap(level),
                 knifeWaves, v -> knifeWaves = v);
-        y += ROW_HEIGHT;
+        y += rowHeight;
         addPercentSlider(x, y, "flying_damage", CellEvolution.DAMAGE_MULT_BASE, CellEvolution.damageMultCap(level),
                 flyingDamage, v -> flyingDamage = v);
-        y += ROW_HEIGHT;
+        y += rowHeight;
         addPercentSlider(x, y, "flying_size", CellEvolution.SIZE_MULT_BASE, CellEvolution.sizeMultCap(level),
                 flyingSize, v -> flyingSize = v);
-        y += ROW_HEIGHT;
+        y += rowHeight;
         addIntSlider(x, y, "ki_output", CellEvolution.KI_OUTPUT_BASE, CellEvolution.kiOutputCap(level),
                 kiOutput, v -> kiOutput = v);
-        y += ROW_HEIGHT;
-        // Throttles, not boosts: their own ends are 100%, so the whole range is how far back the player may
-        // hold the damage they already hit for and the reach their strength and speed already earn them.
+        y += rowHeight;
+        // Throttles, not boosts: their own ends are 100%, so the whole range is how far back the player may hold
+        // the damage they already hit for, the reach their strength and speed already earn them, and how far
+        // their thrown techniques already carry.
         addPercentSlider(x, y, "attack_damage", CellEvolution.ATTACK_DAMAGE_FLOOR,
                 CellEvolution.ATTACK_DAMAGE_BASE, attackDamage, v -> attackDamage = v);
-        y += ROW_HEIGHT;
+        y += rowHeight;
         addPercentSlider(x, y, "leap_distance", CellEvolution.LEAP_DISTANCE_FLOOR,
                 CellEvolution.LEAP_DISTANCE_BASE, leapDistance, v -> leapDistance = v);
-        y += ROW_HEIGHT + 12;
+        y += rowHeight;
+        addPercentSlider(x, y, "range", CellEvolution.RANGE_FLOOR,
+                CellEvolution.RANGE_BASE, range, v -> range = v);
+        y += rowHeight + 10;
 
         addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, b -> onDone())
                 .bounds(width / 2 - 100, y, 200, 20).build());
@@ -93,7 +113,7 @@ public class SkillSettingsScreen extends Screen {
     private void addIntSlider(int x, int y, String key, int base, int cap, int initial, java.util.function.IntConsumer onChange) {
         Function<Double, Component> label = mapped -> Component.translatable(
                 "gui." + Gourmet2.MODID + ".skill_settings." + key, Math.round(mapped), cap);
-        PowerSlider slider = new PowerSlider(x, y, SLIDER_WIDTH, SLIDER_HEIGHT, base, cap, 1.0, initial, label,
+        PowerSlider slider = new PowerSlider(x, y, SLIDER_WIDTH, sliderHeight, base, cap, 1.0, initial, label,
                 mapped -> onChange.accept((int) Math.round(mapped)));
         addRenderableWidget(slider);
     }
@@ -102,7 +122,7 @@ public class SkillSettingsScreen extends Screen {
         Function<Double, Component> label = mapped -> Component.translatable(
                 "gui." + Gourmet2.MODID + ".skill_settings." + key,
                 Math.round(mapped * 100), Math.round(cap * 100));
-        PowerSlider slider = new PowerSlider(x, y, SLIDER_WIDTH, SLIDER_HEIGHT, base, cap, 0.01, initial, label,
+        PowerSlider slider = new PowerSlider(x, y, SLIDER_WIDTH, sliderHeight, base, cap, 0.01, initial, label,
                 mapped -> onChange.accept((float) mapped));
         addRenderableWidget(slider);
     }
@@ -110,7 +130,7 @@ public class SkillSettingsScreen extends Screen {
     private void onDone() {
         PacketDistributor.sendToServer(new C2SUpdateSkillSettings(
                 nailCombo, forkProjectiles, knifeWaves, flyingDamage, flyingSize, kiOutput,
-                attackDamage, leapDistance));
+                attackDamage, leapDistance, range));
         onClose();
     }
 
@@ -118,10 +138,11 @@ public class SkillSettingsScreen extends Screen {
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(graphics, mouseX, mouseY, partialTick);
         super.render(graphics, mouseX, mouseY, partialTick);
-        graphics.drawCenteredString(font, title, width / 2, height / 2 - 122, 0xFFFFFF);
+        // Sitting on the rows themselves rather than on the screen, so the header follows them down on a short one.
+        graphics.drawCenteredString(font, title, width / 2, panelTop - 26, 0xFFFFFF);
         graphics.drawCenteredString(font,
                 Component.translatable("gui." + Gourmet2.MODID + ".skill_settings.cell_level", ClientTorikoData.cellLevel()),
-                width / 2, height / 2 - 110, 0xAAAAAA);
+                width / 2, panelTop - 15, 0xAAAAAA);
     }
 
     @Override

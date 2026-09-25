@@ -24,6 +24,10 @@ public final class CellEvolution {
     public static final float SIZE_MULT_BASE = 1.0F;
     public static final float ATTACK_DAMAGE_BASE = 1.0F;
     public static final float LEAP_DISTANCE_BASE = 1.0F;
+    public static final float RANGE_BASE = 1.0F;
+
+    /** Lowest the reach of the ranged techniques can be dialled to. */
+    public static final float RANGE_FLOOR = 0.25F;
 
     /**
      * How long a full Nail Punch charge takes, whatever combo the player has dialled in. The charge is spent
@@ -133,6 +137,16 @@ public final class CellEvolution {
      */
     public static final float ATTACK_DAMAGE_FLOOR = 0.25F;
     public static final float LEAP_DISTANCE_FLOOR = 0.25F;
+
+    /**
+     * How far the ranged techniques reach at this Cell level, as a multiplier on what they always reached. The
+     * flying techniques are thrown further and fly for longer, and the spray of a Nail Gun covers more ground.
+     * Like the other two dials over it this is a ceiling, not a floor: the level gives the reach and the player's
+     * own dial can only hold it back ({@link #RANGE_FLOOR}).
+     */
+    public static float rangeLevelBonus(int level) {
+        return 1.0F + level * 0.05F;
+    }
 
     // ---------------------------------------------------------------- cost scaling
 

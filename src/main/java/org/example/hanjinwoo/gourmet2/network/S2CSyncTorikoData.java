@@ -16,7 +16,7 @@ public record S2CSyncTorikoData(int appetite, int maxAppetite, int selected, int
                                 int nailComboSetting, int forkProjectileSetting, int knifeWaveSetting,
                                 float flyingDamageSetting, float flyingSizeSetting,
                                 boolean kiActive, int kiOutputSetting,
-                                float attackDamageSetting, float leapDistanceSetting,
+                                float attackDamageSetting, float leapDistanceSetting, float rangeSetting,
                                 int[] skillSlots, boolean combatMode, String combatStyle)
         implements CustomPacketPayload {
 
@@ -50,6 +50,7 @@ public record S2CSyncTorikoData(int appetite, int maxAppetite, int selected, int
                 data.kiOutputSetting(),
                 data.attackDamageSetting(),
                 data.leapDistanceSetting(),
+                data.rangeSetting(),
                 Arrays.copyOf(data.skillSlotsView(), data.skillSlotsView().length),
                 data.isCombatMode(),
                 data.combatStyle());
@@ -75,6 +76,7 @@ public record S2CSyncTorikoData(int appetite, int maxAppetite, int selected, int
                 buf.readFloat(),
                 buf.readBoolean(),
                 buf.readVarInt(),
+                buf.readFloat(),
                 buf.readFloat(),
                 buf.readFloat(),
                 buf.readVarIntArray(),
@@ -104,6 +106,7 @@ public record S2CSyncTorikoData(int appetite, int maxAppetite, int selected, int
         buf.writeVarInt(kiOutputSetting);
         buf.writeFloat(attackDamageSetting);
         buf.writeFloat(leapDistanceSetting);
+        buf.writeFloat(rangeSetting);
         buf.writeVarIntArray(skillSlots);
         buf.writeBoolean(combatMode);
         buf.writeUtf(combatStyle);

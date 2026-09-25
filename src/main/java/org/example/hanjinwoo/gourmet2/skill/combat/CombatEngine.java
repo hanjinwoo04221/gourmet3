@@ -21,11 +21,13 @@ import org.example.hanjinwoo.gourmet2.fx.SkillFx;
 import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.registry.ModDamageTypes;
 import org.example.hanjinwoo.gourmet2.skill.Hurt;
+import org.example.hanjinwoo.gourmet2.skill.LeapEngine;
 import org.example.hanjinwoo.gourmet2.skill.SkillContext;
 import org.example.hanjinwoo.gourmet2.skill.SkillEngine;
 import org.example.hanjinwoo.gourmet2.skill.Targeting;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +66,17 @@ public final class CombatEngine {
     private static final int SPIKE_LOCK = 22;
     private static final float SPIKE_DAMAGE = 10.0F;
     private static final double SPIKE_STRENGTH = 1.9;
+    /** Straight down, the direction a spike drives its victims. */
+    private static final Vec3 SPIKE_DIRECTION = new Vec3(0.0, -1.0, 0.0);
+    /** How long a spiked body is watched for its landing before the blow is written off. */
+    private static final int SPIKE_WATCH_TICKS = 60;
+    /** Fastest a spike can arrive at, in blocks per tick; vanilla's own terminal velocity is a little under four. */
+    private static final double SPIKE_MAX_PLUNGE = 4.0;
+    /**
+     * Below this a spiked body never really fell — it was already on the ground and was driven into it. Only the
+     * damage behind the blow is left to judge the ground by then, since there is no plunge to speak of.
+     */
+    private static final double SPIKE_MIN_PLUNGE = 0.05;
     /** How fast the caster themselves crashes down alongside the target. */
     private static final double SPIKE_SELF_FALL_SPEED = 1.4;
     /** Ticks of fall-damage immunity granted so an intentional dive dropping through the sky doesn't hurt the caster. */
@@ -113,6 +126,8 @@ public final class CombatEngine {
             case AERIAL_ATTACK -> aerialAttack(ctx);
             case GUARD_START -> {
                 data.setGuarding(true);
+                // Raising a guard is an exchange of its own while the caster is duelling in the air.
+                LeapEngine.guarded(player);
                 CombatAnimations.play(player, "guard");
             }
             case GUARD_END -> {
@@ -158,6 +173,54 @@ public final class CombatEngine {
         if (data.isGuarding()) {
             data.tickGuard();
         }
+        tickSpikes(player, data);
+    }
+
+    /**
+     * Watches the bodies this player has driven into the ground and throws the ground up where each one lands.
+     * What comes up is the plunge it arrived with and the damage the blow carried, weighed the same way as any
+     * other blow (see {@link Hurt#impulse}) — so a slam from high up leaves a real mark and a light one from a step
+     * leaves none, and the block breaking follows the same rule as everything else that hits terrain.
+     *
+     * <p>A body that was already standing when it was spiked still gets the burst under it: it is the blow the
+     * player just landed that is being shown, not the flight, and there is simply no plunge to add to it.
+     */
+    private static void tickSpikes(ServerPlayer player, TorikoData data) {
+        Iterator<TorikoData.Slam> waiting = data.slamsView().iterator();
+        while (waiting.hasNext()) {
+            TorikoData.Slam slam = waiting.next();
+            if (--slam.ticksLeft <= 0) {
+                waiting.remove();
+                continue;
+            }
+            if (!(player.level().getEntity(slam.targetId) instanceof LivingEntity body) || !body.isAlive()) {
+                waiting.remove();
+                continue;
+            }
+            slam.plunge = Math.min(SPIKE_MAX_PLUNGE, Math.max(slam.plunge, -body.getDeltaMovement().y));
+            if (!body.onGround()) {
+                continue;
+            }
+            waiting.remove();
+            spikeLanded(player, body, slam);
+        }
+    }
+
+    /** The ground comes up where a spiked body stops. */
+    private static void spikeLanded(ServerPlayer player, LivingEntity body, TorikoData.Slam slam) {
+        ServerLevel level = (ServerLevel) player.level();
+        BlockPos at = body.blockPosition();
+        // The burst goes up first and unconditionally, so a slam reads as one whether or not the hardness gave way;
+        // the sweep that follows does the breaking, and a duplicate burst at the same spot is refused there anyway.
+        UpheavalEntity.burst(level, at, SPIKE_DIRECTION, slam.damage, slam.plunge);
+        if (slam.plunge < SPIKE_MIN_PLUNGE) {
+            return;
+        }
+        // The sweep is the ground around the body, but the blow is weighed on the body's own footprint — that is
+        // the contact patch the ground is asked to take, and a wide body spreads it thinner than a narrow one.
+        AABB foot = body.getBoundingBox().inflate(0.25);
+        Vec3 blow = SPIKE_DIRECTION.scale(slam.plunge);
+        Hurt.sweepBreak(player, level, foot, blow, slam.damage, Hurt.frontalArea(body.getBoundingBox(), blow));
     }
 
     // ------------------------------------------------------------------- actions
@@ -287,6 +350,9 @@ public final class CombatEngine {
             victim.invulnerableTime = 0;
             if (Hurt.apply(ctx, victim, ModDamageTypes.NAIL, ctx.damage(LAUNCHER_DAMAGE))) {
                 Hurt.launch(victim, LAUNCH_DIRECTION, LAUNCH_STRENGTH);
+                // What was just thrown up is worth remembering: a double tap on the leap key follows it without
+                // the caster having to get the crosshair onto a body that is now somewhere over their head.
+                data.rememberLaunched(victim.getId(), player.tickCount);
                 impact(ctx, victim, 0.8F);
             }
         }
@@ -323,7 +389,10 @@ public final class CombatEngine {
         for (LivingEntity victim : inFront(player)) {
             victim.invulnerableTime = 0;
             if (Hurt.apply(ctx, victim, ModDamageTypes.NAIL_PIERCE, ctx.damage(SPIKE_DAMAGE))) {
-                Hurt.launch(victim, new Vec3(0.0, -1.0, 0.0), SPIKE_STRENGTH);
+                Hurt.launch(victim, SPIKE_DIRECTION, SPIKE_STRENGTH);
+                // Watched from here down: where it lands, the ground is thrown up by the speed it arrived with and
+                // by what the blow was worth (see tickSpikes).
+                data.watchSlam(victim.getId(), ctx.damage(SPIKE_DAMAGE), SPIKE_WATCH_TICKS);
                 impact(ctx, victim, 1.0F);
             }
         }

@@ -53,11 +53,14 @@ public class NailGunSkill implements SkillBehavior {
         ServerPlayer player = ctx.player();
         Vec3 direction = ctx.lookDirection();
 
-        List<LivingEntity> victims = Targeting.inCone(player, direction, RANGE, HALF_ANGLE, TARGETS_PER_VOLLEY);
+        // The barrage of an evolved caster sprays further (see TorikoData#rangeMultiplier), which is what the
+        // reach dial in the power settings is there to wind back in.
+        double range = RANGE * ctx.data().rangeMultiplier();
+        List<LivingEntity> victims = Targeting.inCone(player, direction, range, HALF_ANGLE, TARGETS_PER_VOLLEY);
         if (victims.isEmpty()) {
             // Still show the rounds landing on terrain so the burst reads as continuous fire.
             FxDispatch.at(ctx.level(), SkillFx.NAIL_GUN_IMPACT,
-                    Targeting.impactPoint(player, direction, RANGE), 0.5F, player.getYRot(), player.getXRot());
+                    Targeting.impactPoint(player, direction, range), 0.5F, player.getYRot(), player.getXRot());
         } else {
             for (LivingEntity victim : victims) {
                 if (Hurt.nail(ctx, victim, DAMAGE_PER_HIT, PIERCE_FRACTION)) {

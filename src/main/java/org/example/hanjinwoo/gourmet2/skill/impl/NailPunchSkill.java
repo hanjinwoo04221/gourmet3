@@ -174,6 +174,8 @@ public class NailPunchSkill implements SkillBehavior {
         if (target != null && Hurt.nail(ctx, target, SINGLE_DAMAGE, SINGLE_PIERCE_FRACTION)) {
             Vec3 knockDirection = direction.add(0.0, 0.22, 0.0);
             Hurt.launch(target, knockDirection, SINGLE_KNOCKBACK);
+            // Remembered so a double tap on the leap key can follow the body up without being aimed at it.
+            ctx.data().rememberLaunched(target.getId(), player.tickCount);
             hitTerrain(ctx, target, knockDirection, SINGLE_KNOCKBACK, SINGLE_DAMAGE);
             Hurt.playSound(ctx, impact, SoundEvents.ANVIL_LAND, 0.5F, 1.7F);
         }
@@ -198,7 +200,11 @@ public class NailPunchSkill implements SkillBehavior {
         // The ground comes up where the victim is, whether or not anything gave way: a punch the hardness beats
         // is still a punch, and the burst is what makes one hit read as a hit. Bursts do not stack on each other
         // (see UpheavalEntity), so a fast combo churns the same patch instead of carpeting it.
-        UpheavalEntity.burst((ServerLevel) ctx.level(), BlockPos.containing(contact.getCenter()), dir, blow, strength);
+        // Aimed the way the caster was facing rather than the way the victim is thrown: the knock direction is lifted a
+        // little to throw them up, which is not the line the blow went into the ground along, and that line is what
+        // decides whether the crater lies flat on the floor or stands on end against a wall.
+        UpheavalEntity.burst((ServerLevel) ctx.level(), BlockPos.containing(contact.getCenter()),
+                ctx.lookDirection(), blow, strength);
         Hurt.sweepBreak(ctx.player(), ctx.level(), contact, dir.scale(strength), blow, Hurt.FIST_AREA);
     }
 
@@ -248,6 +254,7 @@ public class NailPunchSkill implements SkillBehavior {
             if (Hurt.nail(ctx, target, COMBO_FINISHER_DAMAGE, COMBO_PIERCE_FRACTION)) {
                 Vec3 knockDirection = ctx.lookDirection().add(0.0, 0.55, 0.0);
                 Hurt.launch(target, knockDirection, FINISHER_KNOCKBACK);
+                ctx.data().rememberLaunched(target.getId(), ctx.player().tickCount);
                 hitTerrain(ctx, target, knockDirection, FINISHER_KNOCKBACK, COMBO_FINISHER_DAMAGE);
             }
             FxDispatch.at(ctx.level(), SkillFx.THIRTEEN_FINISH, center, 1.4F, ctx.player().getYRot(), 0.0F);
