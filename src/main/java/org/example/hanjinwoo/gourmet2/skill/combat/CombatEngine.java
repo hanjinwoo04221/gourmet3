@@ -22,6 +22,7 @@ import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.registry.ModDamageTypes;
 import org.example.hanjinwoo.gourmet2.skill.Hurt;
 import org.example.hanjinwoo.gourmet2.skill.LeapEngine;
+import org.example.hanjinwoo.gourmet2.skill.MinorityWorld;
 import org.example.hanjinwoo.gourmet2.skill.SkillContext;
 import org.example.hanjinwoo.gourmet2.skill.SkillEngine;
 import org.example.hanjinwoo.gourmet2.skill.Targeting;
@@ -622,7 +623,7 @@ public final class CombatEngine {
             return;
         }
         ServerLevel level = (ServerLevel) player.level();
-        Vec3 look = player.getLookAngle();
+        Vec3 look = MinorityWorld.aim(player);
         // Held back by the player's own damage dial exactly as their blows are (see CellEvolution): the heave is
         // the strength the limbs arrive with, and someone who has wound their damage down has wound this down with
         // it. It is the attribute that gets scaled rather than the blow's own damage, because the attribute is the
@@ -656,7 +657,7 @@ public final class CombatEngine {
 
     private static java.util.List<LivingEntity> inFront(ServerPlayer player) {
         Vec3 eye = player.getEyePosition();
-        Vec3 look = player.getLookAngle();
+        Vec3 look = MinorityWorld.aim(player);
         return Targeting.inSphere(player, eye.add(look.scale(REACH * 0.5)), REACH).stream()
                 .filter(victim -> {
                     Vec3 to = victim.getBoundingBox().getCenter().subtract(eye);
@@ -667,7 +668,7 @@ public final class CombatEngine {
     }
 
     private static void lunge(ServerPlayer player, double strength) {
-        Vec3 flat = player.getLookAngle().multiply(1.0, 0.0, 1.0);
+        Vec3 flat = MinorityWorld.aim(player).multiply(1.0, 0.0, 1.0);
         if (flat.lengthSqr() < 1.0E-6) {
             return;
         }

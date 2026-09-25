@@ -22,6 +22,10 @@ public final class ClientPacketHandlers {
         ClientTorikoData.accept(payload);
     }
 
+    public static void onMinorityZone(org.example.hanjinwoo.gourmet2.network.S2CMinorityZone payload) {
+        ClientMinorityWorld.accept(payload);
+    }
+
     public static void onSkillFx(S2CSkillFx payload) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) {

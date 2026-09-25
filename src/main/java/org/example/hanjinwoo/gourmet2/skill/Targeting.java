@@ -82,6 +82,31 @@ public final class Targeting {
         return found;
     }
 
+    /**
+     * Like {@link #alongRay}, but a body pressed right up against the caster still counts: anything whose hitbox,
+     * widened by {@code radius}, already contains the ray's start or the caster's own middle is on the line even
+     * though the ray never has to enter it. A plain ray test misses exactly those, since a ray that starts inside
+     * a box has no face to hit.
+     */
+    public static List<LivingEntity> alongLine(Player caster, Vec3 origin, Vec3 direction, double range, double radius) {
+        Vec3 dir = direction.normalize();
+        Vec3 end = origin.add(dir.scale(range));
+        Vec3 middle = caster.getBoundingBox().getCenter();
+        AABB box = new AABB(origin, end).inflate(radius + 1.5);
+
+        List<LivingEntity> found = new ArrayList<>();
+        for (Entity entity : caster.level().getEntities(caster, box, e -> canTarget(caster, e))) {
+            AABB wide = entity.getBoundingBox().inflate(radius);
+            boolean touching = wide.contains(origin)
+                    || (wide.contains(middle) && entity.getBoundingBox().getCenter().subtract(middle).dot(dir) > -0.5);
+            if (touching || wide.clip(origin, end).isPresent()) {
+                found.add((LivingEntity) entity);
+            }
+        }
+        found.sort(Comparator.comparingDouble(e -> e.distanceToSqr(origin)));
+        return found;
+    }
+
     /** Living entities within {@code radius} of {@code center}, nearest first. */
     public static List<LivingEntity> inSphere(Player caster, Vec3 center, double radius) {
         AABB box = AABB.ofSize(center, radius * 2, radius * 2, radius * 2);
@@ -102,7 +127,7 @@ public final class Targeting {
      * back to the nearest thing in a narrow forward cone so that skills still feel responsive.
      */
     public static @Nullable LivingEntity lockOn(Player caster, double range) {
-        Vec3 direction = caster.getLookAngle();
+        Vec3 direction = MinorityWorld.aim(caster);
         List<LivingEntity> narrow = inCone(caster, direction, range, 12.0, 1);
         if (!narrow.isEmpty()) {
             return narrow.get(0);

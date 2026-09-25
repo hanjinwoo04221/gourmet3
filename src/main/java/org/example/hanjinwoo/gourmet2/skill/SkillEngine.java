@@ -18,6 +18,11 @@ import org.example.hanjinwoo.gourmet2.network.S2CSyncTorikoData;
 import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.compat.CombatAnimations;
 import org.example.hanjinwoo.gourmet2.skill.combat.CombatEngine;
+import org.example.hanjinwoo.gourmet2.skill.impl.ChopstickFistSkill;
+import org.example.hanjinwoo.gourmet2.skill.impl.ChopstickFlurrySkill;
+import org.example.hanjinwoo.gourmet2.skill.impl.ChopstickSingleSkill;
+import org.example.hanjinwoo.gourmet2.skill.impl.MinorityWorldSkill;
+import org.example.hanjinwoo.gourmet2.skill.impl.ChopsticksSkill;
 import org.example.hanjinwoo.gourmet2.skill.impl.KiReleaseSkill;
 
 /**
@@ -44,7 +49,7 @@ public final class SkillEngine {
      * strike frame of its cast animation instead of before the animation has started.
      */
     private static final java.util.Map<SkillType, Integer> WINDUP_TICKS = java.util.Map.of(
-            SkillType.FORK, 6, SkillType.KNIFE, 7);
+            SkillType.FORK, 6, SkillType.KNIFE, 7, SkillType.CHOPSTICK_STAB, 8);
 
 
     private SkillEngine() {}
@@ -53,17 +58,32 @@ public final class SkillEngine {
 
     public static void select(ServerPlayer player, int index) {
         TorikoData data = ModAttachments.of(player);
-        data.setSelected(index);
+        if (SkillType.byIndex(index).isUnlocked(data.cellLevel())) {
+            data.setSelected(index);
+        }
         sync(player, data);
     }
 
     /** Saves the skill selection screen's hotbar layout. Unknown skill ids become empty slots. */
     public static void setSkillSlots(ServerPlayer player, int[] slots) {
         TorikoData data = ModAttachments.of(player);
+        int level = data.cellLevel();
         for (int i = 0; i < TorikoData.SLOT_COUNT; i++) {
-            data.setSkillSlot(i, i < slots.length ? slots[i] : -1);
+            int slot = i < slots.length ? slots[i] : -1;
+            boolean locked = slot >= 0 && slot < SkillType.COUNT && !SkillType.byIndex(slot).isUnlocked(level);
+            data.setSkillSlot(i, locked ? -1 : slot);
         }
         sync(player, data);
+    }
+
+    /** Up/Down while Chopsticks hover: chooses which technique they perform. */
+    public static void cycleChopsticks(ServerPlayer player, int delta) {
+        TorikoData data = ModAttachments.of(player);
+        if (data.selectedSkill() == SkillType.CHOPSTICK_FIST) {
+            ChopstickFistSkill.cycleMode(player, data, delta);
+        } else {
+            ChopsticksSkill.cycleMode(player, data, delta);
+        }
     }
 
     public static void selectCombatStyle(ServerPlayer player, String id) {
@@ -102,6 +122,47 @@ public final class SkillEngine {
         TorikoData data = ModAttachments.of(player);
         SkillType skill = data.selectedSkill();
         SkillContext ctx = new SkillContext(player, (ServerLevel) player.level(), data);
+
+        boolean toggledOn = (skill == SkillType.KI_RELEASE && data.isKiActive())
+                || (isIntimidation(skill) && data.intimidationStage() == toggleStage(skill))
+                || (skill == SkillType.MINORITY_WORLD && data.minorityWorld.active);
+        if (!toggledOn && !skill.isUnlocked(data.cellLevel())) {
+            fail(player, Component.translatable("message." + Gourmet2.MODID + ".skill_locked",
+                    skill.displayName(), skill.unlockLevel()));
+            return;
+        }
+
+        ActiveSkill running = data.active();
+        if (running != null && running.type == SkillType.CHOPSTICK_FLURRY) {
+            // Pressing the skill key again calls a flurry off.
+            ChopstickFlurrySkill.cancel(ctx, running);
+            sync(player, data);
+            return;
+        }
+
+        if (skill == SkillType.CHOPSTICKS && (data.chopsticks.active || data.chopsticks.holding())) {
+            ChopsticksSkill.fire(ctx);
+            sync(player, data);
+            return;
+        }
+
+        if (skill == SkillType.MINORITY_WORLD) {
+            MinorityWorldSkill.press(ctx);
+            sync(player, data);
+            return;
+        }
+
+        if (skill == SkillType.CHOPSTICK_SINGLE && data.singleChopstick.active) {
+            ChopstickSingleSkill.fire(ctx);
+            sync(player, data);
+            return;
+        }
+
+        if (skill == SkillType.CHOPSTICK_FIST && data.fistChopstick.active) {
+            ChopstickFistSkill.fire(ctx);
+            sync(player, data);
+            return;
+        }
 
         if (skill == SkillType.KI_RELEASE && data.isKiActive()) {
             SkillRegistry.get(skill).deactivateToggle(ctx);
@@ -218,6 +279,7 @@ public final class SkillEngine {
     /** Releases a charging or held (AUTO) skill on key-up. No-op if nothing is active. */
     public static void release(ServerPlayer player) {
         TorikoData data = ModAttachments.of(player);
+        ChopstickFistSkill.stopFrenzy(player, data);
         SkillType skill = data.chargingSkill();
         if (skill == null) {
             return;
@@ -266,6 +328,10 @@ public final class SkillEngine {
         tickPending(player, data);
         tickIntimidation(player, data);
         tickKi(player, data);
+        ChopsticksSkill.tick(player, data);
+        ChopstickFistSkill.tick(player, data);
+        ChopstickSingleSkill.tickHover(player, data);
+        MinorityWorldSkill.tick(player, data);
         CombatEngine.tick(player, data);
         // Before the leap, so a duel the caster has just landed out of is not still live for this tick's blows.
         LeapEngine.tickDuel(player, data);
@@ -521,7 +587,7 @@ public final class SkillEngine {
         return Component.translatable("message." + Gourmet2.MODID + "." + key);
     }
 
-    private static void fail(ServerPlayer player, Component reason) {
+    public static void fail(ServerPlayer player, Component reason) {
         player.displayClientMessage(reason, true);
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.4F, 1.2F);

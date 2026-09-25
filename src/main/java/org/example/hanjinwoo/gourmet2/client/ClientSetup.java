@@ -41,6 +41,9 @@ public final class ClientSetup {
         event.register(ModKeys.ATTACK_GROUP_2);
         event.register(ModKeys.ATTACK_GROUP_3);
         event.register(ModKeys.LEAP);
+        event.register(ModKeys.MINORITY_SETTINGS);
+        event.register(ModKeys.CHOPSTICKS_PREV);
+        event.register(ModKeys.CHOPSTICKS_NEXT);
     }
 
     @SubscribeEvent
@@ -63,6 +66,10 @@ public final class ClientSetup {
         event.registerEntityRenderer(ModEntities.LEG_KNIFE_SLASH.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ModEntities.KI_AURA.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ModEntities.SHOCKWAVE_RING.get(), ShockwaveRingRenderer::new);
+        event.registerEntityRenderer(ModEntities.THROWN_CHOPSTICK.get(), org.example.hanjinwoo.gourmet2.client.renderer.ThrownChopstickRenderer::new);
+        event.registerEntityRenderer(ModEntities.CHOPSTICK_GHOST.get(), org.example.hanjinwoo.gourmet2.client.renderer.ChopstickGhostRenderer::new);
+        event.registerEntityRenderer(ModEntities.MINORITY_WORLD.get(), org.example.hanjinwoo.gourmet2.client.renderer.MinorityWorldRenderer::new);
+        event.registerEntityRenderer(ModEntities.CHOPSTICKS.get(), org.example.hanjinwoo.gourmet2.client.renderer.ChopsticksRenderer::new);
         // A crater draws only its own block displays, so its owner has nothing to render.
         event.registerEntityRenderer(ModEntities.UPHEAVAL.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }

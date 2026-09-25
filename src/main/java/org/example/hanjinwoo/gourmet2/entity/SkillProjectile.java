@@ -69,6 +69,11 @@ public abstract class SkillProjectile extends Projectile {
         return Hurt.frontalArea(new AABB(-half, 0.0, -half, half, base.height(), half), blow);
     }
 
+    /** How fast the upheaval this technique leaves grows with its blow; see {@link UpheavalEntity.Growth}. */
+    protected UpheavalEntity.Growth upheavalGrowth() {
+        return UpheavalEntity.Growth.DEFAULT;
+    }
+
     /**
      * Multiplies the flight speed by this much every tick; 1.0 (the default) is constant speed. A
      * value above 1 makes the technique visibly build momentum as it flies, the way a thrown vacuum
@@ -137,7 +142,7 @@ public abstract class SkillProjectile extends Projectile {
                 // its speed is its own, growing as it accelerates, not the caster's.
                 Vec3 blow = getDeltaMovement();
                 Hurt.sweepBreak(caster, level(), getBoundingBox().inflate(breakSweepMargin()), blow, damage(),
-                        impactArea(blow));
+                        impactArea(blow), upheavalGrowth());
             }
             if (scanForHits()) {
                 return;

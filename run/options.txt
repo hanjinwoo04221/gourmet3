@@ -147,6 +147,9 @@ key_key.gourmet2.dodge:key.keyboard.x
 key_key.gourmet2.attack_group_2:key.keyboard.f
 key_key.gourmet2.attack_group_3:key.keyboard.t
 key_key.gourmet2.leap:key.keyboard.q
+key_key.gourmet2.minority_settings:key.keyboard.j
+key_key.gourmet2.chopsticks_prev:key.keyboard.up
+key_key.gourmet2.chopsticks_next:key.keyboard.down
 soundCategory_master:0.6142384105960265
 soundCategory_music:1.0
 soundCategory_record:1.0

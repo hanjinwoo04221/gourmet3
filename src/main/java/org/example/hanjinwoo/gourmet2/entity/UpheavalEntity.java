@@ -186,6 +186,17 @@ public class UpheavalEntity extends VisualEntity {
      * stops reading as a crater and starts reading as debris.
      */
     private static final double MAX_LIFT = 4.0;
+    /**
+     * How fast a burst's size grows with the blow behind it: a base plus a share of the power over the bar, for the
+     * crater's radius and for how high it comes up. {@link #DEFAULT} is what the attacks, the leap and the other
+     * techniques leave; {@link #GENTLE} is a small mark that only creeps up with the blow, for techniques that
+     * should disturb just the ground they touch.
+     */
+    public record Growth(double baseRadius, double radiusPerPower, double baseLift, double liftPerPower) {
+        public static final Growth DEFAULT = new Growth(BASE_RADIUS, RADIUS_PER_POWER, BASE_LIFT, LIFT_PER_POWER);
+        public static final Growth GENTLE = new Growth(1.2, 0.02, 0.6, 0.015);
+    }
+
     /** How close a new burst may land to one already going, and how many may be going at once nearby. */
     private static final double MIN_SPACING = 2.0;
     private static final double NEARBY_RANGE = 12.0;
@@ -210,6 +221,12 @@ public class UpheavalEntity extends VisualEntity {
      */
     public static boolean burst(ServerLevel level, ServerPlayer caster, BlockPos at, Vec3 direction,
             double damage, double speed, double impulse) {
+        return burst(level, caster, at, direction, damage, speed, impulse, Growth.DEFAULT);
+    }
+
+    /** As {@link #burst(ServerLevel, ServerPlayer, BlockPos, Vec3, double, double, double)}, with its own growth rates. */
+    public static boolean burst(ServerLevel level, ServerPlayer caster, BlockPos at, Vec3 direction,
+            double damage, double speed, double impulse, Growth growth) {
         double power = damage * (1.0 + Math.min(MAX_SPEED_FACTOR, Math.max(0.0, speed)) * SPEED_WEIGHT);
         if (power < MIN_POWER) {
             return false;
@@ -227,8 +244,8 @@ public class UpheavalEntity extends VisualEntity {
         }
         double over = power - MIN_POWER;
         // As wide as the blow is worth, up to as wide as can be dug and shown block for block: see MAX_CRATER_RADIUS.
-        double radius = Math.min(MAX_CRATER_RADIUS, BASE_RADIUS + over * RADIUS_PER_POWER);
-        double lift = Math.min(MAX_LIFT, BASE_LIFT + over * LIFT_PER_POWER);
+        double radius = Math.min(MAX_CRATER_RADIUS, growth.baseRadius() + over * growth.radiusPerPower());
+        double lift = Math.min(MAX_LIFT, growth.baseLift() + over * growth.liftPerPower());
         UpheavalEntity burst = new UpheavalEntity(level);
         burst.moveTo(at.getX() + 0.5, at.getY() + 1.0, at.getZ() + 0.5, 0.0F, 0.0F);
         burst.setBurst(radius, lift, direction, caster.getUUID(), impulse);

@@ -233,6 +233,12 @@ public final class Hurt {
      */
     public static void sweepBreak(ServerPlayer caster, Level level, AABB region, Vec3 blow, double damage,
             double area) {
+        sweepBreak(caster, level, region, blow, damage, area, UpheavalEntity.Growth.DEFAULT);
+    }
+
+    /** As {@link #sweepBreak(ServerPlayer, Level, AABB, Vec3, double, double)}, with its own upheaval growth rates. */
+    public static void sweepBreak(ServerPlayer caster, Level level, AABB region, Vec3 blow, double damage,
+            double area, UpheavalEntity.Growth growth) {
         double impulse = impulse(blow, damage, area);
         BlockPos min = BlockPos.containing(region.minX, region.minY, region.minZ);
         BlockPos max = BlockPos.containing(region.maxX, region.maxY, region.maxZ);
@@ -246,7 +252,7 @@ public final class Hurt {
             // enough for one. Weighed the same way, so the crater it leaves is broken through under the very
             // impulse that just swept the corridor.
             UpheavalEntity.burst(server, caster, BlockPos.containing(region.getCenter()), blow, damage,
-                    blow.length(), impulse);
+                    blow.length(), impulse, growth);
         }
     }
 }

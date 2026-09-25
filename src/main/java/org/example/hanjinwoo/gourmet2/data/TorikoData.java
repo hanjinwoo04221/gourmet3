@@ -42,6 +42,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
     private static final String KEY_RANGE = "RangeSetting";
     private static final String KEY_SKILL_SLOTS = "SkillSlots";
     private static final String KEY_COMBAT_STYLE = "CombatStyle";
+    private static final String KEY_MINORITY_FLAGS = "MinorityFlags";
     public static final int SLOT_COUNT = 9;
 
     private final int[] cooldowns = new int[SkillType.COUNT];
@@ -66,6 +67,31 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
 
     /** Skill (by ordinal, -1 = empty) assigned to each combat-mode hotbar slot. */
     private final int[] skillSlots = new int[SLOT_COUNT];
+
+    /** Ichiryu's Chopsticks: runtime state only, never saved. */
+    public final org.example.hanjinwoo.gourmet2.skill.ChopsticksState chopsticks =
+            new org.example.hanjinwoo.gourmet2.skill.ChopsticksState();
+    /** Ichiryu's Minority World: which abilities are on and who they reach (saved), and the running zone (not). */
+    private int minorityFlags = org.example.hanjinwoo.gourmet2.skill.MinorityWorld.DEFAULT;
+    public final org.example.hanjinwoo.gourmet2.skill.ChopsticksState minorityWorld =
+            new org.example.hanjinwoo.gourmet2.skill.ChopsticksState();
+
+    public int minorityFlags() {
+        return minorityFlags;
+    }
+
+    public void setMinorityFlags(int flags) {
+        minorityFlags = flags & (org.example.hanjinwoo.gourmet2.skill.MinorityWorld.EFFECTS
+                | org.example.hanjinwoo.gourmet2.skill.MinorityWorld.AFFECT_SELF
+                | org.example.hanjinwoo.gourmet2.skill.MinorityWorld.AFFECT_OTHERS);
+    }
+
+    /** Ichiryu's Single Chopstick (the summoned stick waiting to be dropped): runtime state only, never saved. */
+    public final org.example.hanjinwoo.gourmet2.skill.ChopsticksState singleChopstick =
+            new org.example.hanjinwoo.gourmet2.skill.ChopsticksState();
+    /** Ichiryu's Fist Chopstick: runtime state only, never saved. */
+    public final org.example.hanjinwoo.gourmet2.skill.ChopsticksState fistChopstick =
+            new org.example.hanjinwoo.gourmet2.skill.ChopsticksState();
 
     {
         Arrays.fill(skillSlots, -1);
@@ -849,6 +875,7 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         tag.putFloat(KEY_RANGE, rangeSetting);
         tag.putIntArray(KEY_SKILL_SLOTS, Arrays.copyOf(skillSlots, SLOT_COUNT));
         tag.putString(KEY_COMBAT_STYLE, combatStyle);
+        tag.putInt(KEY_MINORITY_FLAGS, minorityFlags);
         return tag;
     }
 
@@ -878,6 +905,8 @@ public class TorikoData implements INBTSerializable<CompoundTag> {
         }
         combatStyle = CombatStyles.FIST.id();
         setCombatStyle(tag.getString(KEY_COMBAT_STYLE));
+        setMinorityFlags(tag.contains(KEY_MINORITY_FLAGS) ? tag.getInt(KEY_MINORITY_FLAGS)
+                : org.example.hanjinwoo.gourmet2.skill.MinorityWorld.DEFAULT);
         clampSettingsToLevel();
 
         dirty = true;

@@ -95,5 +95,28 @@ public final class ModKeys {
             GLFW.GLFW_KEY_H,
             CATEGORY);
 
+    /** Up/Down while Ichiryu's chopsticks hover: choose which technique they perform. */
+    public static final KeyMapping CHOPSTICKS_PREV = new KeyMapping(
+            "key." + Gourmet2.MODID + ".chopsticks_prev",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_UP,
+            CATEGORY);
+
+    public static final KeyMapping CHOPSTICKS_NEXT = new KeyMapping(
+            "key." + Gourmet2.MODID + ".chopsticks_next",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_DOWN,
+            CATEGORY);
+
+    /** Opens the Minority World settings screen. */
+    public static final KeyMapping MINORITY_SETTINGS = new KeyMapping(
+            "key." + Gourmet2.MODID + ".minority_settings",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_J,
+            CATEGORY);
+
     private ModKeys() {}
 }

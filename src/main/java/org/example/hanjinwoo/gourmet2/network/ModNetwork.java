@@ -21,7 +21,7 @@ public final class ModNetwork {
      * {@link org.example.hanjinwoo.gourmet2.skill.SkillType} / {@link org.example.hanjinwoo.gourmet2.fx.SkillFx}
      * are reordered.
      */
-    public static final String VERSION = "13";
+    public static final String VERSION = "17";
 
     private ModNetwork() {}
 
@@ -37,6 +37,12 @@ public final class ModNetwork {
         registrar.playToServer(C2SReleaseSkill.TYPE, C2SReleaseSkill.CODEC, (payload, context) -> {
             if (context.player() instanceof ServerPlayer player) {
                 SkillEngine.release(player);
+            }
+        });
+
+        registrar.playToServer(C2SChopstickMode.TYPE, C2SChopstickMode.CODEC, (payload, context) -> {
+            if (context.player() instanceof ServerPlayer player) {
+                SkillEngine.cycleChopsticks(player, payload.delta());
             }
         });
 
@@ -92,6 +98,18 @@ public final class ModNetwork {
         registrar.playToClient(S2CSyncTorikoData.TYPE, S2CSyncTorikoData.CODEC, (payload, context) -> {
             if (FMLEnvironment.dist == Dist.CLIENT) {
                 ClientPacketHandlers.onSync(payload);
+            }
+        });
+
+        registrar.playToServer(C2SMinoritySettings.TYPE, C2SMinoritySettings.CODEC, (payload, context) -> {
+            if (context.player() instanceof ServerPlayer player) {
+                org.example.hanjinwoo.gourmet2.skill.impl.MinorityWorldSkill.updateFlags(player, payload.flags());
+            }
+        });
+
+        registrar.playToClient(S2CMinorityZone.TYPE, S2CMinorityZone.CODEC, (payload, context) -> {
+            if (FMLEnvironment.dist == Dist.CLIENT) {
+                ClientPacketHandlers.onMinorityZone(payload);
             }
         });
 

@@ -1,5 +1,12 @@
 package org.example.hanjinwoo.gourmet2.skill;
 
+import org.example.hanjinwoo.gourmet2.skill.impl.ChopstickAsuraSkill;
+import org.example.hanjinwoo.gourmet2.skill.impl.ChopstickFistSkill;
+import org.example.hanjinwoo.gourmet2.skill.impl.ChopstickSingleSkill;
+import org.example.hanjinwoo.gourmet2.skill.impl.MinorityWorldSkill;
+import org.example.hanjinwoo.gourmet2.skill.impl.ChopstickFlurrySkill;
+import org.example.hanjinwoo.gourmet2.skill.impl.ChopstickStabSkill;
+import org.example.hanjinwoo.gourmet2.skill.impl.ChopsticksSkill;
 import org.example.hanjinwoo.gourmet2.skill.impl.FlyingForkSkill;
 import org.example.hanjinwoo.gourmet2.skill.impl.FlyingKnifeSkill;
 import org.example.hanjinwoo.gourmet2.skill.impl.FoodImmersionSkill;
@@ -30,6 +37,13 @@ public final class SkillRegistry {
         BEHAVIORS.put(SkillType.DEMON_FORM, new IntimidationSkill(2));
         BEHAVIORS.put(SkillType.KI_RELEASE, new KiReleaseSkill());
         BEHAVIORS.put(SkillType.FOOD_IMMERSION, new FoodImmersionSkill());
+        BEHAVIORS.put(SkillType.CHOPSTICKS, new ChopsticksSkill());
+        BEHAVIORS.put(SkillType.CHOPSTICK_FIST, new ChopstickFistSkill());
+        BEHAVIORS.put(SkillType.CHOPSTICK_STAB, new ChopstickStabSkill());
+        BEHAVIORS.put(SkillType.CHOPSTICK_FLURRY, new ChopstickFlurrySkill());
+        BEHAVIORS.put(SkillType.CHOPSTICK_SINGLE, new ChopstickSingleSkill());
+        BEHAVIORS.put(SkillType.CHOPSTICK_ASURA, new ChopstickAsuraSkill());
+        BEHAVIORS.put(SkillType.MINORITY_WORLD, new MinorityWorldSkill());
 
         // Fail at class-load rather than mid-fight if a new SkillType is added without mechanics.
         for (SkillType type : SkillType.VALUES) {

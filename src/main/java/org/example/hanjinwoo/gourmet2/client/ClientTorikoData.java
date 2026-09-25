@@ -128,7 +128,14 @@ public final class ClientTorikoData {
 
     /** Optimistic local selection so pressing the cycle key feels instant. */
     public static int cycleSelectedLocally(int delta) {
-        selected = Math.floorMod(selected + delta, SkillType.COUNT);
+        int level = cellLevel();
+        int step = delta < 0 ? -1 : 1;
+        for (int i = 0; i < SkillType.COUNT; i++) {
+            selected = Math.floorMod(selected + step, SkillType.COUNT);
+            if (SkillType.byIndex(selected).isUnlocked(level)) {
+                break;
+            }
+        }
         selectionHighlight = HudTiming.SELECTION_HIGHLIGHT_TICKS;
         return selected;
     }

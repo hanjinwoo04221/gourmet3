@@ -2,6 +2,7 @@ package org.example.hanjinwoo.gourmet2.client.gui;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -10,11 +11,13 @@ import org.example.hanjinwoo.gourmet2.Gourmet2;
 import org.example.hanjinwoo.gourmet2.client.ClientTorikoData;
 import org.example.hanjinwoo.gourmet2.data.TorikoData;
 import org.example.hanjinwoo.gourmet2.network.C2SSetSkillSlots;
+import org.example.hanjinwoo.gourmet2.skill.SkillTree;
 import org.example.hanjinwoo.gourmet2.skill.SkillType;
 
 /**
- * Skill selection window: pick a skill on the left, then click a hotbar slot on the right to put it
- * there; click a slot with nothing picked to empty it. Those slots are the hotbar used in combat mode.
+ * Skill tree window: pick a tree tab, pick an unlocked skill in it (skills unlock with Gourmet Cell level), then
+ * click a hotbar slot on the right to put it there; click a slot with nothing picked to empty it. Those slots
+ * are the hotbar used in combat mode.
  */
 public class SkillSlotsScreen extends Screen {
     private static final int BUTTON_HEIGHT = 20;
@@ -23,6 +26,7 @@ public class SkillSlotsScreen extends Screen {
 
     private final int[] slots = new int[TorikoData.SLOT_COUNT];
     private int picked = -1;
+    private static SkillTree currentTree = SkillTree.TECHNIQUE;
 
     public SkillSlotsScreen() {
         super(Component.translatable("gui." + Gourmet2.MODID + ".skill_slots.title"));
@@ -37,16 +41,41 @@ public class SkillSlotsScreen extends Screen {
         int listX = width / 2 - LIST_WIDTH - 10;
         int slotX = width / 2 + 10;
 
-        for (SkillType skill : SkillType.VALUES) {
-            int row = skill.ordinal();
-            Component label = skill.displayName();
-            if (picked == row) {
-                label = Component.literal("> ").append(label);
+        int level = ClientTorikoData.cellLevel();
+        int tabWidth = LIST_WIDTH / 2 - 1;
+        for (SkillTree tree : SkillTree.VALUES) {
+            int col = tree.ordinal() % 2;
+            int tabRow = tree.ordinal() / 2;
+            Component tabLabel = tree == currentTree ? Component.literal("> ").append(tree.displayName()) : tree.displayName();
+            addRenderableWidget(Button.builder(tabLabel, b -> {
+                currentTree = tree;
+                picked = -1;
+                rebuildWidgets();
+            }).bounds(listX + col * (tabWidth + 2), top + tabRow * (BUTTON_HEIGHT + 2), tabWidth, BUTTON_HEIGHT).build());
+        }
+
+        int tabRows = (SkillTree.VALUES.length + 1) / 2;
+        int skillTop = top + tabRows * (BUTTON_HEIGHT + 2) + 6;
+        int row = 0;
+        for (SkillType skill : currentTree.skills()) {
+            boolean unlocked = skill.isUnlocked(level);
+            Component label;
+            if (!unlocked) {
+                label = Component.translatable("gui." + Gourmet2.MODID + ".skill_tree.locked",
+                        skill.displayName(), skill.unlockLevel());
+            } else if (picked == skill.ordinal()) {
+                label = Component.literal("> ").append(skill.displayName());
+            } else {
+                label = skill.displayName();
             }
-            addRenderableWidget(Button.builder(label, b -> {
+            Button button = Button.builder(label, b -> {
                 picked = picked == skill.ordinal() ? -1 : skill.ordinal();
                 rebuildWidgets();
-            }).bounds(listX, top + row * (BUTTON_HEIGHT + 2), LIST_WIDTH, BUTTON_HEIGHT).build());
+            }).bounds(listX, skillTop + row * (BUTTON_HEIGHT + 2), LIST_WIDTH, BUTTON_HEIGHT).build();
+            button.active = unlocked;
+            button.setTooltip(Tooltip.create(Component.translatable(skill.descriptionKey())));
+            addRenderableWidget(button);
+            row++;
         }
 
         for (int i = 0; i < slots.length; i++) {
@@ -71,7 +100,10 @@ public class SkillSlotsScreen extends Screen {
         renderBackground(graphics, mouseX, mouseY, partialTick);
         super.render(graphics, mouseX, mouseY, partialTick);
         int top = height / 2 - 6 * (BUTTON_HEIGHT + 2);
-        graphics.drawCenteredString(font, title, width / 2, top - 26, 0xFFFFFF);
+        graphics.drawCenteredString(font,
+                title.copy().append(" - ").append(
+                        Component.translatable("gui." + Gourmet2.MODID + ".skill_tree.level", ClientTorikoData.cellLevel())),
+                width / 2, top - 26, 0xFFFFFF);
         graphics.drawCenteredString(font,
                 Component.translatable("gui." + Gourmet2.MODID + ".skill_slots.hint"), width / 2, top - 14, 0xAAAAAA);
     }

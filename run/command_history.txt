@@ -1,15 +1,3 @@
-/summon minecraft:iron_golem
-/gourmet2 celllevel add 30
-/gourmet2 celllevel set 1
-/summon minecraft:husk
-/gourmet2 celllevel add 100
-/summon minecraft:iron_golem
-/gourmet2 celllevel set 1000
-/summon husk ~ ~1 ~ {active_effects:[{id:resistance,duration:3000,amplifier:5}]}
-/effect clear
-/summon husk ~ ~1 ~ {active_effects:[{id:resistance,duration:3000,amplifier:5}]}
-/effect clear
-/weather clear
 /kill @e[type=minecraft:item]
 /kill @e[type=minecraft:experience_orb]
 /summon husk ~ ~1 ~ {active_effects:[{id:resistance,duration:3000,amplifier:5}]}
@@ -48,3 +36,15 @@
 /time set day
 /summon minecraft:iron_golem
 /summon zombie ~ ~1 ~ {active_effects:[{id:resistance,duration:9999,amplifier:5}]}
+/gourmet2 celllevel set 20
+/gourmet2 celllevel set 60
+/summon minecraft:iron_golem
+/time set day]
+/title s
+/time set day
+/summon minecraft:husk
+/summon minecraft:iron_golem
+/gourmet2 celllevel set 400
+/summon minecraft:ender_dragon
+/summon minecraft:iron_golem
+/summon minecraft:husk

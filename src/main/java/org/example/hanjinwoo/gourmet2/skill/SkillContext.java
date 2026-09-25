@@ -53,7 +53,7 @@ public record SkillContext(ServerPlayer player, ServerLevel level, TorikoData da
     }
 
     public Vec3 lookDirection() {
-        return player.getLookAngle();
+        return MinorityWorld.aim(player);
     }
 
     /** A point just in front of the caster's fist, used as the origin of cast visuals. */

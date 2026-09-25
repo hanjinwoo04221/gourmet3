@@ -24,6 +24,8 @@ public class ActiveSkill {
     public int hits;
     /** Total hits a charged Nail Punch combo will land, or shots a charged flying skill will fire. */
     public int comboHits;
+    /** Where a skill that lands on a spot is bringing its blow down (Single Chopstick). */
+    public Vec3 point = Vec3.ZERO;
     /** Charge fraction (0..1) a charged skill was released at. */
     public float power;
 

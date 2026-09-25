@@ -117,7 +117,10 @@ public class SkillHudLayer implements LayeredDraw.Layer {
 
     /** The expanded list, drawn upwards from {@code bottom} so it grows away from the hotbar. */
     private void renderSkillList(GuiGraphics graphics, Minecraft minecraft, int bottom) {
-        int count = SkillType.COUNT;
+        int level = ClientTorikoData.cellLevel();
+        java.util.List<SkillType> unlocked = java.util.Arrays.stream(SkillType.VALUES)
+                .filter(skill -> skill.isUnlocked(level)).toList();
+        int count = unlocked.size();
         int height = count * ROW_HEIGHT + 4;
         int top = bottom - height;
         int width = BAR_WIDTH;
@@ -126,9 +129,9 @@ public class SkillHudLayer implements LayeredDraw.Layer {
         graphics.renderOutline(MARGIN_X - 2, top, width + 2, height, COLOR_BORDER);
 
         for (int i = 0; i < count; i++) {
-            SkillType skill = SkillType.VALUES[i];
+            SkillType skill = unlocked.get(i);
             int y = top + 2 + i * ROW_HEIGHT;
-            boolean isSelected = i == ClientTorikoData.selectedIndex();
+            boolean isSelected = skill.ordinal() == ClientTorikoData.selectedIndex();
             if (isSelected) {
                 graphics.fill(MARGIN_X - 1, y - 1, MARGIN_X + width - 1, y + ROW_HEIGHT - 2, COLOR_SELECTION);
             }

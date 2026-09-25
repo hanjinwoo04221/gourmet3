@@ -21,6 +21,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.example.hanjinwoo.gourmet2.Gourmet2;
 import org.example.hanjinwoo.gourmet2.client.gui.SkillSettingsScreen;
 import org.example.hanjinwoo.gourmet2.client.weapon.ClientWeaponFlashes;
+import org.example.hanjinwoo.gourmet2.network.C2SChopstickMode;
 import org.example.hanjinwoo.gourmet2.network.C2SReleaseSkill;
 import org.example.hanjinwoo.gourmet2.network.C2SSelectSkill;
 import org.example.hanjinwoo.gourmet2.network.C2SUseSkill;
@@ -250,6 +251,23 @@ public final class ClientEvents {
         if (cycle != 0) {
             int selected = ClientTorikoData.cycleSelectedLocally(cycle);
             PacketDistributor.sendToServer(new C2SSelectSkill(selected));
+        }
+
+        while (ModKeys.CHOPSTICKS_PREV.consumeClick()) {
+            if (inGame) {
+                PacketDistributor.sendToServer(new C2SChopstickMode(-1));
+            }
+        }
+        while (ModKeys.CHOPSTICKS_NEXT.consumeClick()) {
+            if (inGame) {
+                PacketDistributor.sendToServer(new C2SChopstickMode(1));
+            }
+        }
+
+        while (ModKeys.MINORITY_SETTINGS.consumeClick()) {
+            if (inGame) {
+                minecraft.setScreen(new org.example.hanjinwoo.gourmet2.client.gui.MinorityWorldScreen());
+            }
         }
 
         while (ModKeys.SKILL_SETTINGS.consumeClick()) {

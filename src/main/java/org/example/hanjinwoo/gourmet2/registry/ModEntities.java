@@ -101,5 +101,48 @@ public final class ModEntities {
                     .fireImmune()
                     .build("upheaval"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<org.example.hanjinwoo.gourmet2.entity.ChopsticksEntity>> CHOPSTICKS =
+            REGISTER.register("chopsticks", () -> EntityType.Builder
+                    .<org.example.hanjinwoo.gourmet2.entity.ChopsticksEntity>of(
+                            org.example.hanjinwoo.gourmet2.entity.ChopsticksEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSummon()
+                    .fireImmune()
+                    .build("chopsticks"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<org.example.hanjinwoo.gourmet2.entity.ThrownChopstickEntity>> THROWN_CHOPSTICK =
+            REGISTER.register("thrown_chopstick", () -> EntityType.Builder
+                    .<org.example.hanjinwoo.gourmet2.entity.ThrownChopstickEntity>of(
+                            org.example.hanjinwoo.gourmet2.entity.ThrownChopstickEntity::new, MobCategory.MISC)
+                    .sized(0.3F, 0.3F)
+                    .clientTrackingRange(8)
+                    .updateInterval(2)
+                    .noSummon()
+                    .build("thrown_chopstick"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<org.example.hanjinwoo.gourmet2.entity.ChopstickGhostEntity>> CHOPSTICK_GHOST =
+            REGISTER.register("chopstick_ghost", () -> EntityType.Builder
+                    .<org.example.hanjinwoo.gourmet2.entity.ChopstickGhostEntity>of(
+                            org.example.hanjinwoo.gourmet2.entity.ChopstickGhostEntity::new, MobCategory.MISC)
+                    .sized(0.3F, 0.3F)
+                    .clientTrackingRange(10)
+                    .updateInterval(20)
+                    .noSummon()
+                    .fireImmune()
+                    .build("chopstick_ghost"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<org.example.hanjinwoo.gourmet2.entity.MinorityWorldEntity>> MINORITY_WORLD =
+            REGISTER.register("minority_world", () -> EntityType.Builder
+                    .<org.example.hanjinwoo.gourmet2.entity.MinorityWorldEntity>of(
+                            org.example.hanjinwoo.gourmet2.entity.MinorityWorldEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(16)
+                    .updateInterval(20)
+                    .noSummon()
+                    .fireImmune()
+                    .build("minority_world"));
+
     private ModEntities() {}
 }
