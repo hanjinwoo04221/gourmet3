@@ -144,5 +144,14 @@ public final class ModEntities {
                     .fireImmune()
                     .build("minority_world"));
 
+    /** The Lizardman (modelCollection/red_nitro1): a real, hostile, AI-driven mob rather than a purely visual one. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.example.hanjinwoo.gourmet2.entity.LizardmanEntity>> LIZARDMAN =
+            REGISTER.register("lizardman", () -> EntityType.Builder
+                    .<org.example.hanjinwoo.gourmet2.entity.LizardmanEntity>of(
+                            org.example.hanjinwoo.gourmet2.entity.LizardmanEntity::new, MobCategory.MONSTER)
+                    .sized(0.85F, 1.95F)
+                    .clientTrackingRange(10)
+                    .build("lizardman"));
+
     private ModEntities() {}
 }

@@ -219,8 +219,11 @@ public final class CombatEngine {
         // The burst goes up first and unconditionally, so a slam reads as one whether or not the hardness gave way;
         // the sweep that follows breaks what the blow actually reached, and the crater's own ground is broken or
         // only heaved by the same impulse (see UpheavalEntity). A duplicate burst at the same spot is refused anyway.
+        // Held to the body's own footprint and grown gently: a spiked body marks the ground it lands on, not the
+        // whole neighbourhood, however hard it came down.
         UpheavalEntity.burst(level, player, at, SPIKE_DIRECTION, slam.damage, slam.plunge,
-                Hurt.impulse(blow, slam.damage, area));
+                Hurt.impulse(blow, slam.damage, area), UpheavalEntity.Growth.GENTLE,
+                UpheavalEntity.contactRadius(Math.max(foot.getXsize(), foot.getZsize()) + 1.0));
         if (slam.plunge < SPIKE_MIN_PLUNGE) {
             return;
         }

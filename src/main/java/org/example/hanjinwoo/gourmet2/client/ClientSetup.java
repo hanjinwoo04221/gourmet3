@@ -68,6 +68,7 @@ public final class ClientSetup {
         event.registerEntityRenderer(ModEntities.SHOCKWAVE_RING.get(), ShockwaveRingRenderer::new);
         event.registerEntityRenderer(ModEntities.THROWN_CHOPSTICK.get(), org.example.hanjinwoo.gourmet2.client.renderer.ThrownChopstickRenderer::new);
         event.registerEntityRenderer(ModEntities.CHOPSTICK_GHOST.get(), org.example.hanjinwoo.gourmet2.client.renderer.ChopstickGhostRenderer::new);
+        event.registerEntityRenderer(ModEntities.LIZARDMAN.get(), org.example.hanjinwoo.gourmet2.client.renderer.LizardmanRenderer::new);
         event.registerEntityRenderer(ModEntities.MINORITY_WORLD.get(), org.example.hanjinwoo.gourmet2.client.renderer.MinorityWorldRenderer::new);
         event.registerEntityRenderer(ModEntities.CHOPSTICKS.get(), org.example.hanjinwoo.gourmet2.client.renderer.ChopsticksRenderer::new);
         // A crater draws only its own block displays, so its owner has nothing to render.

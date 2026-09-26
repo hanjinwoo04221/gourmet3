@@ -1,15 +1,3 @@
-/gourmet2 celllevel set 3000
-/gourmet2 celllevel set 100
-/gourmet2 celllevel set 1
-/gourmet2 celllevel set 20
-/gourmet2 celllevel set 200
-/gourmet2 celllevel set 1000
-/gourmet2 celllevel set 5000
-/gourmet2 celllevel set 100
-/gourmet2 celllevel set 1000
-/gourmet2 celllevel set 3000
-/gourmet2 celllevel set 100
-/gourmet2 celllevel set 20
 /gourmet2 celllevel set 1000
 /summon zombie ~ ~1 ~ {active_effects:[{id:resistance,duration:9999,amplifier:5}]}
 /summon minecraft:iron_golem
@@ -48,3 +36,15 @@
 /summon minecraft:warden
 /summon minecraft:iron_golem
 /summon minecraft:warden
+/attribute Dev neoforge:creative_flight base set 20
+/attribute Dev minecraft:generic.flying_speed base set 20
+/attribute Dev neoforge:creative_flight base set 200
+/attribute Dev neoforge:creative_flight base set 10
+/summon minecraft:warden
+/summon husk ~ ~1 ~ {active_effects:[{id:resistance,duration:9999,amplifier:5}]}
+/gourmet2 celllevel set 10
+/summon husk ~ ~1 ~ {active_effects:[{id:resistance,duration:9999,amplifier:5}]}
+/gourmet2 celllevel set 40
+/summon gourmet2:lizardman
+/summon
+/summon gourmet2:lizardman

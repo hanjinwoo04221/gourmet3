@@ -151,7 +151,7 @@ public class IntimidationSkill implements SkillBehavior {
         for (LivingEntity victim : Targeting.inSphere(player, center, RADIUS)) {
             // Only clearly weaker targets feel it; anything of a similar or higher level shrugs it off.
             int victimLevel = CaptureLevel.of(victim, victim instanceof ServerPlayer other
-                    ? ModAttachments.of(other).cellLevel() : 0);
+                    ? ModAttachments.of(other).cellLevel() : CaptureLevel.cellLevelOf(victim));
             if (casterLevel - victimLevel <= Config.captureSimilarityWindow) {
                 continue;
             }

@@ -76,7 +76,7 @@ public class SkillHudLayer implements LayeredDraw.Layer {
         if (minecraft.crosshairPickEntity instanceof LivingEntity target) {
             // Other players' Gourmet Cell levels are server-side, so only their attributes count here.
             Component label = Component.translatable("hud." + Gourmet2.MODID + ".capture_level_target",
-                    CaptureLevel.of(target, 0));
+                    CaptureLevel.of(target, CaptureLevel.cellLevelOf(target)));
             int x = (graphics.guiWidth() - minecraft.font.width(label)) / 2;
             graphics.drawString(minecraft.font, label, x, graphics.guiHeight() / 2 + 14, COLOR_TEXT, true);
         }
@@ -117,9 +117,7 @@ public class SkillHudLayer implements LayeredDraw.Layer {
 
     /** The expanded list, drawn upwards from {@code bottom} so it grows away from the hotbar. */
     private void renderSkillList(GuiGraphics graphics, Minecraft minecraft, int bottom) {
-        int level = ClientTorikoData.cellLevel();
-        java.util.List<SkillType> unlocked = java.util.Arrays.stream(SkillType.VALUES)
-                .filter(skill -> skill.isUnlocked(level)).toList();
+        java.util.List<SkillType> unlocked = ClientTorikoData.offeredSkills();
         int count = unlocked.size();
         int height = count * ROW_HEIGHT + 4;
         int top = bottom - height;

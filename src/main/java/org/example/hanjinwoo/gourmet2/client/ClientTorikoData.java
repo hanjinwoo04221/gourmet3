@@ -127,12 +127,34 @@ public final class ClientTorikoData {
     }
 
     /** Optimistic local selection so pressing the cycle key feels instant. */
-    public static int cycleSelectedLocally(int delta) {
+    /** Whether the skill is one the player put on their hotbar in the skill tree. */
+    public static boolean isChosen(int ordinal) {
+        for (int slot : SKILL_SLOTS) {
+            if (slot == ordinal) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * The skills to offer in the on-screen list and to cycle through: the unlocked ones the player has chosen (put on
+     * their hotbar). A player who has chosen nothing yet is offered everything they have unlocked.
+     */
+    public static java.util.List<SkillType> offeredSkills() {
         int level = cellLevel();
+        java.util.List<SkillType> unlocked = java.util.Arrays.stream(SkillType.VALUES)
+                .filter(skill -> skill.isUnlocked(level)).toList();
+        java.util.List<SkillType> chosen = unlocked.stream().filter(skill -> isChosen(skill.ordinal())).toList();
+        return chosen.isEmpty() ? unlocked : chosen;
+    }
+
+    public static int cycleSelectedLocally(int delta) {
+        java.util.List<SkillType> offered = offeredSkills();
         int step = delta < 0 ? -1 : 1;
         for (int i = 0; i < SkillType.COUNT; i++) {
             selected = Math.floorMod(selected + step, SkillType.COUNT);
-            if (SkillType.byIndex(selected).isUnlocked(level)) {
+            if (offered.contains(SkillType.byIndex(selected))) {
                 break;
             }
         }

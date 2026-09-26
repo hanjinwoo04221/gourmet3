@@ -28,6 +28,16 @@ public final class CaptureLevel {
 
     private CaptureLevel() {}
 
+    /**
+     * The Gourmet Cell level to score {@code entity} with when the caller has no cell level of its own already in
+     * hand: a player's is on their {@code TorikoData} (see the callers that already read it directly), and a
+     * {@link org.example.hanjinwoo.gourmet2.entity.LizardmanEntity} carries its own. Anything else has none.
+     */
+    public static int cellLevelOf(LivingEntity entity) {
+        return entity instanceof org.example.hanjinwoo.gourmet2.entity.LizardmanEntity lizardman
+                ? lizardman.cellLevel() : 0;
+    }
+
     /** @param cellLevel Gourmet Cell level for players; pass 0 for anything else */
     public static int of(LivingEntity entity, int cellLevel) {
         double score = base(entity, Attributes.MAX_HEALTH) * HEALTH_WEIGHT
