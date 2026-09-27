@@ -31,7 +31,13 @@ public final class ModDamageTypes {
         return ResourceKey.create(Registries.DAMAGE_TYPE, Gourmet2.id(path));
     }
 
+    /** A stand-in player never spawns, so what it does is the mob's doing. */
+    private static @Nullable Entity attributed(@Nullable Entity entity) {
+        return entity instanceof org.example.hanjinwoo.gourmet2.entity.MobDouble standIn ? standIn.owner() : entity;
+    }
+
     public static DamageSource source(Level level, ResourceKey<DamageType> type, @Nullable Entity causing) {
+        causing = attributed(causing);
         return new DamageSource(
                 level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type),
                 causing,
@@ -39,6 +45,8 @@ public final class ModDamageTypes {
     }
 
     public static DamageSource source(Level level, ResourceKey<DamageType> type, @Nullable Entity direct, @Nullable Entity causing) {
+        direct = attributed(direct);
+        causing = attributed(causing);
         return new DamageSource(
                 level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type),
                 direct,

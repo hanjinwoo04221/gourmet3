@@ -27,12 +27,15 @@ public final class CombatAnimations {
     }
 
     public static void tick(ServerPlayer player, boolean guarding, boolean combatMode) {
-        if (available()) {
+        if (available() && !(player instanceof org.example.hanjinwoo.gourmet2.entity.MobDouble)) {
             EpicFightCompat.tick(player, guarding, combatMode);
         }
     }
 
     public static void setCombatMode(ServerPlayer player, boolean on) {
+        if (player instanceof org.example.hanjinwoo.gourmet2.entity.MobDouble) {
+            return;
+        }
         if (available()) {
             EpicFightCompat.setCombatMode(player, on);
         }
@@ -52,6 +55,10 @@ public final class CombatAnimations {
 
     /** Plays a skill's cast animation (clip name in {@code animations/skill/}). */
     public static void playSkill(ServerPlayer player, String clip) {
+        if (player instanceof org.example.hanjinwoo.gourmet2.entity.MobDouble standIn) {
+            standIn.playClip(clip);
+            return;
+        }
         if (available()) {
             EpicFightCompat.playSkill(player, clip);
         }
@@ -67,6 +74,10 @@ public final class CombatAnimations {
     }
 
     public static void play(ServerPlayer player, String name) {
+        if (player instanceof org.example.hanjinwoo.gourmet2.entity.MobDouble standIn) {
+            standIn.playClip(name);
+            return;
+        }
         if (available()) {
             EpicFightCompat.play(player, name);
         }

@@ -71,7 +71,7 @@ public final class Hurt {
 
     /** Applies {@code amount} of {@code type}, ignoring the victim's hit-cooldown. */
     public static boolean apply(SkillContext ctx, LivingEntity target, ResourceKey<DamageType> type, float amount) {
-        if (amount <= 0.0F) {
+        if (amount <= 0.0F || Casters.isOwnKind(ctx.player(), target)) {
             return false;
         }
         // Skills land many hits per tick; vanilla i-frames would silently swallow all but the first.
@@ -211,6 +211,11 @@ public final class Hurt {
      */
     public static boolean givesWay(ServerPlayer caster, Level level, BlockPos pos, double impulse) {
         if (!Config.cellPowerBreaksBlocks || caster == null || !level.mayInteract(caster, pos)) {
+            return false;
+        }
+        // A mob fighting through a stand-in player only breaks blocks where mobs may.
+        if (caster instanceof org.example.hanjinwoo.gourmet2.entity.MobDouble
+                && !level.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING)) {
             return false;
         }
         BlockState state = level.getBlockState(pos);

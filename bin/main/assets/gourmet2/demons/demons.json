@@ -1,0 +1,13 @@
+{
+  "_comment": "One entry per Appetite Demon. cell_color decides which Gourmet Cell colour effect files are looked up (toriko/<kind>_<cell_color>.efkefc); effects{} can name an explicit file per kind (intimidation, ki). Missing files fall back to toriko/<kind>.efkefc.",
+  "default": "crimson_demon",
+  "demons": {
+    "crimson_demon": {
+      "cell_color": "red",
+      "rgb": "#D42A2A",
+      "effects": {
+        "intimidation": "toriko/intimidation"
+      }
+    }
+  }
+}

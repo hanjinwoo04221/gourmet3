@@ -568,7 +568,8 @@ public final class LeapEngine {
         // would knock away the very thing it flew up to fall alongside — and a tough one would stop it dead.
         int markId = data.isLeapChasing() ? data.leapTargetId() : -1;
         for (LivingEntity victim : player.level().getEntitiesOfClass(LivingEntity.class, swept,
-                candidate -> candidate != player && candidate.getId() != markId && candidate.isPickable())) {
+                candidate -> candidate != player && candidate.getId() != markId && candidate.isPickable()
+                        && !Casters.isOwnKind(player, candidate))) {
             if (!victim.isAlive() || victim.invulnerableTime > 0) {
                 // Already hit on this pass; its own invulnerability keeps one leap to one hit each.
                 continue;
@@ -664,7 +665,8 @@ public final class LeapEngine {
         Vec3 end = eye.add(look.scale(TARGET_RANGE));
         AABB sweep = player.getBoundingBox().expandTowards(look.scale(TARGET_RANGE)).inflate(1.0);
         EntityHitResult hit = ProjectileUtil.getEntityHitResult(player, eye, end, sweep,
-                candidate -> candidate != player && candidate.isPickable() && !candidate.isSpectator(),
+                candidate -> candidate != player && candidate.isPickable() && !candidate.isSpectator()
+                        && !Casters.isOwnKind(player, candidate),
                 TARGET_RANGE * TARGET_RANGE);
         if (hit == null) {
             return null;

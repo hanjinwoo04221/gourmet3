@@ -7,6 +7,7 @@
   },
   "minecraft:adventure/adventuring_time": {
     "criteria": {
+      "minecraft:flower_forest": "2026-09-27 22:11:32 +0900",
       "minecraft:old_growth_birch_forest": "2026-09-26 00:10:27 +0900",
       "minecraft:beach": "2026-09-25 22:56:20 +0900",
       "minecraft:forest": "2026-09-25 21:13:47 +0900",
@@ -616,6 +617,12 @@
   "minecraft:recipes/misc/light_gray_dye_from_azure_bluet": {
     "criteria": {
       "has_azure_bluet": "2026-09-26 09:54:01 +0900"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cake": {
+    "criteria": {
+      "has_egg": "2026-09-26 19:49:07 +0900"
     },
     "done": true
   },

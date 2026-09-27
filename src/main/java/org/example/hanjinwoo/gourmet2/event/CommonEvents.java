@@ -55,6 +55,10 @@ public final class CommonEvents {
             // (see LeapEngine#exchanged). Read from here rather than from any one skill so every kind of blow
             // counts, and a blow the victim turns aside on a guard still counts as the exchange it was.
             LeapEngine.exchanged(player, event.getSource().getEntity());
+        } else if (event.getEntity() instanceof org.example.hanjinwoo.gourmet2.entity.ClipPlayer fighter
+                && fighter.fighter().hasTwin()) {
+            // A mob fighting through its stand-in guards and dodges exactly as a player does.
+            CombatEngine.onIncomingDamage(fighter.fighter().twin(), event);
         }
     }
 

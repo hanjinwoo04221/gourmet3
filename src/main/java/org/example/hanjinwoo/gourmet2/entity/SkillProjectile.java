@@ -199,12 +199,13 @@ public abstract class SkillProjectile extends Projectile {
         if (!super.canHitEntity(target) || alreadyHit.contains(target.getId())) {
             return false;
         }
-        return !(getOwner() instanceof Player caster) || Targeting.canTarget(caster, target);
+        Player caster = org.example.hanjinwoo.gourmet2.skill.Casters.playerOf(getOwner());
+        return caster == null || Targeting.canTarget(caster, target);
     }
 
     /** The caster, if they are still around and are a player. */
     protected Player casterOrNull() {
-        return getOwner() instanceof Player player ? player : null;
+        return org.example.hanjinwoo.gourmet2.skill.Casters.playerOf(getOwner());
     }
 
     protected ServerLevel serverLevel() {

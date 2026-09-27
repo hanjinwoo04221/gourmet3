@@ -149,7 +149,7 @@ public final class ModEntities {
             REGISTER.register("lizardman", () -> EntityType.Builder
                     .<org.example.hanjinwoo.gourmet2.entity.LizardmanEntity>of(
                             org.example.hanjinwoo.gourmet2.entity.LizardmanEntity::new, MobCategory.MONSTER)
-                    .sized(0.85F, 1.95F)
+                    .sized(0.8F, 2.0F)
                     .clientTrackingRange(10)
                     .build("lizardman"));
 

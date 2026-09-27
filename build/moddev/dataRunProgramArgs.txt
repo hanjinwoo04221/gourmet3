@@ -7,7 +7,7 @@ forgedatadev
 --assetIndex
 17
 --assetsDir
-C:\\Users\\USER\\.gradle\\caches\\neoformruntime\\assets
+C:\\Users\\hanjw\\.gradle\\caches\\neoformruntime\\assets
 --gameDir
 .
 --fml.fmlVersion
@@ -24,6 +24,6 @@ C:\\Users\\USER\\.gradle\\caches\\neoformruntime\\assets
 gourmet2
 --all
 --output
-C:\\Users\\USER\\Desktop\\mod\\gourmet2\\src\\generated\\resources
+C:\\Users\\hanjw\\Downloads\\gourmet2-main\\gourmet2-main\\src\\generated\\resources
 --existing
-C:\\Users\\USER\\Desktop\\mod\\gourmet2\\src\\main\\resources
+C:\\Users\\hanjw\\Downloads\\gourmet2-main\\gourmet2-main\\src\\main\\resources

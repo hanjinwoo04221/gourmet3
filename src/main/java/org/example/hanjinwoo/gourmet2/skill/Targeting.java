@@ -25,6 +25,11 @@ public final class Targeting {
         if (target == caster || !target.isAlive() || target.isSpectator()) {
             return false;
         }
+        // A mob fighting through its stand-in never hurts itself or its own kind.
+        if (caster instanceof org.example.hanjinwoo.gourmet2.entity.MobDouble standIn
+                && (target == standIn.owner() || target.getType() == standIn.owner().getType())) {
+            return false;
+        }
         if (!(target instanceof LivingEntity living) || living.isInvulnerable()) {
             return false;
         }

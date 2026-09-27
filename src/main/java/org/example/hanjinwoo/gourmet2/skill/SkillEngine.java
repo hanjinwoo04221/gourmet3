@@ -87,6 +87,9 @@ public final class SkillEngine {
     }
 
     public static void selectCombatStyle(ServerPlayer player, String id) {
+        if (!(player instanceof org.example.hanjinwoo.gourmet2.entity.MobDouble) && !org.example.hanjinwoo.gourmet2.skill.combat.CombatStyles.playerSelectable(id)) {
+            return;
+        }
         TorikoData data = ModAttachments.of(player);
         data.setCombatStyle(id);
         sync(player, data);

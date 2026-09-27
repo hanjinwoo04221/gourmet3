@@ -67,7 +67,34 @@ public final class CombatStyles {
                     new ComboMove("spin3", 10.0F, 20)))),
             1.2F, true);
 
+    /**
+     * The Lizardman's style (modelCollection/red_nitro2): fast, low and predatory. Its claw group chains a right claw, a
+     * left claw and a bite; its tail group is a sweep into a heavy slam. It is aerial, so it launches and spikes like
+     * the player styles do. Written in exactly the format the player styles use, but kept out of {@link #ALL}: that
+     * list is what players can pick and what Epic Fight builds clips for, and this style's clips are GeckoLib
+     * animations on the mob (see LizardmanEntity#playClip), not Epic Fight ones.
+     */
+    public static final CombatStyle LIZARDMAN = new CombatStyle("lizardman", "combat_lizardman", List.of(
+            new AttackGroup("lizardman_claw", List.of(
+                    // Rising claws from below, then a bite to finish.
+                    new ComboMove("rise1", 4.0F, 8),
+                    new ComboMove("rise2", 4.5F, 8),
+                    new ComboMove("bite", 7.0F, 12))),
+            // A fast rake: four short claws in a row, the last one throws the victim back.
+            new AttackGroup("lizardman_flurry", List.of(
+                    new ComboMove("flurry1", 2.0F, 6, 5, 0),
+                    new ComboMove("flurry2", 2.0F, 6, 5, 0),
+                    new ComboMove("flurry3", 2.5F, 6, 5, 0),
+                    new ComboMove("flurry4", 4.0F, 6, 8, 0))),
+            new AttackGroup("lizardman_tail", List.of(
+                    new ComboMove("tail1", 5.0F, 12),
+                    new ComboMove("tail2", 9.0F, 16)))),
+            1.5F, true);
+
     public static final List<CombatStyle> ALL = List.of(FIST, ACROBATIC, SWIFT, CAPOEIRA);
+
+    /** Styles only mobs fight in. */
+    public static final List<CombatStyle> NPC = List.of(LIZARDMAN);
 
     static {
         // Combat state keeps one chain per group, sized by MAX_GROUPS: a style with more groups would
@@ -89,10 +116,20 @@ public final class CombatStyles {
                 return style;
             }
         }
+        for (CombatStyle style : NPC) {
+            if (style.id().equals(id)) {
+                return style;
+            }
+        }
         return ALL.get(0);
     }
 
     public static boolean exists(String id) {
+        return playerSelectable(id) || NPC.stream().anyMatch(style -> style.id().equals(id));
+    }
+
+    /** Whether a player may pick this style (mob-only styles have no Epic Fight clips to play for one). */
+    public static boolean playerSelectable(String id) {
         return ALL.stream().anyMatch(style -> style.id().equals(id));
     }
 }

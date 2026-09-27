@@ -483,7 +483,13 @@ public final class CombatEngine {
             // Arms: waist to over the head, out in front.
             "hand", List.of(new Limb(-1.1, 0.8, 0.15, 1.1, 2.05, 2.2)),
             // Spins: the whole body, all the way round.
-            "spin", List.of(new Limb(-2.4, 0.05, -2.4, 2.4, 1.95, 2.4)));
+            "spin", List.of(new Limb(-2.4, 0.05, -2.4, 2.4, 1.95, 2.4)),
+            // The Lizardman's rising claws: from the knees to well over its head.
+            "lizardman_claw", List.of(new Limb(-1.2, 0.1, 0.1, 1.2, 2.5, 2.7)),
+            // Its rake: short, at chest height, but reaching a little further than a fist.
+            "lizardman_flurry", List.of(new Limb(-1.1, 0.5, 0.1, 1.1, 2.1, 2.6)),
+            // Its tail: a low, wide sweep behind and around.
+            "lizardman_tail", List.of(new Limb(-2.0, 0.05, -2.0, 2.0, 1.2, 2.0)));
 
     private static List<Limb> limbsOf(AttackGroup group) {
         return LIMBS.getOrDefault(group.id(), LIMBS.get("basic"));
@@ -512,7 +518,8 @@ public final class CombatEngine {
         List<LivingEntity> hits = new ArrayList<>();
         for (LivingEntity victim : player.level().getEntitiesOfClass(LivingEntity.class,
                 player.getBoundingBox().inflate(2.8),
-                candidate -> candidate != player && candidate.isPickable())) {
+                candidate -> candidate != player && candidate.isPickable()
+                        && !org.example.hanjinwoo.gourmet2.skill.Casters.isOwnKind(player, candidate))) {
             if (reaches(limbs, feet, forward, right, victim.getBoundingBox())) {
                 hits.add(victim);
             }
