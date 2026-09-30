@@ -1,0 +1,14 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_21",
+  "package": "yesman.epicfight.compat.skinlayer3d.mixin",
+  "plugin": "yesman.epicfight.compat.skinlayer3d.SkinLayer3DMixinPlugin",
+  "client": [
+    "MixinCustomModelPart",
+    "MixinCustomizableCubeWrapper$SkinLayer3DMixinCustomModelCube"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

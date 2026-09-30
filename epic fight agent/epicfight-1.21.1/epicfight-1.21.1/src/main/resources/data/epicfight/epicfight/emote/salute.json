@@ -1,0 +1,12 @@
+{
+  "animation": "epicfight:biped/emote/salute",
+  "title": "emote.epicfight.salute",
+  "snapshot_time_stamp": 0.9,
+  "preview_camera_transform": {
+    "x_translation": 0.0,
+    "y_translation": 0.0,
+    "x_rotation": 10.0,
+    "y_rotation": -180.0,
+    "zoom": -3.0
+  }
+}

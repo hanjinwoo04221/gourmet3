@@ -1,0 +1,74 @@
+{
+  "source": "animation.lizardman.tail_slam",
+  "output_action": "animation.lizardman.tail_slam.generalized",
+  "driver": "Root",
+  "usable_bones": 26,
+  "animated_bones": 18,
+  "roles": {
+    "root": [
+      "Root"
+    ],
+    "spine": [
+      "Torso",
+      "Chest"
+    ],
+    "head": [
+      "Head",
+      "Jaw"
+    ],
+    "arm": [
+      "Shoulder_R",
+      "Arm_R",
+      "Elbow_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Elbow_L"
+    ],
+    "hand": [
+      "Hand_R",
+      "Hand_L"
+    ],
+    "leg": [
+      "Thigh_R",
+      "Knee_R",
+      "Leg_R",
+      "Thigh_L",
+      "Knee_L",
+      "Leg_L"
+    ],
+    "foot": [
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "tail": [
+      "Tail1",
+      "Tail2",
+      "Tail3"
+    ],
+    "wing": [],
+    "accessory": []
+  },
+  "excluded": [
+    "Elbow_L",
+    "Elbow_R",
+    "Knee_L",
+    "Knee_R",
+    "Tool_L",
+    "Tool_R"
+  ],
+  "accepted_contacts": [],
+  "validation": {
+    "contact_error": 0.0,
+    "max_sample_rotation_degrees": 53.07629728568226
+  },
+  "warnings": [
+    "No anatomical limits supplied; joint feasibility is not certified"
+  ],
+  "file": "C:\\Users\\hanjw\\Downloads\\epic fight agent\\sampleRig\\lizardman_generalized_test.blend"
+}

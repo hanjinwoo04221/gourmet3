@@ -1,0 +1,419 @@
+{
+  "idle": {
+    "status": "authored",
+    "loop": true,
+    "frames": 64,
+    "poses": [
+      "STANCE",
+      "SWAY_L",
+      "BOB",
+      "STANCE",
+      "SWAY_R",
+      "BOB",
+      "STANCE"
+    ]
+  },
+  "walk": {
+    "status": "authored",
+    "loop": true,
+    "frames": 40,
+    "poses": [
+      "WALK_L",
+      "WALK_PASS_L",
+      "WALK_R",
+      "WALK_PASS_R",
+      "WALK_L"
+    ]
+  },
+  "run": {
+    "status": "authored",
+    "loop": true,
+    "frames": 20,
+    "poses": [
+      "RUN_L",
+      "RUN_FLY_L",
+      "RUN_R",
+      "RUN_FLY_R",
+      "RUN_L"
+    ]
+  },
+  "claw_right": {
+    "status": "authored",
+    "loop": false,
+    "frames": 18,
+    "poses": [
+      "CARRY_R",
+      "F_R",
+      "SWING_R",
+      "STRIKE_R",
+      "STRIKE_R",
+      "FOLLOW_R",
+      "CARRY_L"
+    ]
+  },
+  "claw_left": {
+    "status": "authored",
+    "loop": false,
+    "frames": 18,
+    "poses": [
+      "CARRY_L",
+      "F_L",
+      "SWING_L",
+      "STRIKE_L",
+      "STRIKE_L",
+      "FOLLOW_L",
+      "CARRY_R"
+    ]
+  },
+  "flurry_right": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "CARRY_R",
+      "F_R",
+      "STRIKE_R",
+      "STRIKE_R",
+      "CARRY_L"
+    ]
+  },
+  "flurry_left": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "CARRY_L",
+      "F_L",
+      "STRIKE_L",
+      "STRIKE_L",
+      "CARRY_R"
+    ]
+  },
+  "rise_right": {
+    "status": "authored",
+    "loop": false,
+    "frames": 18,
+    "poses": [
+      "CARRY_R",
+      "DIP_R",
+      "RISE_HIT_R",
+      "RISE_HIT_R",
+      "RISE_OVER_R",
+      "CARRY_L"
+    ]
+  },
+  "rise_left": {
+    "status": "authored",
+    "loop": false,
+    "frames": 18,
+    "poses": [
+      "CARRY_L",
+      "DIP_L",
+      "RISE_HIT_L",
+      "RISE_HIT_L",
+      "RISE_OVER_L",
+      "CARRY_R"
+    ]
+  },
+  "bite": {
+    "status": "authored",
+    "loop": false,
+    "frames": 20,
+    "poses": [
+      "CARRY_R",
+      "BITE_COIL",
+      "BITE_LUNGE",
+      "BITE_CLAMP",
+      "BITE_SHAKE",
+      "BITE_CLAMP",
+      "STANCE"
+    ]
+  },
+  "tail_slam": {
+    "status": "authored",
+    "loop": false,
+    "frames": 28,
+    "poses": [
+      "SPIN_READY",
+      "SPIN_COIL",
+      "SPIN_MID",
+      "SPIN_HIT",
+      "SPIN_END",
+      "SPIN_END"
+    ]
+  },
+  "launcher": {
+    "status": "authored",
+    "loop": false,
+    "frames": 22,
+    "poses": [
+      "STANCE",
+      "LOAD_LOW",
+      "FLIP_KICK_A",
+      "FLIP_KICK_B",
+      "FLIP_TUCK",
+      "FLIP_OPEN",
+      "LAND_BACK",
+      "STANCE_BACK"
+    ]
+  },
+  "climb": {
+    "status": "authored",
+    "loop": true,
+    "frames": 20,
+    "poses": [
+      "CLIMB_L",
+      "CLIMB_R",
+      "CLIMB_L"
+    ]
+  },
+  "flash_step": {
+    "status": "authored",
+    "loop": false,
+    "frames": 10,
+    "poses": [
+      "STANCE",
+      "FLASH_LEAN",
+      "FLASH_SLIDE",
+      "LAND_LOW",
+      "STANCE"
+    ]
+  },
+  "wall_hold": {
+    "status": "authored",
+    "loop": true,
+    "frames": 40,
+    "poses": [
+      "WALL_HOLD_A",
+      "WALL_HOLD_B",
+      "WALL_HOLD_A"
+    ]
+  },
+  "ceiling_hang": {
+    "status": "authored",
+    "loop": true,
+    "frames": 48,
+    "poses": [
+      "CEIL_HANG_A",
+      "CEIL_HANG_B",
+      "CEIL_HANG_A"
+    ]
+  },
+  "ceiling_move": {
+    "status": "authored",
+    "loop": true,
+    "frames": 24,
+    "poses": [
+      "CEILM_L",
+      "CEILM_R",
+      "CEILM_L"
+    ]
+  },
+  "run_claw_left": {
+    "status": "authored",
+    "loop": false,
+    "frames": 14,
+    "poses": [
+      "RUN_L",
+      "RCW_L",
+      "RCS_L",
+      "RCS_L",
+      "RCF_L",
+      "RUN_FLY_R",
+      "RUN_L"
+    ]
+  },
+  "run_claw_right": {
+    "status": "authored",
+    "loop": false,
+    "frames": 10,
+    "poses": [
+      "RUN_R",
+      "RCW_R",
+      "RCS_R",
+      "RCS_R",
+      "RUN_L"
+    ]
+  },
+  "run_bite": {
+    "status": "authored",
+    "loop": false,
+    "frames": 14,
+    "poses": [
+      "RUN_L",
+      "RB_OPEN",
+      "RB_CLAMP",
+      "RB_SHAKE",
+      "RUN_FLY_R",
+      "RUN_L"
+    ]
+  },
+  "dash_spin": {
+    "status": "authored",
+    "loop": false,
+    "frames": 26,
+    "poses": [
+      "RUN_L",
+      "DASH_LOW",
+      "DASH_120",
+      "DASH_300",
+      "DASH_480",
+      "DASH_660",
+      "DASH_720",
+      "RUN_R_720",
+      "RUN_L_720"
+    ]
+  },
+  "rise_punch": {
+    "status": "authored",
+    "loop": false,
+    "frames": 16,
+    "poses": [
+      "STANCE",
+      "PUNCH_COIL",
+      "PUNCH_UP",
+      "PUNCH_HOLD",
+      "PUNCH_FALL",
+      "STANCE"
+    ]
+  },
+  "spike": {
+    "status": "authored",
+    "loop": false,
+    "frames": 16,
+    "poses": [
+      "STANCE",
+      "STOMP_RAISE",
+      "STOMP_HIT",
+      "STOMP_HIT",
+      "LAND_LOW",
+      "STANCE"
+    ]
+  },
+  "leap_charge": {
+    "status": "authored",
+    "loop": false,
+    "frames": 16,
+    "poses": [
+      "STANCE",
+      "LEAP_SWING",
+      "LEAP_SPRING",
+      "LAND_LOW",
+      "STANCE"
+    ]
+  },
+  "leap": {
+    "status": "authored",
+    "loop": false,
+    "frames": 30,
+    "poses": [
+      "STANCE",
+      "LOAD_LOW",
+      "POUNCE_A",
+      "POUNCE_B",
+      "POUNCE_C",
+      "LAND_LEAP",
+      "STANCE_FRONT"
+    ]
+  },
+  "jump": {
+    "status": "authored",
+    "loop": false,
+    "frames": 24,
+    "poses": [
+      "STANCE",
+      "LOAD_LOW",
+      "TWIST_A",
+      "TWIST_B",
+      "TWIST_C",
+      "LAND_TWIST",
+      "STANCE_TWIST"
+    ]
+  },
+  "dodge": {
+    "status": "authored",
+    "loop": false,
+    "frames": 18,
+    "poses": [
+      "STANCE",
+      "SIDE_COIL",
+      "SIDE_A",
+      "SIDE_B",
+      "SIDE_C",
+      "LAND_SIDE",
+      "STANCE_SIDE"
+    ]
+  },
+  "guard": {
+    "status": "authored",
+    "loop": false,
+    "frames": 16,
+    "poses": [
+      "STANCE",
+      "GUARD_UP",
+      "GUARD_HIT",
+      "GUARD_UP",
+      "STANCE"
+    ]
+  },
+  "skill_charge": {
+    "status": "authored",
+    "loop": false,
+    "frames": 22,
+    "poses": [
+      "STANCE",
+      "GATHER",
+      "GATHER_A",
+      "GATHER_B",
+      "GATHER_A",
+      "STANCE"
+    ]
+  },
+  "skill_thrust": {
+    "status": "authored",
+    "loop": false,
+    "frames": 14,
+    "poses": [
+      "STANCE",
+      "THRUST_LOAD",
+      "THRUST_HIT",
+      "THRUST_HOLD",
+      "STANCE"
+    ]
+  },
+  "duck_rake_bite": {
+    "status": "authored",
+    "loop": false,
+    "frames": 38,
+    "poses": [
+      "STANCE",
+      "DUCK_L",
+      "SPIN_LOAD",
+      "SPIN_RAKE",
+      "SPIN_RAKE_END",
+      "BITE_COIL_360",
+      "BITE_LUNGE_360",
+      "BITE_CLAMP_360",
+      "BITE_SHAKE_360",
+      "STANCE_360"
+    ]
+  },
+  "hop_tail_claw": {
+    "status": "authored",
+    "loop": false,
+    "frames": 44,
+    "poses": [
+      "STANCE",
+      "LOAD_LOW",
+      "LEAP_SPRING",
+      "AIR_TAIL_A",
+      "AIR_TAIL_B",
+      "LAND_TAILSPIN",
+      "CARRY_R_TS",
+      "F_R_TS",
+      "STRIKE_R_TS",
+      "FOLLOW_R_TS",
+      "STANCE_TS"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "override": false,
+  "rules": [
+    {
+      "for": "epicfight:weapon_innate_skill_tooltip",
+      "where": "left",
+      "when": ["epicfight:can_show_weapon_innate_skill_tooltip"],
+      "then": { "translate": "inventory.epicfight.guide.show_innate_skill" }
+    }
+  ]
+}

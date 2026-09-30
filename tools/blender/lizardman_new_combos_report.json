@@ -1,0 +1,166 @@
+[
+  {
+    "action": "lizardman.duck_rake_bite",
+    "authored": "lizardman.duck_rake_bite.authored",
+    "phases": [
+      {
+        "frame": 1,
+        "label": "Low guard"
+      },
+      {
+        "frame": 5,
+        "label": "Duck to outside"
+      },
+      {
+        "frame": 8,
+        "label": "Clear the strike"
+      },
+      {
+        "frame": 11,
+        "label": "Load low claw"
+      },
+      {
+        "frame": 14,
+        "label": "Low rake"
+      },
+      {
+        "frame": 17,
+        "label": "Recoil"
+      },
+      {
+        "frame": 20,
+        "label": "Neck drive"
+      },
+      {
+        "frame": 23,
+        "label": "Bite"
+      },
+      {
+        "frame": 26,
+        "label": "Release"
+      },
+      {
+        "frame": 30,
+        "label": "Guard return"
+      },
+      {
+        "frame": 34,
+        "label": "Settle"
+      }
+    ],
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 1,
+        "end": 3
+      },
+      {
+        "bone": "Foot_L",
+        "start": 13,
+        "end": 15
+      },
+      {
+        "bone": "Foot_R",
+        "start": 22,
+        "end": 24
+      }
+    ],
+    "impacts": [
+      14,
+      23
+    ],
+    "refinement": {
+      "validation": {
+        "contact_error": 0.0,
+        "max_sample_rotation_degrees": 32.40875104089529
+      },
+      "warnings": [
+        "No anatomical limits supplied; joint feasibility is not certified"
+      ]
+    }
+  },
+  {
+    "action": "lizardman.hop_tail_claw",
+    "authored": "lizardman.hop_tail_claw.authored",
+    "phases": [
+      {
+        "frame": 1,
+        "label": "Stalk"
+      },
+      {
+        "frame": 5,
+        "label": "Compression"
+      },
+      {
+        "frame": 8,
+        "label": "Feint launch"
+      },
+      {
+        "frame": 12,
+        "label": "Hop across"
+      },
+      {
+        "frame": 16,
+        "label": "Landing"
+      },
+      {
+        "frame": 18,
+        "label": "Tail coil"
+      },
+      {
+        "frame": 21,
+        "label": "Tail sweep"
+      },
+      {
+        "frame": 24,
+        "label": "Turn through"
+      },
+      {
+        "frame": 26,
+        "label": "Claw chamber"
+      },
+      {
+        "frame": 29,
+        "label": "Claw impact"
+      },
+      {
+        "frame": 34,
+        "label": "Recover"
+      },
+      {
+        "frame": 38,
+        "label": "Settle"
+      }
+    ],
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 1,
+        "end": 3
+      },
+      {
+        "bone": "Foot_R",
+        "start": 20,
+        "end": 22
+      },
+      {
+        "bone": "Foot_L",
+        "start": 28,
+        "end": 30
+      }
+    ],
+    "impacts": [
+      21,
+      29
+    ],
+    "refinement": {
+      "validation": {
+        "contact_error": 0.0,
+        "max_sample_rotation_degrees": 27.18851022350145
+      },
+      "warnings": [
+        "No anatomical limits supplied; joint feasibility is not certified"
+      ]
+    }
+  }
+]

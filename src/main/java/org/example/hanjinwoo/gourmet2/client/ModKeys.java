@@ -59,6 +59,14 @@ public final class ModKeys {
             GLFW.GLFW_KEY_N,
             CATEGORY);
 
+    /** Hold against a wall to hang on it and move across it (see PlayerCling). */
+    public static final KeyMapping CLING = new KeyMapping(
+            "key." + Gourmet2.MODID + ".cling",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_Y,
+            CATEGORY);
+
     public static final KeyMapping DODGE = new KeyMapping(
             "key." + Gourmet2.MODID + ".dodge",
             KeyConflictContext.IN_GAME,

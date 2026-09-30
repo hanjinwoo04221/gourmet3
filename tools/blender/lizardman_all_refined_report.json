@@ -1,0 +1,1190 @@
+{
+  "idle": {
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 0,
+        "end": 48
+      },
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 48
+      }
+    ],
+    "anchors": [
+      12,
+      24,
+      36
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 0.35308608263824265
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "walk": {
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 0,
+        "end": 3
+      },
+      {
+        "bone": "Foot_R",
+        "start": 17,
+        "end": 20
+      },
+      {
+        "bone": "Foot_L",
+        "start": 33,
+        "end": 36
+      }
+    ],
+    "anchors": [
+      0,
+      18,
+      36
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 5.146563457265603
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "run": {
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_R",
+        "start": 9,
+        "end": 11
+      },
+      {
+        "bone": "Foot_L",
+        "start": 18,
+        "end": 20
+      }
+    ],
+    "anchors": [
+      0,
+      10,
+      20
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 6.110591279213451
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "claw_left": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_R",
+        "start": 6,
+        "end": 8
+      }
+    ],
+    "anchors": [
+      4,
+      7
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 22.99743889826886
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "claw_right": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_L",
+        "start": 6,
+        "end": 8
+      }
+    ],
+    "anchors": [
+      4,
+      7
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 22.99744767251421
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "flurry_left": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_R",
+        "start": 4,
+        "end": 6
+      }
+    ],
+    "anchors": [
+      3,
+      5,
+      7
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 34.39016503962641
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "flurry_right": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_L",
+        "start": 4,
+        "end": 6
+      }
+    ],
+    "anchors": [
+      3,
+      5,
+      7
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 34.39029501398617
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "bite": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_R",
+        "start": 5,
+        "end": 7
+      }
+    ],
+    "anchors": [
+      4,
+      6,
+      9
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 7.728588613840419
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "tail_slam": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_L",
+        "start": 7,
+        "end": 9
+      }
+    ],
+    "anchors": [
+      4,
+      8
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 10.638377168038746
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "spike": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_L",
+        "start": 6,
+        "end": 8
+      }
+    ],
+    "anchors": [
+      4,
+      7
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 15.179293620557509
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "guard": {
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 0,
+        "end": 12
+      },
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 12
+      }
+    ],
+    "anchors": [
+      4
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 16.927733266253846
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "dodge": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_L",
+        "start": 2,
+        "end": 4
+      },
+      {
+        "bone": "Foot_L",
+        "start": 6,
+        "end": 8
+      }
+    ],
+    "anchors": [
+      3,
+      7
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 11.515782064822275
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "launcher": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      }
+    ],
+    "anchors": [
+      4,
+      7
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 29.15026779112084
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "rise_left": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_R",
+        "start": 6,
+        "end": 8
+      }
+    ],
+    "anchors": [
+      4,
+      7
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 23.17861009821158
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "rise_right": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_L",
+        "start": 6,
+        "end": 8
+      }
+    ],
+    "anchors": [
+      4,
+      7
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 23.178620980290006
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "skill_charge": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      }
+    ],
+    "anchors": [
+      5
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 10.836018656861425
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "skill_thrust": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_L",
+        "start": 5,
+        "end": 7
+      }
+    ],
+    "anchors": [
+      3,
+      6
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 29.27372904167176
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "leap_charge": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_L",
+        "start": 9,
+        "end": 11
+      }
+    ],
+    "anchors": [
+      4,
+      6,
+      9
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 28.21089414812487
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "leap": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_L",
+        "start": 16,
+        "end": 18
+      }
+    ],
+    "anchors": [
+      6,
+      16
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 14.002261336789184
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "jump": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_L",
+        "start": 14,
+        "end": 16
+      }
+    ],
+    "anchors": [
+      5,
+      14
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 14.002264011539596
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "duck_rake_bite": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_R",
+        "start": 11,
+        "end": 13
+      },
+      {
+        "bone": "Foot_R",
+        "start": 19,
+        "end": 21
+      }
+    ],
+    "anchors": [
+      4,
+      8,
+      12,
+      16,
+      20
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 17.29988848107871
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  "hop_tail_claw": {
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2
+      },
+      {
+        "bone": "Foot_L",
+        "start": 12,
+        "end": 14
+      }
+    ],
+    "anchors": [
+      4,
+      8,
+      12,
+      17,
+      22,
+      26
+    ],
+    "selected_bones": [
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Torso",
+      "Chest",
+      "Head",
+      "Jaw",
+      "Shoulder_R",
+      "Arm_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Hand_L",
+      "Thigh_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "status": "refined",
+    "api_validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 17.299891750521777
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  }
+}

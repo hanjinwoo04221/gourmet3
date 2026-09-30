@@ -1,0 +1,314 @@
+[
+  {
+    "name": "martial.jab_cross_hook",
+    "authored": "martial.jab_cross_hook.authored",
+    "refined": "martial.jab_cross_hook",
+    "impacts": [
+      9,
+      18,
+      27
+    ],
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 7,
+        "end": 10
+      },
+      {
+        "bone": "Foot_L",
+        "start": 16,
+        "end": 19
+      },
+      {
+        "bone": "Foot_R",
+        "start": 25,
+        "end": 28
+      }
+    ],
+    "lateral_results": [
+      {
+        "frame": 6.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.08,
+        "achieved": 0.08000078797340393,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "frame": 9.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.08,
+        "achieved": 0.07999518513679504,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "frame": 11.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.035,
+        "achieved": 0.035016030073165894,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "frame": 16.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": 0.08,
+        "achieved": 0.07999557256698608,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 18.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": 0.08,
+        "achieved": 0.08000344038009644,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 24.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": -0.11,
+        "achieved": -0.1100265383720398,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "frame": 27.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.1,
+        "achieved": 0.09998629987239838,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "authored_joint_key_counts": {
+      "Root": 7,
+      "Tail1": 5,
+      "Tail2": 5,
+      "Tail3": 5,
+      "Torso": 11,
+      "Chest": 13,
+      "Head": 7,
+      "Jaw": 2,
+      "Shoulder_R": 6,
+      "Arm_R": 6,
+      "Elbow_R": 6,
+      "Hand_R": 6,
+      "Shoulder_L": 8,
+      "Arm_L": 8,
+      "Elbow_L": 8,
+      "Hand_L": 8,
+      "Thigh_R": 3,
+      "Knee_R": 3,
+      "Leg_R": 3,
+      "Foot_R": 3,
+      "Toe_R_out": 2,
+      "Toe_R_mid": 2,
+      "Toe_R_in": 2,
+      "Thigh_L": 3,
+      "Knee_L": 3,
+      "Leg_L": 3,
+      "Foot_L": 3,
+      "Toe_L_out": 2,
+      "Toe_L_mid": 2,
+      "Toe_L_in": 2
+    },
+    "validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 13.614119610777319
+    },
+    "joint_coverage": {
+      "selected": 23,
+      "joint_helpers": [
+        "Elbow_L",
+        "Elbow_R",
+        "Knee_L",
+        "Knee_R"
+      ],
+      "mean_active_per_sample": 6.46969696969697,
+      "least_active_per_sample": 1,
+      "active_samples_by_bone": {
+        "Arm_L": 48,
+        "Arm_R": 63,
+        "Chest": 46,
+        "Hand_L": 0,
+        "Hand_R": 0,
+        "Head": 0,
+        "Jaw": 0,
+        "Shoulder_L": 59,
+        "Shoulder_R": 19,
+        "Tail1": 0,
+        "Tail2": 0,
+        "Tail3": 0,
+        "Toe_L_in": 0,
+        "Toe_L_mid": 0,
+        "Toe_L_out": 0,
+        "Toe_R_in": 0,
+        "Toe_R_mid": 0,
+        "Toe_R_out": 0,
+        "Torso": 61,
+        "Elbow_L": 62,
+        "Elbow_R": 47,
+        "Knee_L": 11,
+        "Knee_R": 11
+      }
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified",
+      "Review animated deforming joint helpers: ['Elbow_L', 'Elbow_R', 'Knee_L', 'Knee_R']"
+    ]
+  },
+  {
+    "name": "martial.slip_elbow_knee",
+    "authored": "martial.slip_elbow_knee.authored",
+    "refined": "martial.slip_elbow_knee",
+    "impacts": [
+      14,
+      24
+    ],
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 11,
+        "end": 15
+      },
+      {
+        "bone": "Foot_R",
+        "start": 22,
+        "end": 26
+      }
+    ],
+    "lateral_results": [
+      {
+        "frame": 11.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": 0.05,
+        "achieved": 0.05001148581504822,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "frame": 14.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": 0.08,
+        "achieved": 0.0799989104270935,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "authored_joint_key_counts": {
+      "Root": 9,
+      "Tail1": 3,
+      "Tail2": 3,
+      "Tail3": 3,
+      "Torso": 10,
+      "Chest": 10,
+      "Head": 9,
+      "Jaw": 2,
+      "Shoulder_R": 5,
+      "Arm_R": 5,
+      "Elbow_R": 5,
+      "Hand_R": 5,
+      "Shoulder_L": 4,
+      "Arm_L": 4,
+      "Elbow_L": 4,
+      "Hand_L": 4,
+      "Thigh_R": 7,
+      "Knee_R": 7,
+      "Leg_R": 7,
+      "Foot_R": 7,
+      "Toe_R_out": 2,
+      "Toe_R_mid": 2,
+      "Toe_R_in": 2,
+      "Thigh_L": 8,
+      "Knee_L": 8,
+      "Leg_L": 8,
+      "Foot_L": 8,
+      "Toe_L_out": 2,
+      "Toe_L_mid": 2,
+      "Toe_L_in": 2
+    },
+    "validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 9.546814071377169
+    },
+    "joint_coverage": {
+      "selected": 23,
+      "joint_helpers": [
+        "Elbow_L",
+        "Elbow_R",
+        "Knee_L",
+        "Knee_R"
+      ],
+      "mean_active_per_sample": 8.903225806451612,
+      "least_active_per_sample": 4,
+      "active_samples_by_bone": {
+        "Arm_L": 62,
+        "Arm_R": 35,
+        "Chest": 47,
+        "Hand_L": 60,
+        "Hand_R": 0,
+        "Head": 54,
+        "Jaw": 0,
+        "Shoulder_L": 0,
+        "Shoulder_R": 34,
+        "Tail1": 53,
+        "Tail2": 0,
+        "Tail3": 0,
+        "Toe_L_in": 0,
+        "Toe_L_mid": 0,
+        "Toe_L_out": 0,
+        "Toe_R_in": 0,
+        "Toe_R_mid": 0,
+        "Toe_R_out": 0,
+        "Torso": 62,
+        "Elbow_L": 51,
+        "Elbow_R": 47,
+        "Knee_L": 33,
+        "Knee_R": 14
+      }
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified",
+      "Review animated deforming joint helpers: ['Elbow_L', 'Elbow_R', 'Knee_L', 'Knee_R']"
+    ]
+  }
+]

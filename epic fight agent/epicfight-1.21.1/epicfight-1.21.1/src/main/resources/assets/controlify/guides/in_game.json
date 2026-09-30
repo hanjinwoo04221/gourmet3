@@ -1,0 +1,17 @@
+{
+  "override": false,
+  "rules": [
+    {
+      "for": "epicfight:dodge",
+      "where": "right",
+      "when": ["epicfight:can_perform_dodge"],
+      "then": { "translate": "key.epicfight.dodge" }
+    },
+    {
+      "for": "epicfight:lock_on",
+      "where": "left",
+      "when": ["controlify:looking_at_entity"],
+      "then": { "translate": "key.epicfight.lock_on" }
+    }
+  ]
+}

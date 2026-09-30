@@ -19,6 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.example.hanjinwoo.gourmet2.entity.MobDouble;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.example.hanjinwoo.gourmet2.compat.CombatAnimations;
 import org.example.hanjinwoo.gourmet2.data.TorikoData;
@@ -27,6 +28,10 @@ import org.example.hanjinwoo.gourmet2.entity.UpheavalEntity;
 import org.example.hanjinwoo.gourmet2.registry.ModAttachments;
 import org.example.hanjinwoo.gourmet2.registry.ModDamageTypes;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * The charged leap: hold the leap key while supported by a surface to wind up, let go to launch at
@@ -152,7 +157,48 @@ public final class LeapEngine {
      */
     private static final int FALL_IMMUNITY_TICKS = 60;
 
+    /**
+     * A leap key tap this short (in ticks held) is not a leap at all but a flash step: a burst of speed along the
+     * movement keys, over in a handful of ticks, with a moment of invulnerability.
+     */
+    private static final int FLASH_MAX_HOLD = 8;
+    private static final int FLASH_TICKS = 5;
+    private static final int FLASH_COOLDOWN = 10;
+    private static final int FLASH_IFRAMES = 4;
+    /** Speed of the first tick of a flash step, in blocks per tick; it decays by {@link #FLASH_DECAY} each tick. */
+    private static final double FLASH_SPEED = 1.7;
+    private static final double FLASH_DECAY = 0.76;
+
+    /** One flash step in progress. */
+    private static final class Flash {
+        final Vec3 direction;
+        double speed = FLASH_SPEED;
+        int ticks = FLASH_TICKS;
+
+        Flash(Vec3 direction) {
+            this.direction = direction;
+        }
+    }
+
+    private static final Map<UUID, Flash> FLASHES = new HashMap<>();
+    private static final Map<UUID, Integer> FLASH_READY = new HashMap<>();
+    /** The movement keys held when the leap key went down, for a tap whose release came with none held. */
+    private static final Map<UUID, float[]> PRESSED_KEYS = new HashMap<>();
+    /** The tick the leap key went down, for timing a tap. */
+    private static final Map<UUID, Integer> PRESSED_AT = new HashMap<>();
+
     private LeapEngine() {}
+
+    /** The leap key went down: plant and wind up, if there is a surface to push off from. */
+    public static void charge(ServerPlayer player, float forward, float strafe) {
+        PRESSED_KEYS.put(player.getUUID(), new float[] {forward, strafe});
+        PRESSED_AT.put(player.getUUID(), player.tickCount);
+        charge(player);
+        if (ModAttachments.of(player).isLeaping()) {
+            // That press launched the air chase: its release is the end of a leap, not a tap.
+            PRESSED_AT.remove(player.getUUID());
+        }
+    }
 
     /** The leap key went down: plant and wind up, if there is a surface to push off from. */
     public static void charge(ServerPlayer player) {
@@ -168,12 +214,12 @@ public final class LeapEngine {
         if (doubleTap && chaseAirborne(player, data)) {
             return;
         }
-        if (data.isLeaping() || !supported(player)) {
+        if (data.isLeaping() || !canPlant(player)) {
             return;
         }
         data.setLeapCharging(true);
         data.setGuarding(false);
-        CombatAnimations.playSkill(player, "leap_charge");
+        // The wind-up clip starts only once the press has outlasted a tap (see tick): a flash step has no wind-up.
     }
 
     /**
@@ -283,6 +329,86 @@ public final class LeapEngine {
                 && mark.isAlive() && !mark.onGround() ? mark : null;
     }
 
+    /** The leap key came up with these movement keys held: launch, or flash-step if it was only tapped. */
+    public static void release(ServerPlayer player, float forward, float strafe) {
+        TorikoData data = ModAttachments.of(player);
+        float[] pressed = PRESSED_KEYS.remove(player.getUUID());
+        Integer pressedAt = PRESSED_AT.remove(player.getUUID());
+        boolean tap = pressedAt != null && player.tickCount - pressedAt <= FLASH_MAX_HOLD;
+        // A tap during a real flight is ignored; one while "leaping" on the ground is a leap that never ended.
+        if (tap && (!data.isLeaping() || player.onGround())) {
+            if (forward == 0.0F && strafe == 0.0F && pressed != null) {
+                forward = pressed[0];
+                strafe = pressed[1];
+            }
+            if (data.isLeapCharging()) {
+                data.stopLeap();
+            }
+            flash(player, data, forward, strafe);
+            return;
+        }
+        release(player);
+    }
+
+    /**
+     * The flash step: a short, fast slide the way the movement keys point (straight ahead with none held), that
+     * hangs a few ticks of invulnerability on the body and leaves a trail. Also what a mob's short leap tap is.
+     *
+     * @param forward movement key forward (+1) or back (-1)
+     * @param strafe movement key left (+1) or right (-1)
+     * @return whether the step happened (it does not while the last one is recovering, or without the Appetite)
+     */
+    public static boolean flash(ServerPlayer player, TorikoData data, float forward, float strafe) {
+        UUID id = player.getUUID();
+        Integer ready = FLASH_READY.get(id);
+        if ((ready != null && player.tickCount < ready) || FLASHES.containsKey(id)) {
+            return false;
+        }
+        Vec3 look = player.getLookAngle().multiply(1.0, 0.0, 1.0);
+        look = look.lengthSqr() < 1.0E-6 ? new Vec3(0.0, 0.0, 1.0) : look.normalize();
+        Vec3 left = new Vec3(look.z, 0.0, -look.x);
+        Vec3 direction = look.scale(forward).add(left.scale(strafe));
+        direction = direction.lengthSqr() < 0.01 ? look : direction.normalize();
+        FLASHES.put(id, new Flash(direction));
+        FLASH_READY.put(id, player.tickCount + FLASH_COOLDOWN);
+
+        data.setDodgeTicks(FLASH_IFRAMES);
+        data.setGuarding(false);
+        data.setFallImmuneTicks(Math.max(data.fallImmuneTicks(), 20));
+        if (player instanceof MobDouble standIn) {
+            standIn.playClip("flash_step");
+        } else {
+            CombatAnimations.play(player, "dodge");
+        }
+        ServerLevel level = (ServerLevel) player.level();
+        Vec3 at = player.position();
+        level.playSound(null, at.x, at.y, at.z, SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 0.7F, 1.9F);
+        level.playSound(null, at.x, at.y, at.z, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.25F, 1.9F);
+        SkillEngine.sync(player, data);
+        return true;
+    }
+
+    /** Flies the flash steps in progress: the push, the speed bleeding off, the streak left behind. */
+    private static void tickFlash(ServerPlayer player) {
+        Flash flash = FLASHES.get(player.getUUID());
+        if (flash == null) {
+            return;
+        }
+        if (--flash.ticks < 0 || !player.isAlive()) {
+            FLASHES.remove(player.getUUID());
+            return;
+        }
+        Vec3 motion = player.getDeltaMovement();
+        if (player.horizontalCollision && flash.ticks < FLASH_TICKS - 1) {
+            FLASHES.remove(player.getUUID());
+            return;
+        }
+        player.setDeltaMovement(flash.direction.x * flash.speed, player.onGround() ? Math.max(0.0, motion.y) : motion.y,
+                flash.direction.z * flash.speed);
+        player.hurtMarked = true;
+        flash.speed *= FLASH_DECAY;
+    }
+
     /** The leap key came up: launch, however far the wind-up earned. */
     public static void release(ServerPlayer player) {
         TorikoData data = ModAttachments.of(player);
@@ -350,13 +476,17 @@ public final class LeapEngine {
 
     /** Winds the charge up while the key is held, then flies the dash a tick at a time. */
     public static void tick(ServerPlayer player, TorikoData data) {
+        tickFlash(player);
         if (data.isLeapCharging()) {
-            if (!supported(player)) {
+            if (!canPlant(player)) {
                 // The surface is gone, or they stepped off it: the wind-up needs something to push from.
                 data.stopLeap();
                 return;
             }
             data.tickLeapCharge();
+            if (data.leapChargeTicks() == FLASH_MAX_HOLD + 1) {
+                CombatAnimations.playSkill(player, "leap_charge");
+            }
             int held = data.leapChargeTicks() - HOLD_FROM_CHARGE_TICKS;
             if (held >= 0 && held % HOLD_REPLAY_TICKS == 0) {
                 // The wind-up has eased into the coil: hold it from here on. Re-played before the previous
@@ -614,6 +744,11 @@ public final class LeapEngine {
      * does holding on to a ladder or vine. The test is just whether a block's collision shape touches the
      * player, so clinging to a wall or hanging under an overhang winds the leap up like standing does.
      */
+    /** Something to push off: a surface underfoot, or the wall or ceiling the body is hanging on. */
+    private static boolean canPlant(ServerPlayer player) {
+        return supported(player) || org.example.hanjinwoo.gourmet2.skill.PlayerCling.isClinging(player);
+    }
+
     private static boolean supported(ServerPlayer player) {
         if (player.onGround() || player.onClimbable()) {
             return true;

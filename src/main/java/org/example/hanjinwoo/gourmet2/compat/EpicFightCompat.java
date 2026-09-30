@@ -64,6 +64,8 @@ public final class EpicFightCompat {
             Map.entry("flying_knife_charge", 56), Map.entry("flying_knife_shot", 12), Map.entry("intimidation", 34),
             Map.entry("demon_form", 46), Map.entry("ki_release", 40), Map.entry("food_immersion", 84),
             Map.entry("leap_charge", 24), Map.entry("leap_hold", 12),
+            Map.entry("cling_wall", 12), Map.entry("cling_wall_move", 24),
+            Map.entry("cling_ceiling", 12), Map.entry("cling_ceiling_move", 24),
             Map.entry("leap", 16), Map.entry("leap_up", 16),
             Map.entry("leap_fly", 12), Map.entry("leap_up_fly", 12),
             Map.entry("chopsticks", 36), Map.entry("chopsticks_pick", 24), Map.entry("chopsticks_transfer", 44),

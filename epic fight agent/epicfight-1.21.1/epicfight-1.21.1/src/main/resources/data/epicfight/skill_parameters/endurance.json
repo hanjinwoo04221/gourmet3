@@ -1,0 +1,19 @@
+{
+	"consumption": 12.0,
+	"max_duration": 160,
+	"stamina_ratio": 0.3,
+	"attribute_modifiers": [
+		{
+			"attribute": "minecraft:generic.max_health",
+			"id": "epicfight:endurance_modifier",
+			"operation": "add_value",
+			"amount": 2.0
+		},
+		{
+			"attribute": "epicfight:stamina",
+			"id": "epicfight:endurance_modifier",
+			"operation": "add_value",
+			"amount": 4.0
+		}
+	]
+}

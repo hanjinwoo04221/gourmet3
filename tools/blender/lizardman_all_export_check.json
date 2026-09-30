@@ -1,0 +1,112 @@
+{
+  "bite": {
+    "seconds": 0.5833,
+    "keys": 633,
+    "loop_gap": 0.0
+  },
+  "claw_left": {
+    "seconds": 0.5,
+    "keys": 547,
+    "loop_gap": 0.0
+  },
+  "claw_right": {
+    "seconds": 0.5,
+    "keys": 547,
+    "loop_gap": 0.0
+  },
+  "dodge": {
+    "seconds": 0.5,
+    "keys": 547,
+    "loop_gap": 0.0
+  },
+  "duck_rake_bite": {
+    "seconds": 1.0833,
+    "keys": 1149,
+    "loop_gap": 0.0
+  },
+  "flurry_left": {
+    "seconds": 0.4167,
+    "keys": 461,
+    "loop_gap": 0.0
+  },
+  "flurry_right": {
+    "seconds": 0.4167,
+    "keys": 461,
+    "loop_gap": 0.0
+  },
+  "guard": {
+    "seconds": 0.5,
+    "keys": 547,
+    "loop_gap": 0.0
+  },
+  "hop_tail_claw": {
+    "seconds": 1.3333,
+    "keys": 1407,
+    "loop_gap": 0.0
+  },
+  "idle": {
+    "seconds": 2.0,
+    "keys": 2095,
+    "loop_gap": 0.0
+  },
+  "jump": {
+    "seconds": 0.7917,
+    "keys": 848,
+    "loop_gap": 0.0
+  },
+  "launcher": {
+    "seconds": 0.5,
+    "keys": 547,
+    "loop_gap": 0.0
+  },
+  "leap": {
+    "seconds": 0.9167,
+    "keys": 977,
+    "loop_gap": 0.0
+  },
+  "leap_charge": {
+    "seconds": 0.5417,
+    "keys": 590,
+    "loop_gap": 0.0
+  },
+  "rise_left": {
+    "seconds": 0.4583,
+    "keys": 504,
+    "loop_gap": 0.0
+  },
+  "rise_right": {
+    "seconds": 0.4583,
+    "keys": 504,
+    "loop_gap": 0.0
+  },
+  "run": {
+    "seconds": 0.8333,
+    "keys": 891,
+    "loop_gap": 0.0
+  },
+  "skill_charge": {
+    "seconds": 0.5833,
+    "keys": 633,
+    "loop_gap": 0.0
+  },
+  "skill_thrust": {
+    "seconds": 0.4167,
+    "keys": 461,
+    "loop_gap": 0.0
+  },
+  "spike": {
+    "seconds": 0.5,
+    "keys": 547,
+    "loop_gap": 0.0
+  },
+  "tail_slam": {
+    "seconds": 0.5417,
+    "keys": 590,
+    "loop_gap": 0.0
+  },
+  "walk": {
+    "seconds": 1.5,
+    "keys": 1579,
+    "loop_gap": 0.0
+  }
+}

@@ -21,7 +21,7 @@ public final class ModNetwork {
      * {@link org.example.hanjinwoo.gourmet2.skill.SkillType} / {@link org.example.hanjinwoo.gourmet2.fx.SkillFx}
      * are reordered.
      */
-    public static final String VERSION = "17";
+    public static final String VERSION = "18";
 
     private ModNetwork() {}
 
@@ -76,12 +76,26 @@ public final class ModNetwork {
             }
         });
 
+        registrar.playToServer(C2SCling.TYPE, C2SCling.CODEC, (payload, context) -> {
+            if (context.player() instanceof ServerPlayer player) {
+                org.example.hanjinwoo.gourmet2.skill.PlayerCling.setMode(player.getUUID(), payload.mode());
+                net.neoforged.neoforge.network.PacketDistributor.sendToPlayersTrackingEntity(player,
+                        new S2CClingState(player.getId(), payload.mode(), payload.yaw()));
+            }
+        });
+
+        registrar.playToClient(S2CClingState.TYPE, S2CClingState.CODEC, (payload, context) -> {
+            if (FMLEnvironment.dist == Dist.CLIENT) {
+                org.example.hanjinwoo.gourmet2.client.ClientCling.set(payload.entityId(), payload.mode(), payload.yaw());
+            }
+        });
+
         registrar.playToServer(C2SLeap.TYPE, C2SLeap.CODEC, (payload, context) -> {
             if (context.player() instanceof ServerPlayer player) {
                 if (payload.release()) {
-                    LeapEngine.release(player);
+                    LeapEngine.release(player, payload.forward(), payload.strafe());
                 } else {
-                    LeapEngine.charge(player);
+                    LeapEngine.charge(player, payload.forward(), payload.strafe());
                 }
             }
         });

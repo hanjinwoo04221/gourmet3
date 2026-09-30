@@ -441,6 +441,10 @@ public final class CombatEngine {
             event.setCanceled(true);
             return;
         }
+        // Resistance: the passive trims every blow by Cell level, and an open resist window shrugs blows off.
+        if (org.example.hanjinwoo.gourmet2.skill.ResistanceEngine.onIncomingDamage(player, data, event)) {
+            return;
+        }
         if (!data.isGuarding() || !data.isCombatMode()) {
             return;
         }

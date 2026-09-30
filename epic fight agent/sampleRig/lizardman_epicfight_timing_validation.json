@@ -1,0 +1,45 @@
+{
+  "test.hook_claw_bite": {
+    "authored_key_count_min_max": [
+      2,
+      7
+    ],
+    "max_half_frame_rotation_degrees": 8.438466142775587,
+    "worst_step": [
+      21.5,
+      "Head"
+    ],
+    "median_moving_joints": 30,
+    "contact_world_tail_drift": {
+      "Foot_R": 0.00717948294586497
+    }
+  },
+  "test.tail_pivot_rake": {
+    "authored_key_count_min_max": [
+      2,
+      8
+    ],
+    "max_half_frame_rotation_degrees": 32.151132907640545,
+    "worst_step": [
+      10.0,
+      "Tail3"
+    ],
+    "median_moving_joints": 30,
+    "contact_world_tail_drift": {
+      "Foot_L": 0.01238591719409484
+    }
+  },
+  "test.low_pounce_double_rake": {
+    "authored_key_count_min_max": [
+      2,
+      11
+    ],
+    "max_half_frame_rotation_degrees": 15.691806274909588,
+    "worst_step": [
+      10.5,
+      "Thigh_R"
+    ],
+    "median_moving_joints": 29,
+    "contact_world_tail_drift": {}
+  }
+}

@@ -1,0 +1,292 @@
+{
+  "idle": {
+    "status": "authored",
+    "loop": true,
+    "frames": 48,
+    "poses": [
+      "STANCE",
+      "IN_L",
+      "EX_L",
+      "SETTLE",
+      "IN_R",
+      "EX_R",
+      "SETTLE_R",
+      "STANCE"
+    ]
+  },
+  "walk": {
+    "status": "authored",
+    "loop": true,
+    "frames": 36,
+    "poses": [
+      "WALK_L",
+      "WALK_PASS_L",
+      "WALK_R",
+      "WALK_PASS_R",
+      "WALK_L"
+    ]
+  },
+  "run": {
+    "status": "authored",
+    "loop": true,
+    "frames": 20,
+    "poses": [
+      "RUN_L",
+      "RUN_FLY_L",
+      "RUN_R",
+      "RUN_FLY_R",
+      "RUN_L"
+    ]
+  },
+  "claw_left": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "WIND_L",
+      "RAKE_MID_L",
+      "RAKE_L",
+      "RAKE_OVER_L",
+      "STANCE"
+    ]
+  },
+  "claw_right": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "WIND_R",
+      "RAKE_MID_R",
+      "RAKE_R",
+      "RAKE_OVER_R",
+      "STANCE"
+    ]
+  },
+  "flurry_left": {
+    "status": "authored",
+    "loop": false,
+    "frames": 10,
+    "poses": [
+      "STANCE",
+      "WIND_L",
+      "RAKE_L",
+      "WIND_R",
+      "RAKE_R",
+      "STANCE"
+    ]
+  },
+  "flurry_right": {
+    "status": "authored",
+    "loop": false,
+    "frames": 10,
+    "poses": [
+      "STANCE",
+      "WIND_R",
+      "RAKE_R",
+      "WIND_L",
+      "RAKE_L",
+      "STANCE"
+    ]
+  },
+  "bite": {
+    "status": "authored",
+    "loop": false,
+    "frames": 14,
+    "poses": [
+      "STANCE",
+      "HEAD_RECOIL",
+      "BITE_OPEN",
+      "BITE_CLAMP",
+      "BITE_SHAKE_L",
+      "BITE_SHAKE_R",
+      "STANCE"
+    ]
+  },
+  "tail_slam": {
+    "status": "authored",
+    "loop": false,
+    "frames": 13,
+    "poses": [
+      "STANCE",
+      "TAIL_COIL",
+      "TAIL_SWEEP",
+      "TAIL_FOLLOW",
+      "STANCE"
+    ]
+  },
+  "spike": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "SPIKE_WIND",
+      "SPIKE_HIT",
+      "SPIKE_OVER",
+      "STANCE"
+    ]
+  },
+  "guard": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "GUARD",
+      "GUARD_HIT",
+      "GUARD",
+      "STANCE"
+    ]
+  },
+  "dodge": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "SLIP_L",
+      "SLIP_R",
+      "STANCE"
+    ]
+  },
+  "launcher": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "LAUNCH_LOAD",
+      "LAUNCH_HIT",
+      "LAUNCH_OVER",
+      "STANCE"
+    ]
+  },
+  "rise_left": {
+    "status": "authored",
+    "loop": false,
+    "frames": 11,
+    "poses": [
+      "STANCE",
+      "RISE_LOAD_L",
+      "RISE_HIT_L",
+      "RISE_OVER_L",
+      "STANCE"
+    ]
+  },
+  "rise_right": {
+    "status": "authored",
+    "loop": false,
+    "frames": 11,
+    "poses": [
+      "STANCE",
+      "RISE_LOAD_R",
+      "RISE_HIT_R",
+      "RISE_OVER_R",
+      "STANCE"
+    ]
+  },
+  "skill_charge": {
+    "status": "authored",
+    "loop": false,
+    "frames": 14,
+    "poses": [
+      "STANCE",
+      "CHARGE",
+      "CHARGE_TREMOR_A",
+      "CHARGE_TREMOR_B",
+      "CHARGE_TREMOR_A",
+      "STANCE"
+    ]
+  },
+  "skill_thrust": {
+    "status": "authored",
+    "loop": false,
+    "frames": 10,
+    "poses": [
+      "STANCE",
+      "THRUST_LOAD",
+      "THRUST_HIT",
+      "THRUST_OVER",
+      "STANCE"
+    ]
+  },
+  "leap_charge": {
+    "status": "authored",
+    "loop": false,
+    "frames": 13,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "STRETCH",
+      "LAND",
+      "STANCE"
+    ]
+  },
+  "leap": {
+    "status": "authored",
+    "loop": false,
+    "frames": 22,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "POUNCE_LAUNCH",
+      "POUNCE_APEX",
+      "POUNCE_STRIKE",
+      "LAND",
+      "STANCE"
+    ]
+  },
+  "jump": {
+    "status": "authored",
+    "loop": false,
+    "frames": 19,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "STRETCH",
+      "TUCK",
+      "REACH_LAND",
+      "LAND",
+      "STANCE"
+    ]
+  },
+  "duck_rake_bite": {
+    "status": "authored",
+    "loop": false,
+    "frames": 26,
+    "poses": [
+      "STANCE",
+      "SLIP_L",
+      "WIND_L",
+      "RAKE_MID_L",
+      "RAKE_L",
+      "RAKE_OVER_L",
+      "HEAD_RECOIL",
+      "BITE_OPEN",
+      "BITE_CLAMP",
+      "BITE_SHAKE_L",
+      "STANCE"
+    ]
+  },
+  "hop_tail_claw": {
+    "status": "authored",
+    "loop": false,
+    "frames": 32,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "STRETCH",
+      "TUCK",
+      "LAND",
+      "TAIL_COIL",
+      "TAIL_SWEEP",
+      "TAIL_FOLLOW",
+      "WIND_R",
+      "RAKE_R",
+      "RAKE_OVER_R",
+      "STANCE"
+    ]
+  }
+}

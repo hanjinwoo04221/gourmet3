@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "blender-animation": {
+      "source": "TerminalSkills/skills",
+      "sourceType": "github",
+      "skillPath": "skills/blender-animation/SKILL.md",
+      "computedHash": "514f1469e4fd27eb9443523b9cef950f1e4e2d7071b7937de0ff6037b4c7e8be"
+    }
+  }
+}

@@ -1,0 +1,692 @@
+[
+  {
+    "object": "Lizardman",
+    "world": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "bones": [
+      {
+        "name": "Root",
+        "parent": null,
+        "children": [
+          "Tail1",
+          "Torso",
+          "Thigh_R",
+          "Thigh_L"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.0,
+          0.0,
+          0.7637500166893005
+        ],
+        "tail": [
+          0.0,
+          0.11999999731779099,
+          0.7637500166893005
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Tail1",
+        "parent": "Root",
+        "children": [
+          "Tail2"
+        ],
+        "deform": true,
+        "length": 0.11999998986721039,
+        "head": [
+          0.0,
+          0.11249999701976776,
+          0.75
+        ],
+        "tail": [
+          0.0,
+          0.23249998688697815,
+          0.75
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Tail2",
+        "parent": "Tail1",
+        "children": [
+          "Tail3"
+        ],
+        "deform": true,
+        "length": 0.1199999749660492,
+        "head": [
+          0.0,
+          0.4625000059604645,
+          0.6875
+        ],
+        "tail": [
+          0.0,
+          0.5824999809265137,
+          0.6875
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Tail3",
+        "parent": "Tail2",
+        "children": [],
+        "deform": true,
+        "length": 0.12000000476837158,
+        "head": [
+          0.0,
+          0.800000011920929,
+          0.6625000238418579
+        ],
+        "tail": [
+          0.0,
+          0.9200000166893005,
+          0.6625000238418579
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Torso",
+        "parent": "Root",
+        "children": [
+          "Chest"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.0,
+          0.0,
+          0.8137500286102295
+        ],
+        "tail": [
+          0.0,
+          0.11999999731779099,
+          0.8137500286102295
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Chest",
+        "parent": "Torso",
+        "children": [
+          "Head",
+          "Shoulder_R",
+          "Shoulder_L"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.0,
+          0.0,
+          1.1137499809265137
+        ],
+        "tail": [
+          0.0,
+          0.11999999731779099,
+          1.1137499809265137
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Head",
+        "parent": "Chest",
+        "children": [
+          "Jaw"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.0,
+          0.0,
+          1.5137499570846558
+        ],
+        "tail": [
+          0.0,
+          0.11999999731779099,
+          1.5137499570846558
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Jaw",
+        "parent": "Head",
+        "children": [],
+        "deform": true,
+        "length": 0.12000000476837158,
+        "head": [
+          0.0,
+          -0.15625,
+          1.6437499523162842
+        ],
+        "tail": [
+          0.0,
+          -0.036250002682209015,
+          1.6437499523162842
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Shoulder_R",
+        "parent": "Chest",
+        "children": [
+          "Arm_R"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.0,
+          0.0,
+          1.5137499570846558
+        ],
+        "tail": [
+          0.0,
+          0.11999999731779099,
+          1.5137499570846558
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Arm_R",
+        "parent": "Shoulder_R",
+        "children": [
+          "Elbow_R",
+          "Hand_R"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          -0.375,
+          0.0,
+          1.3937499523162842
+        ],
+        "tail": [
+          -0.375,
+          0.11999999731779099,
+          1.3937499523162842
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Elbow_R",
+        "parent": "Arm_R",
+        "children": [],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          -0.375,
+          0.0,
+          1.09375
+        ],
+        "tail": [
+          -0.375,
+          0.11999999731779099,
+          1.09375
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Hand_R",
+        "parent": "Arm_R",
+        "children": [
+          "Tool_R"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          -0.375,
+          0.0,
+          1.09375
+        ],
+        "tail": [
+          -0.375,
+          0.11999999731779099,
+          1.09375
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Tool_R",
+        "parent": "Hand_R",
+        "children": [],
+        "deform": true,
+        "length": 0.11999998986721039,
+        "head": [
+          -0.375,
+          -0.029999999329447746,
+          0.8218749761581421
+        ],
+        "tail": [
+          -0.375,
+          0.08999999612569809,
+          0.8218749761581421
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Shoulder_L",
+        "parent": "Chest",
+        "children": [
+          "Arm_L"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.0,
+          0.0,
+          1.5137499570846558
+        ],
+        "tail": [
+          0.0,
+          0.11999999731779099,
+          1.5137499570846558
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Arm_L",
+        "parent": "Shoulder_L",
+        "children": [
+          "Elbow_L",
+          "Hand_L"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.375,
+          0.0,
+          1.3937499523162842
+        ],
+        "tail": [
+          0.375,
+          0.11999999731779099,
+          1.3937499523162842
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Elbow_L",
+        "parent": "Arm_L",
+        "children": [],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.375,
+          0.0,
+          1.09375
+        ],
+        "tail": [
+          0.375,
+          0.11999999731779099,
+          1.09375
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Hand_L",
+        "parent": "Arm_L",
+        "children": [
+          "Tool_L"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.375,
+          0.0,
+          1.09375
+        ],
+        "tail": [
+          0.375,
+          0.11999999731779099,
+          1.09375
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Tool_L",
+        "parent": "Hand_L",
+        "children": [],
+        "deform": true,
+        "length": 0.11999998986721039,
+        "head": [
+          0.375,
+          -0.029999999329447746,
+          0.8218749761581421
+        ],
+        "tail": [
+          0.375,
+          0.08999999612569809,
+          0.8218749761581421
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Thigh_R",
+        "parent": "Root",
+        "children": [
+          "Knee_R",
+          "Leg_R"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          -0.125,
+          0.0,
+          0.7612500190734863
+        ],
+        "tail": [
+          -0.125,
+          0.11999999731779099,
+          0.7612500190734863
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Knee_R",
+        "parent": "Thigh_R",
+        "children": [],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          -0.125,
+          0.0,
+          0.38624998927116394
+        ],
+        "tail": [
+          -0.125,
+          0.11999999731779099,
+          0.38624998927116394
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Leg_R",
+        "parent": "Thigh_R",
+        "children": [
+          "Foot_R"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          -0.125,
+          0.0,
+          0.38624998927116394
+        ],
+        "tail": [
+          -0.125,
+          0.11999999731779099,
+          0.38624998927116394
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Foot_R",
+        "parent": "Leg_R",
+        "children": [
+          "Toe_R_out",
+          "Toe_R_mid",
+          "Toe_R_in"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          -0.15625,
+          0.0,
+          0.09375
+        ],
+        "tail": [
+          -0.15625,
+          0.11999999731779099,
+          0.09375
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Toe_R_out",
+        "parent": "Foot_R",
+        "children": [],
+        "deform": true,
+        "length": 0.12000000476837158,
+        "head": [
+          -0.21875,
+          -0.125,
+          0.03750000149011612
+        ],
+        "tail": [
+          -0.21875,
+          -0.005000002682209015,
+          0.03750000149011612
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Toe_R_mid",
+        "parent": "Foot_R",
+        "children": [],
+        "deform": true,
+        "length": 0.12000000476837158,
+        "head": [
+          -0.15625,
+          -0.125,
+          0.03750000149011612
+        ],
+        "tail": [
+          -0.15625,
+          -0.005000002682209015,
+          0.03750000149011612
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Toe_R_in",
+        "parent": "Foot_R",
+        "children": [],
+        "deform": true,
+        "length": 0.12000000476837158,
+        "head": [
+          -0.09375,
+          -0.125,
+          0.03750000149011612
+        ],
+        "tail": [
+          -0.09375,
+          -0.005000002682209015,
+          0.03750000149011612
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Thigh_L",
+        "parent": "Root",
+        "children": [
+          "Knee_L",
+          "Leg_L"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.125,
+          0.0,
+          0.7612500190734863
+        ],
+        "tail": [
+          0.125,
+          0.11999999731779099,
+          0.7612500190734863
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Knee_L",
+        "parent": "Thigh_L",
+        "children": [],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.125,
+          0.0,
+          0.38624998927116394
+        ],
+        "tail": [
+          0.125,
+          0.11999999731779099,
+          0.38624998927116394
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Leg_L",
+        "parent": "Thigh_L",
+        "children": [
+          "Foot_L"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.125,
+          0.0,
+          0.38624998927116394
+        ],
+        "tail": [
+          0.125,
+          0.11999999731779099,
+          0.38624998927116394
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Foot_L",
+        "parent": "Leg_L",
+        "children": [
+          "Toe_L_out",
+          "Toe_L_mid",
+          "Toe_L_in"
+        ],
+        "deform": true,
+        "length": 0.11999999731779099,
+        "head": [
+          0.15625,
+          0.0,
+          0.09375
+        ],
+        "tail": [
+          0.15625,
+          0.11999999731779099,
+          0.09375
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Toe_L_out",
+        "parent": "Foot_L",
+        "children": [],
+        "deform": true,
+        "length": 0.12000000476837158,
+        "head": [
+          0.21875,
+          -0.125,
+          0.03750000149011612
+        ],
+        "tail": [
+          0.21875,
+          -0.005000002682209015,
+          0.03750000149011612
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Toe_L_mid",
+        "parent": "Foot_L",
+        "children": [],
+        "deform": true,
+        "length": 0.12000000476837158,
+        "head": [
+          0.15625,
+          -0.125,
+          0.03750000149011612
+        ],
+        "tail": [
+          0.15625,
+          -0.005000002682209015,
+          0.03750000149011612
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      },
+      {
+        "name": "Toe_L_in",
+        "parent": "Foot_L",
+        "children": [],
+        "deform": true,
+        "length": 0.12000000476837158,
+        "head": [
+          0.09375,
+          -0.125,
+          0.03750000149011612
+        ],
+        "tail": [
+          0.09375,
+          -0.005000002682209015,
+          0.03750000149011612
+        ],
+        "rotation_mode": "XZY",
+        "constraints": []
+      }
+    ],
+    "active_action": "animation.lizardman.idle",
+    "nla": []
+  }
+]

@@ -1,0 +1,630 @@
+{
+  "idle": {
+    "frames": 48,
+    "loop": true,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 13,
+    "median_moving_bones_per_integer_frame": 16,
+    "max_half_frame_rotation_degrees": 0.637,
+    "max_rotation_at": {
+      "frame": 23.0,
+      "bone": "Jaw"
+    },
+    "loop_rotation_gap_degrees": 0.0,
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 0,
+        "end": 48,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 48,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "walk": {
+    "frames": 36,
+    "loop": true,
+    "finite": true,
+    "min_foot_toe_head_z": 0.045134,
+    "min_moving_bones_per_integer_frame": 11,
+    "median_moving_bones_per_integer_frame": 20,
+    "max_half_frame_rotation_degrees": 11.561,
+    "max_rotation_at": {
+      "frame": 4.0,
+      "bone": "Thigh_L"
+    },
+    "loop_rotation_gap_degrees": 0.0,
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 0,
+        "end": 3,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_R",
+        "start": 17,
+        "end": 20,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 33,
+        "end": 36,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "run": {
+    "frames": 20,
+    "loop": true,
+    "finite": true,
+    "min_foot_toe_head_z": 0.037031,
+    "min_moving_bones_per_integer_frame": 22,
+    "median_moving_bones_per_integer_frame": 27,
+    "max_half_frame_rotation_degrees": 36.076,
+    "max_rotation_at": {
+      "frame": 6.0,
+      "bone": "Toe_L_in"
+    },
+    "loop_rotation_gap_degrees": 0.0,
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_R",
+        "start": 9,
+        "end": 11,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 18,
+        "end": 20,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "claw_left": {
+    "frames": 12,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 10,
+    "median_moving_bones_per_integer_frame": 17,
+    "max_half_frame_rotation_degrees": 23.461,
+    "max_rotation_at": {
+      "frame": 6.0,
+      "bone": "Elbow_L"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_R",
+        "start": 6,
+        "end": 8,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "claw_right": {
+    "frames": 12,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 10,
+    "median_moving_bones_per_integer_frame": 17,
+    "max_half_frame_rotation_degrees": 23.393,
+    "max_rotation_at": {
+      "frame": 6.0,
+      "bone": "Hand_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 6,
+        "end": 8,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "flurry_left": {
+    "frames": 10,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 10,
+    "median_moving_bones_per_integer_frame": 21,
+    "max_half_frame_rotation_degrees": 35.363,
+    "max_rotation_at": {
+      "frame": 4.0,
+      "bone": "Hand_L"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_R",
+        "start": 4,
+        "end": 6,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "flurry_right": {
+    "frames": 10,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 10,
+    "median_moving_bones_per_integer_frame": 18,
+    "max_half_frame_rotation_degrees": 35.33,
+    "max_rotation_at": {
+      "frame": 4.0,
+      "bone": "Hand_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 4,
+        "end": 6,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "bite": {
+    "frames": 14,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 10,
+    "median_moving_bones_per_integer_frame": 13,
+    "max_half_frame_rotation_degrees": 8.547,
+    "max_rotation_at": {
+      "frame": 3.5,
+      "bone": "Head"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_R",
+        "start": 5,
+        "end": 7,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "tail_slam": {
+    "frames": 13,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 13,
+    "median_moving_bones_per_integer_frame": 23,
+    "max_half_frame_rotation_degrees": 21.039,
+    "max_rotation_at": {
+      "frame": 3.0,
+      "bone": "Leg_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 7,
+        "end": 9,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "spike": {
+    "frames": 12,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 10,
+    "median_moving_bones_per_integer_frame": 16,
+    "max_half_frame_rotation_degrees": 15.681,
+    "max_rotation_at": {
+      "frame": 7.0,
+      "bone": "Elbow_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 6,
+        "end": 8,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "guard": {
+    "frames": 12,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 11,
+    "median_moving_bones_per_integer_frame": 12,
+    "max_half_frame_rotation_degrees": 17.158,
+    "max_rotation_at": {
+      "frame": 3.5,
+      "bone": "Hand_L"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 0,
+        "end": 12,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 12,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "dodge": {
+    "frames": 12,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 13,
+    "median_moving_bones_per_integer_frame": 23,
+    "max_half_frame_rotation_degrees": 35.542,
+    "max_rotation_at": {
+      "frame": 3.0,
+      "bone": "Leg_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 2,
+        "end": 4,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 6,
+        "end": 8,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "launcher": {
+    "frames": 12,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 8,
+    "median_moving_bones_per_integer_frame": 25,
+    "max_half_frame_rotation_degrees": 31.995,
+    "max_rotation_at": {
+      "frame": 7.0,
+      "bone": "Hand_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "rise_left": {
+    "frames": 11,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 17,
+    "median_moving_bones_per_integer_frame": 24,
+    "max_half_frame_rotation_degrees": 23.608,
+    "max_rotation_at": {
+      "frame": 7.0,
+      "bone": "Arm_L"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_R",
+        "start": 6,
+        "end": 8,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "rise_right": {
+    "frames": 11,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 16,
+    "median_moving_bones_per_integer_frame": 23,
+    "max_half_frame_rotation_degrees": 23.617,
+    "max_rotation_at": {
+      "frame": 6.0,
+      "bone": "Arm_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 6,
+        "end": 8,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "skill_charge": {
+    "frames": 14,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 11,
+    "median_moving_bones_per_integer_frame": 23,
+    "max_half_frame_rotation_degrees": 18.626,
+    "max_rotation_at": {
+      "frame": 3.0,
+      "bone": "Leg_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "skill_thrust": {
+    "frames": 10,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 14,
+    "median_moving_bones_per_integer_frame": 21,
+    "max_half_frame_rotation_degrees": 31.043,
+    "max_rotation_at": {
+      "frame": 3.0,
+      "bone": "Leg_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 5,
+        "end": 7,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "leap_charge": {
+    "frames": 13,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.026412,
+    "min_moving_bones_per_integer_frame": 22,
+    "median_moving_bones_per_integer_frame": 26,
+    "max_half_frame_rotation_degrees": 28.983,
+    "max_rotation_at": {
+      "frame": 6.0,
+      "bone": "Arm_L"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 9,
+        "end": 11,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "leap": {
+    "frames": 22,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.029525,
+    "min_moving_bones_per_integer_frame": 12,
+    "median_moving_bones_per_integer_frame": 22,
+    "max_half_frame_rotation_degrees": 14.196,
+    "max_rotation_at": {
+      "frame": 9.0,
+      "bone": "Arm_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 16,
+        "end": 18,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "jump": {
+    "frames": 19,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.029014,
+    "min_moving_bones_per_integer_frame": 19,
+    "median_moving_bones_per_integer_frame": 23,
+    "max_half_frame_rotation_degrees": 16.831,
+    "max_rotation_at": {
+      "frame": 3.0,
+      "bone": "Leg_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 14,
+        "end": 16,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "duck_rake_bite": {
+    "frames": 26,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.03579,
+    "min_moving_bones_per_integer_frame": 4,
+    "median_moving_bones_per_integer_frame": 21,
+    "max_half_frame_rotation_degrees": 26.833,
+    "max_rotation_at": {
+      "frame": 3.0,
+      "bone": "Leg_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_R",
+        "start": 11,
+        "end": 13,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_R",
+        "start": 19,
+        "end": 21,
+        "tail_drift": 0.0
+      }
+    ]
+  },
+  "hop_tail_claw": {
+    "frames": 32,
+    "loop": false,
+    "finite": true,
+    "min_foot_toe_head_z": 0.02983,
+    "min_moving_bones_per_integer_frame": 11,
+    "median_moving_bones_per_integer_frame": 24,
+    "max_half_frame_rotation_degrees": 21.039,
+    "max_rotation_at": {
+      "frame": 3.0,
+      "bone": "Leg_R"
+    },
+    "loop_rotation_gap_degrees": null,
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 0,
+        "end": 2,
+        "tail_drift": 0.0
+      },
+      {
+        "bone": "Foot_L",
+        "start": 12,
+        "end": 14,
+        "tail_drift": 0.0
+      }
+    ]
+  }
+}

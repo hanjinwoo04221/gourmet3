@@ -1,0 +1,33 @@
+{
+  "mocap.boxing_two_strikes": {
+    "max_half_frame_rotation_degrees": 20.163141476418296,
+    "worst_step": [
+      29.5,
+      "Elbow_L"
+    ],
+    "median_moving_joints": 8,
+    "contact_world_tail_drift": {
+      "Foot_R:7-15": 6.365778852490731e-08,
+      "Foot_L:18-28": 7.77863451012265e-08
+    },
+    "mapped_bones": 17,
+    "effector_displacement": {
+      "Hand_R": 0.3961032409090499
+    }
+  },
+  "mocap.front_kick_right": {
+    "max_half_frame_rotation_degrees": 19.970060400901094,
+    "worst_step": [
+      15.5,
+      "Foot_R"
+    ],
+    "median_moving_joints": 8,
+    "contact_world_tail_drift": {
+      "Foot_L:7-24": 4.7706993203109864e-08
+    },
+    "mapped_bones": 17,
+    "effector_displacement": {
+      "Foot_R": 0.6399636933165458
+    }
+  }
+}

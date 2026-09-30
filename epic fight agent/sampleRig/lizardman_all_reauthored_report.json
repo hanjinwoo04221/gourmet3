@@ -1,0 +1,260 @@
+{
+  "idle": {
+    "status": "authored",
+    "loop": true,
+    "frames": 48,
+    "poses": [
+      "STANCE",
+      "BREATH",
+      "EXHALE",
+      "BREATH",
+      "STANCE"
+    ]
+  },
+  "walk": {
+    "status": "authored",
+    "loop": true,
+    "frames": 36,
+    "poses": [
+      "WALK_L",
+      "WALK_PASS_L",
+      "WALK_R",
+      "WALK_PASS_R",
+      "WALK_L"
+    ]
+  },
+  "run": {
+    "status": "authored",
+    "loop": true,
+    "frames": 20,
+    "poses": [
+      "RUN_L",
+      "RUN_FLIGHT",
+      "RUN_R",
+      "RUN_FLIGHT",
+      "RUN_L"
+    ]
+  },
+  "claw_left": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "WIND_L",
+      "RAKE_L",
+      "STANCE"
+    ]
+  },
+  "claw_right": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "WIND_R",
+      "RAKE_R",
+      "STANCE"
+    ]
+  },
+  "flurry_left": {
+    "status": "authored",
+    "loop": false,
+    "frames": 10,
+    "poses": [
+      "STANCE",
+      "WIND_L",
+      "RAKE_L",
+      "RAKE_L",
+      "STANCE"
+    ]
+  },
+  "flurry_right": {
+    "status": "authored",
+    "loop": false,
+    "frames": 10,
+    "poses": [
+      "STANCE",
+      "WIND_R",
+      "RAKE_R",
+      "RAKE_R",
+      "STANCE"
+    ]
+  },
+  "bite": {
+    "status": "authored",
+    "loop": false,
+    "frames": 14,
+    "poses": [
+      "STANCE",
+      "HEAD_SNAP",
+      "BITE",
+      "HEAD_SNAP",
+      "STANCE"
+    ]
+  },
+  "tail_slam": {
+    "status": "authored",
+    "loop": false,
+    "frames": 13,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "TAIL_WHIP",
+      "STANCE"
+    ]
+  },
+  "spike": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "WIND_R",
+      "THRUST",
+      "STANCE"
+    ]
+  },
+  "guard": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "GUARD",
+      "GUARD",
+      "STANCE"
+    ]
+  },
+  "dodge": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "SLIP_L",
+      "SLIP_R",
+      "STANCE"
+    ]
+  },
+  "launcher": {
+    "status": "authored",
+    "loop": false,
+    "frames": 12,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "RISE_UP",
+      "STANCE"
+    ]
+  },
+  "rise_left": {
+    "status": "authored",
+    "loop": false,
+    "frames": 11,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "RAKE_L",
+      "STANCE"
+    ]
+  },
+  "rise_right": {
+    "status": "authored",
+    "loop": false,
+    "frames": 11,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "RAKE_R",
+      "STANCE"
+    ]
+  },
+  "skill_charge": {
+    "status": "authored",
+    "loop": false,
+    "frames": 14,
+    "poses": [
+      "STANCE",
+      "CHARGE",
+      "CHARGE",
+      "STANCE"
+    ]
+  },
+  "skill_thrust": {
+    "status": "authored",
+    "loop": false,
+    "frames": 10,
+    "poses": [
+      "STANCE",
+      "CHARGE",
+      "THRUST",
+      "STANCE"
+    ]
+  },
+  "leap_charge": {
+    "status": "authored",
+    "loop": false,
+    "frames": 13,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "AIRBORNE",
+      "LAND",
+      "STANCE"
+    ]
+  },
+  "leap": {
+    "status": "authored",
+    "loop": false,
+    "frames": 22,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "AIRBORNE",
+      "LAND",
+      "STANCE"
+    ]
+  },
+  "jump": {
+    "status": "authored",
+    "loop": false,
+    "frames": 19,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "AIRBORNE",
+      "LAND",
+      "STANCE"
+    ]
+  },
+  "duck_rake_bite": {
+    "status": "authored",
+    "loop": false,
+    "frames": 26,
+    "poses": [
+      "STANCE",
+      "SLIP_L",
+      "WIND_L",
+      "RAKE_L",
+      "HEAD_SNAP",
+      "BITE",
+      "STANCE"
+    ]
+  },
+  "hop_tail_claw": {
+    "status": "authored",
+    "loop": false,
+    "frames": 32,
+    "poses": [
+      "STANCE",
+      "CROUCH",
+      "AIRBORNE",
+      "LAND",
+      "TAIL_WHIP",
+      "WIND_R",
+      "RAKE_R",
+      "STANCE"
+    ]
+  }
+}

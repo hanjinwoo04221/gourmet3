@@ -1,0 +1,22 @@
+{
+  "checks": [
+    {
+      "action": "RoundhouseKick_R_AI",
+      "mean_velocity_jump_before": 6.92392471130843,
+      "mean_velocity_jump_after": 6.916788976062069
+    },
+    {
+      "action": "Run_Cycle_AI",
+      "mean_velocity_jump_before": 0.020002369467829014,
+      "mean_velocity_jump_after": 8.126739648295036e-05
+    },
+    {
+      "action": "SpinKick360_R_AI",
+      "mean_velocity_jump_before": 0.013884863617064326,
+      "mean_velocity_jump_after": 0.0003431239857739201
+    }
+  ],
+  "loop_endpoint_error": 0.0,
+  "saved": "C:\\Users\\hanjw\\Downloads\\epic fight agent\\EpicFight Animation Rig Natural.blend",
+  "original_actions_preserved": true
+}

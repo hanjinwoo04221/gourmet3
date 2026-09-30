@@ -1,0 +1,778 @@
+[
+  {
+    "action": "lizardman.inertial_leap_cross_claws",
+    "authored": "lizardman.inertial_leap_cross_claws.authored",
+    "lateral_results": [
+      {
+        "frame": 5.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.08,
+        "achieved": 0.07997682690620422,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 5.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.08,
+        "achieved": -0.0799906849861145,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 9.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.11,
+        "achieved": 0.11001485586166382,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 9.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.11,
+        "achieved": -0.11001485586166382,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 13.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.12,
+        "achieved": 0.11999067664146423,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 13.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.12,
+        "achieved": -0.11999058723449707,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 17.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": -0.05,
+        "achieved": -0.05000816285610199,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 17.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": 0.05,
+        "achieved": 0.050000011920928955,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 21.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.12,
+        "achieved": 0.12000897526741028,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 21.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.05,
+        "achieved": -0.0499994158744812,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 21.0,
+        "joint": "Arm_L",
+        "effector": "Hand_L",
+        "requested": 0.045,
+        "achieved": 0.04498753696680069,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 24.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": -0.1,
+        "achieved": -0.10000654309988022,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 24.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.04,
+        "achieved": -0.03999125957489014,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 24.0,
+        "joint": "Arm_L",
+        "effector": "Hand_L",
+        "requested": -0.045,
+        "achieved": -0.04497697949409485,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 27.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.05,
+        "achieved": 0.05001568794250488,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 27.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.12,
+        "achieved": -0.11999350786209106,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 27.0,
+        "joint": "Arm_R",
+        "effector": "Hand_R",
+        "requested": 0.045,
+        "achieved": 0.04499277472496033,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 30.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.04,
+        "achieved": 0.0400027334690094,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 30.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": 0.11,
+        "achieved": 0.10999391973018646,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 30.0,
+        "joint": "Arm_R",
+        "effector": "Hand_R",
+        "requested": -0.045,
+        "achieved": -0.04502004384994507,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 34.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.08,
+        "achieved": 0.07999950647354126,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 34.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.08,
+        "achieved": -0.07999953627586365,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      }
+    ],
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 1,
+        "end": 3
+      },
+      {
+        "bone": "Foot_L",
+        "start": 34,
+        "end": 36
+      }
+    ],
+    "impacts": [
+      24,
+      30
+    ],
+    "preview_frames": [
+      1,
+      13,
+      17,
+      24,
+      39
+    ],
+    "refinement": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 13.558966121365232
+    },
+    "settings": {
+      "strength": 0.4,
+      "frequency_hz": 8.0,
+      "damping": 0.9,
+      "centrifugal_gain": 0.55,
+      "translation_gain": 0.2,
+      "helper_follow_gain": 0.25,
+      "max_offset_degrees": 8.0,
+      "sample_step": 0.5,
+      "contact_tolerance": 0.0001,
+      "max_step_degrees": 85.0
+    },
+    "joint_coverage": {
+      "selected": 23,
+      "joint_helpers": [
+        "Elbow_L",
+        "Elbow_R",
+        "Knee_L",
+        "Knee_R"
+      ],
+      "mean_active_per_sample": 17.05263157894737,
+      "least_active_per_sample": 9,
+      "active_samples_by_bone": {
+        "Arm_L": 76,
+        "Arm_R": 76,
+        "Chest": 57,
+        "Hand_L": 68,
+        "Hand_R": 67,
+        "Head": 74,
+        "Jaw": 51,
+        "Shoulder_L": 75,
+        "Shoulder_R": 75,
+        "Tail1": 51,
+        "Tail2": 51,
+        "Tail3": 31,
+        "Toe_L_in": 38,
+        "Toe_L_mid": 35,
+        "Toe_L_out": 38,
+        "Toe_R_in": 38,
+        "Toe_R_mid": 35,
+        "Toe_R_out": 38,
+        "Torso": 75,
+        "Elbow_L": 73,
+        "Elbow_R": 74,
+        "Knee_L": 52,
+        "Knee_R": 48
+      }
+    },
+    "modified_bones": [
+      "Arm_L",
+      "Arm_R",
+      "Chest",
+      "Hand_L",
+      "Hand_R",
+      "Head",
+      "Jaw",
+      "Shoulder_L",
+      "Shoulder_R",
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Toe_L_in",
+      "Toe_L_mid",
+      "Toe_L_out",
+      "Toe_R_in",
+      "Toe_R_mid",
+      "Toe_R_out",
+      "Torso",
+      "Elbow_L",
+      "Elbow_R",
+      "Knee_L",
+      "Knee_R"
+    ],
+    "com_start": [
+      1.0,
+      [
+        -0.005191704723984003,
+        0.009277367033064365,
+        0.9567753076553345
+      ]
+    ],
+    "com_end": [
+      39.0,
+      [
+        0.05999999865889549,
+        0.004595634527504444,
+        0.9607404470443726
+      ]
+    ],
+    "rules_version": 3,
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified",
+      "Review animated deforming joint helpers: ['Elbow_L', 'Elbow_R', 'Knee_L', 'Knee_R']"
+    ]
+  },
+  {
+    "action": "lizardman.inertial_spiral_rake_knee",
+    "authored": "lizardman.inertial_spiral_rake_knee.authored",
+    "lateral_results": [
+      {
+        "frame": 5.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.1,
+        "achieved": 0.09998756647109985,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 5.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.1,
+        "achieved": -0.09999048709869385,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 9.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.11,
+        "achieved": 0.1099994108080864,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 9.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.11,
+        "achieved": -0.10371553897857666,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 9.0,
+        "joint": "Arm_L",
+        "effector": "Hand_L",
+        "requested": 0.045,
+        "achieved": 0.04499924182891846,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 9.0,
+        "joint": "Arm_R",
+        "effector": "Hand_R",
+        "requested": 0.045,
+        "achieved": 0.04499964416027069,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 13.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.06,
+        "achieved": 0.05999946594238281,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 13.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": 0.12,
+        "achieved": 0.1199914813041687,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "frame": 13.0,
+        "joint": "Arm_R",
+        "effector": "Hand_R",
+        "requested": -0.045,
+        "achieved": -0.04500174522399902,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 18.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.12,
+        "achieved": 0.10689836740493774,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 18.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.12,
+        "achieved": -0.10747605562210083,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 23.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": -0.08,
+        "achieved": -0.07999521493911743,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "frame": 23.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": 0.08,
+        "achieved": 0.07999998331069946,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "frame": 26.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.12,
+        "achieved": 0.11999781429767609,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 26.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.04,
+        "achieved": -0.04000431299209595,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 26.0,
+        "joint": "Arm_L",
+        "effector": "Hand_L",
+        "requested": 0.045,
+        "achieved": 0.04501490294933319,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 29.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": -0.12,
+        "achieved": -0.11999748647212982,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "frame": 29.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.05,
+        "achieved": -0.05000567436218262,
+        "local_axis": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 29.0,
+        "joint": "Arm_L",
+        "effector": "Hand_L",
+        "requested": -0.045,
+        "achieved": -0.04500046372413635,
+        "local_axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "frame": 33.0,
+        "joint": "Shoulder_L",
+        "effector": "Hand_L",
+        "requested": 0.05,
+        "achieved": 0.0499982126057148,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "frame": 33.0,
+        "joint": "Shoulder_R",
+        "effector": "Hand_R",
+        "requested": -0.05,
+        "achieved": -0.05001777410507202,
+        "local_axis": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 1,
+        "end": 3
+      },
+      {
+        "bone": "Foot_L",
+        "start": 21,
+        "end": 23
+      },
+      {
+        "bone": "Foot_R",
+        "start": 29,
+        "end": 31
+      }
+    ],
+    "impacts": [
+      13,
+      23,
+      29
+    ],
+    "preview_frames": [
+      1,
+      13,
+      23,
+      29,
+      37
+    ],
+    "refinement": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 25.162563625456993
+    },
+    "settings": {
+      "strength": 0.4,
+      "frequency_hz": 8.0,
+      "damping": 0.9,
+      "centrifugal_gain": 0.55,
+      "translation_gain": 0.2,
+      "helper_follow_gain": 0.25,
+      "max_offset_degrees": 8.0,
+      "sample_step": 0.5,
+      "contact_tolerance": 0.0001,
+      "max_step_degrees": 85.0
+    },
+    "joint_coverage": {
+      "selected": 23,
+      "joint_helpers": [
+        "Elbow_L",
+        "Elbow_R",
+        "Knee_L",
+        "Knee_R"
+      ],
+      "mean_active_per_sample": 16.458333333333332,
+      "least_active_per_sample": 7,
+      "active_samples_by_bone": {
+        "Arm_L": 72,
+        "Arm_R": 72,
+        "Chest": 56,
+        "Hand_L": 64,
+        "Hand_R": 64,
+        "Head": 69,
+        "Jaw": 44,
+        "Shoulder_L": 72,
+        "Shoulder_R": 71,
+        "Tail1": 52,
+        "Tail2": 44,
+        "Tail3": 51,
+        "Toe_L_in": 20,
+        "Toe_L_mid": 28,
+        "Toe_L_out": 20,
+        "Toe_R_in": 20,
+        "Toe_R_mid": 28,
+        "Toe_R_out": 20,
+        "Torso": 71,
+        "Elbow_L": 71,
+        "Elbow_R": 71,
+        "Knee_L": 50,
+        "Knee_R": 55
+      }
+    },
+    "modified_bones": [
+      "Arm_L",
+      "Arm_R",
+      "Chest",
+      "Hand_L",
+      "Hand_R",
+      "Head",
+      "Jaw",
+      "Shoulder_L",
+      "Shoulder_R",
+      "Tail1",
+      "Tail2",
+      "Tail3",
+      "Toe_L_in",
+      "Toe_L_mid",
+      "Toe_L_out",
+      "Toe_R_in",
+      "Toe_R_mid",
+      "Toe_R_out",
+      "Torso",
+      "Elbow_L",
+      "Elbow_R",
+      "Knee_L",
+      "Knee_R"
+    ],
+    "com_start": [
+      1.0,
+      [
+        -0.008595540188252926,
+        0.01939326710999012,
+        0.9673740267753601
+      ]
+    ],
+    "com_end": [
+      37.0,
+      [
+        -0.26798367500305176,
+        0.060169823467731476,
+        0.9679378867149353
+      ]
+    ],
+    "rules_version": 3,
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified",
+      "Review animated deforming joint helpers: ['Elbow_L', 'Elbow_R', 'Knee_L', 'Knee_R']"
+    ]
+  }
+]

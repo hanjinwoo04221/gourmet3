@@ -17,6 +17,7 @@ import org.example.hanjinwoo.gourmet2.skill.impl.KnifeSkill;
 import org.example.hanjinwoo.gourmet2.skill.impl.LegKnifeSkill;
 import org.example.hanjinwoo.gourmet2.skill.impl.NailGunSkill;
 import org.example.hanjinwoo.gourmet2.skill.impl.NailPunchSkill;
+import org.example.hanjinwoo.gourmet2.skill.impl.ResistanceSkill;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -44,6 +45,7 @@ public final class SkillRegistry {
         BEHAVIORS.put(SkillType.CHOPSTICK_SINGLE, new ChopstickSingleSkill());
         BEHAVIORS.put(SkillType.CHOPSTICK_ASURA, new ChopstickAsuraSkill());
         BEHAVIORS.put(SkillType.MINORITY_WORLD, new MinorityWorldSkill());
+        BEHAVIORS.put(SkillType.RESISTANCE, new ResistanceSkill());
 
         // Fail at class-load rather than mid-fight if a new SkillType is added without mechanics.
         for (SkillType type : SkillType.VALUES) {

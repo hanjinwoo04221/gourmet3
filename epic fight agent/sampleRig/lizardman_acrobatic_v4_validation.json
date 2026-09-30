@@ -1,0 +1,353 @@
+{
+  "bite": {
+    "frames": 20,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 151.7,
+    "at": [
+      19.0,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 30.313,
+    "head_height_range": 0.456
+  },
+  "claw_left": {
+    "frames": 18,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 62.3,
+    "at": [
+      10.5,
+      "Hand_L"
+    ],
+    "ends_gap_deg": 56.044,
+    "head_height_range": 0.113
+  },
+  "claw_right": {
+    "frames": 18,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 62.3,
+    "at": [
+      10.5,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 56.044,
+    "head_height_range": 0.113
+  },
+  "dash_spin": {
+    "frames": 26,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0288,
+    "max_half_frame_deg": 141.4,
+    "at": [
+      25.0,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.143
+  },
+  "dodge": {
+    "frames": 18,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0266,
+    "max_half_frame_deg": 82.8,
+    "at": [
+      15.0,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.922
+  },
+  "duck_rake_bite": {
+    "frames": 38,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0224,
+    "max_half_frame_deg": 118.5,
+    "at": [
+      25.0,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.57
+  },
+  "flurry_left": {
+    "frames": 12,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 98.4,
+    "at": [
+      6.5,
+      "Hand_L"
+    ],
+    "ends_gap_deg": 56.044,
+    "head_height_range": 0.097
+  },
+  "flurry_right": {
+    "frames": 12,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 98.4,
+    "at": [
+      6.5,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 56.044,
+    "head_height_range": 0.097
+  },
+  "guard": {
+    "frames": 16,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 14.1,
+    "at": [
+      1.0,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.192
+  },
+  "hop_tail_claw": {
+    "frames": 44,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 129.9,
+    "at": [
+      10.0,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.827
+  },
+  "idle": {
+    "frames": 64,
+    "loop": true,
+    "finite": true,
+    "min_foot_z": 0.0374,
+    "max_half_frame_deg": 2.8,
+    "at": [
+      17.5,
+      "Tail3"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.03
+  },
+  "jump": {
+    "frames": 24,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 91.7,
+    "at": [
+      19.0,
+      "Arm_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.871
+  },
+  "launcher": {
+    "frames": 22,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 125.7,
+    "at": [
+      10.0,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.944
+  },
+  "leap": {
+    "frames": 30,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 77.0,
+    "at": [
+      22.0,
+      "Elbow_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 1.033
+  },
+  "leap_charge": {
+    "frames": 16,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 174.8,
+    "at": [
+      9.0,
+      "Elbow_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.816
+  },
+  "rise_left": {
+    "frames": 18,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 131.9,
+    "at": [
+      10.0,
+      "Hand_L"
+    ],
+    "ends_gap_deg": 56.044,
+    "head_height_range": 0.415
+  },
+  "rise_punch": {
+    "frames": 16,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 152.5,
+    "at": [
+      10.5,
+      "Arm_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.585
+  },
+  "rise_right": {
+    "frames": 18,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 131.9,
+    "at": [
+      10.0,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 56.044,
+    "head_height_range": 0.415
+  },
+  "run": {
+    "frames": 20,
+    "loop": true,
+    "finite": true,
+    "min_foot_z": 0.031,
+    "max_half_frame_deg": 77.5,
+    "at": [
+      2.0,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.277
+  },
+  "run_bite": {
+    "frames": 14,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.031,
+    "max_half_frame_deg": 126.6,
+    "at": [
+      11.5,
+      "Hand_L"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.379
+  },
+  "run_claw_left": {
+    "frames": 14,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.031,
+    "max_half_frame_deg": 143.4,
+    "at": [
+      2.0,
+      "Hand_L"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.312
+  },
+  "run_claw_right": {
+    "frames": 10,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.031,
+    "max_half_frame_deg": 132.9,
+    "at": [
+      1.5,
+      "Hand_L"
+    ],
+    "ends_gap_deg": 164.981,
+    "head_height_range": 0.312
+  },
+  "skill_charge": {
+    "frames": 22,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0385,
+    "max_half_frame_deg": 22.9,
+    "at": [
+      22.0,
+      "Arm_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.197
+  },
+  "skill_thrust": {
+    "frames": 14,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0375,
+    "max_half_frame_deg": 75.7,
+    "at": [
+      8.5,
+      "Hand_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.394
+  },
+  "spike": {
+    "frames": 16,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0077,
+    "max_half_frame_deg": 53.0,
+    "at": [
+      7.0,
+      "Thigh_R"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.632
+  },
+  "tail_slam": {
+    "frames": 28,
+    "loop": false,
+    "finite": true,
+    "min_foot_z": 0.0288,
+    "max_half_frame_deg": 80.2,
+    "at": [
+      17.0,
+      "Tail3"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.276
+  },
+  "walk": {
+    "frames": 40,
+    "loop": true,
+    "finite": true,
+    "min_foot_z": 0.0353,
+    "max_half_frame_deg": 5.1,
+    "at": [
+      15.0,
+      "Thigh_L"
+    ],
+    "ends_gap_deg": 0.0,
+    "head_height_range": 0.11
+  }
+}

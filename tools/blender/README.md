@@ -116,3 +116,85 @@ meaningless. `azimuth_deg` 0 = straight in front of the face (best for roll), 90
 Run `lizardman_export_check.py` after any edit to the passes. It is the regression check, and it must end with
 `OK: clip set, lengths, loop flags, bones, channels and easing all preserved.`
 
+## Mixamo retargeting
+
+`lizardman_mixamo.py` drives this rig from Mixamo FBX clips. Drop the downloads in `tools/blender/mixamo/`
+(animation-only, no skin, is enough) and run:
+
+```python
+import lizardman_mixamo as MX
+MX.apply(project, {"idle": "Idle.fbx", "run": "Run.fbx"})   # replaces those clips
+LA.export_all(project)
+```
+
+`apply` rebuilds the rig from the mod files first, so the other clips keep whatever the realism pass gave
+them. Only the clips you name are replaced. Before overwriting a good export, snapshot it —
+`tools/blender/snapshots/` holds the pre-Mixamo realism version, and the exporter's `.bak` holds the pristine
+pre-realism original.
+
+### Bone mapping
+
+`MAPPING` maps one source bone per target bone, using the **deepest** bone of each source chain, because
+matching world orientations already folds the skipped bones in — `Hand_L <- mixamorig:LeftHand` carries the
+whole forearm and wrist bend, which matters here since this rig has no separate forearm.
+
+22 of the 32 bones are driven: `Hips`→`Root`, `Spine`→`Torso`, `Spine2`→`Chest`, `Head`→`Head`, the
+shoulders/arms/hands, `UpLeg`/`Leg`/`Foot`/`ToeBase` per side. The rest are synthesised, because Mixamo has
+nothing like them: `Tail1..3` follow the pelvis's rotation delayed and amplified, `Jaw` gets a breath or a
+step-synced pant, `Toe_*_in/out` copy the middle toe plus a static splay, and the `Elbow`/`Knee` nubs follow
+their parent at 35%.
+
+### Why the retarget looks the way it does
+
+Three properties of this rig and of Mixamo had to be handled, and each one produced a visible bug first:
+
+1. **Every Lizardman bone's `matrix_local` is the identity.** The rig is axis-aligned `+Y` stubs with roll 0,
+   so `D_bone = D_parent @ (Qr @ Qbasis @ Qr^-1)` collapses to `Qbasis = Q_parent_pose^-1 @ D_bone`. Feed it
+   the parent's *basis* instead of its *pose* and every joint lands about 90 deg out.
+
+2. **The target's bone axis is not its limb direction.** The stubs all point `+Y` while the parts extend
+   elsewhere: legs `-Z`, spine `+Z`, shoulders `+X`, feet forward-down. Transferring bone *frames* therefore
+   folds the legs sideways. `LIMB_AXIS` states the real direction for all 32 bones, taken from the geo
+   pivots. It is explicit rather than measured from the mesh, because four bones carry their weight behind the
+   joint — `Foot` holds the heel and its centroid points backwards, ~90 deg off; `Leg` reaches back; the
+   `Elbow`/`Knee` nubs sit forward.
+
+3. **Matching the limb direction alone leaves the twist free**, which on a blocky model turns the silhouette.
+   `alignment()` does a swing-twist decomposition: keep the swing that puts the limb on the source's limb
+   direction, then carry over the twist component about that limb. Result: `Q(target) = Q(source) @ C` with
+   `C` the constant rest-convention offset.
+
+Mixamo is a T-pose and this rig rests with the arms down; because the transfer is `delta @ alignment` it does
+not matter — the target ends up pointing wherever the source points, which is the point.
+
+Then two more things that only show up in the game:
+
+* **Euler branch flips.** `to_euler` picks any equivalent branch, and a flip between neighbouring frames makes
+  GeckoLib spin the bone across one frame. Conversion passes the previous frame as `euler_compat`, then shifts
+  each axis by whole turns to keep the values near zero. `Run`'s `Thigh_L` went from a 351 deg adjacent jump to
+  0 deg this way.
+* **Ground contact.** The leg-to-hip ratio differs by ~2.6%, so the feet end up ~0.03-0.07 blocks off the
+  floor. `ground_contact` applies one constant vertical offset, which keeps the source's bob and contact
+  timing; per-frame clamping would flatten a run's flight phase.
+
+The tail chain is deliberately *not* dragged on the one-shots — `tail_needs_drag` first checks whether the
+committed clips already stagger Tail1→Tail2→Tail3, and they do, by 0.72-0.96 frames.
+
+### Verifying a retarget
+
+`MX.verify(dst_arm, src_arm, src_action, clip)` returns two independent per-bone measurements, both in degrees:
+
+| key | meaning | expected |
+|---|---|---|
+| `limb` | where the source's limb points vs where the target's limb points, each rig using its own limb axis | `Head` 8.0 (its own bind tilt), everything else ~0 |
+| `twist_drift` | how much the frame difference `Q(src)^-1 @ Q(target)` moves over the clip | 0 for every bone |
+
+`twist_drift` is the check that catches a direction-only retarget; note the product order, since the reverse
+is not constant even when the retarget is perfect. Fold the quaternion double cover with `abs(w)` when
+comparing, or a perfect match reports a phantom 180 deg.
+
+`lizardman_mixamo_check.py` then validates the exported JSON: clip set, loop flags, finite values, that only
+the named clips changed, and that no retargeted curve has a whole-turn jump between adjacent keys. It must end
+with `PROBLEMS: none`.
+
+

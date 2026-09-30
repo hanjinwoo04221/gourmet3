@@ -1,0 +1,52 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_21",
+  "package": "yesman.epicfight.mixin",
+  "client": [
+    "client.MixinAbstractContainerEventHandler",
+    "client.MixinAgeableListModel",
+    "client.MixinCamera",
+    "client.MixinClientCommonPacketListenerImpl",
+    "client.MixinClientPacketListener",
+    "client.MixinCompositeRenderType",
+    "client.MixinEnderDragonRenderer",
+    "client.MixinEntityRenderer",
+    "client.MixinGameRenderer",
+    "client.MixinGui",
+    "client.MixinInventory",
+    "client.MixinKeyboardHandler",
+    "client.MixinLevelRenderer",
+    "client.MixinLightTexture",
+    "client.MixinLivingEntityRenderer",
+    "client.MixinLocalPlayer",
+    "client.MixinMeshData",
+    "client.MixinMinecraft",
+    "client.MixinMouseHandler",
+    "client.MixinOptions",
+    "client.MixinParticleEngine",
+    "client.MixinThrownTridentRenderer"
+  ],
+  "mixins": [
+    "common.MixinCrossbowAttack",
+    "common.MixinDamageSources",
+    "common.MixinEntity",
+    "common.MixinLivingEntity",
+    "common.MixinMob",
+    "common.MixinPlayer",
+    "common.MixinProjectile",
+    "common.MixinRangedAttackGoal",
+    "common.MixinRangedBowAttackGoal",
+    "common.MixinRangedCrossbowAttackGoal",
+    "common.MixinServerCommonPacketListenerImpl",
+    "common.MixinServerEntity",
+    "common.MixinThrownTrident",
+    "common.MixinTridentAttack",
+    "common.MixinWitherBoss",
+    "common.MixinWitherBossAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "epicfight.mixins.refmap.json"
+}

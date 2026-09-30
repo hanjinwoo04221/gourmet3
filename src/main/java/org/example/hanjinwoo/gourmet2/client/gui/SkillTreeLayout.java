@@ -33,6 +33,7 @@ final class SkillTreeLayout {
         PARENT.put(SkillType.LEG_KNIFE, SkillType.KNIFE);
         PARENT.put(SkillType.FLYING_KNIFE, SkillType.KNIFE);
         PARENT.put(SkillType.NAIL_GUN, SkillType.NAIL_PUNCH);
+        PARENT.put(SkillType.RESISTANCE, SkillType.NAIL_PUNCH);
         PARENT.put(SkillType.FLYING_FORK, SkillType.NAIL_GUN);
         // Demon.
         PARENT.put(SkillType.DEMON_FORM, SkillType.INTIMIDATION);

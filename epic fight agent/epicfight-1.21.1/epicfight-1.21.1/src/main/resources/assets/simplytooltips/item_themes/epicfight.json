@@ -1,0 +1,52 @@
+{
+  "items":
+  {
+    "epicfight:wooden_longsword": { "theme": "wood", "badges": ["LONGSWORD", "WOOD"] },
+    "epicfight:wooden_greatsword": { "theme": "wood", "badges": ["GREATSWORD", "WOOD"] },
+    "epicfight:wooden_tachi": { "theme": "wood", "badges": ["TACHI", "WOOD"] },
+    "epicfight:wooden_dagger": { "theme": "wood", "badges": ["DAGGER", "WOOD"] },
+    "epicfight:wooden_spear": { "theme": "wood", "badges": ["SPEAR", "WOOD"] },
+    "epicfight:bokken": { "theme": "wood", "badges": ["BOKKEN", "WOOD", "UNIQUE"] },
+
+    "epicfight:stone_longsword": { "theme": "stone", "badges": ["LONGSWORD", "STONE"] },
+    "epicfight:stone_greatsword": { "theme": "stone", "badges": ["GREATSWORD", "STONE"] },
+    "epicfight:stone_tachi": { "theme": "stone", "badges": ["TACHI", "STONE"] },
+    "epicfight:stone_dagger": { "theme": "stone", "badges": ["DAGGER", "STONE"] },
+    "epicfight:stone_spear": { "theme": "stone", "badges": ["SPEAR", "STONE"] },
+
+    "epicfight:iron_longsword": { "theme": "iron", "badges": ["LONGSWORD", "IRON"] },
+    "epicfight:iron_greatsword": { "theme": "iron", "badges": ["GREATSWORD", "IRON"] },
+    "epicfight:iron_tachi": { "theme": "iron", "badges": ["TACHI", "IRON"] },
+    "epicfight:iron_dagger": { "theme": "iron", "badges": ["DAGGER", "IRON"] },
+    "epicfight:iron_spear": { "theme": "iron", "badges": ["SPEAR", "IRON"] },
+    "epicfight:glove": { "theme": "iron", "badges": ["GLOVE", "IRON"] },
+
+    "epicfight:golden_longsword": { "theme": "gold", "badges": ["LONGSWORD", "GOLD"] },
+    "epicfight:golden_greatsword": { "theme": "gold", "badges": ["GREATSWORD", "GOLD"] },
+    "epicfight:golden_tachi": { "theme": "gold", "badges": ["TACHI", "GOLD"] },
+    "epicfight:golden_dagger": { "theme": "gold", "badges": ["DAGGER", "GOLD"] },
+    "epicfight:golden_spear": { "theme": "gold", "badges": ["SPEAR", "GOLD"] },
+
+    "epicfight:diamond_longsword": { "theme": "diamond", "badges": ["LONGSWORD", "DIAMOND"] },
+    "epicfight:diamond_greatsword": { "theme": "diamond", "badges": ["GREATSWORD", "DIAMOND"] },
+    "epicfight:diamond_tachi": { "theme": "diamond", "badges": ["TACHI", "DIAMOND"] },
+    "epicfight:diamond_dagger": { "theme": "diamond", "badges": ["DAGGER", "DIAMOND"] },
+    "epicfight:diamond_spear": { "theme": "diamond", "badges": ["SPEAR", "DIAMOND"] },
+
+    "epicfight:netherite_longsword": { "theme": "netherite", "badges": ["LONGSWORD", "NETHERITE"] },
+    "epicfight:netherite_greatsword": { "theme": "netherite", "badges": ["GREATSWORD", "NETHERITE"] },
+    "epicfight:netherite_tachi": { "theme": "netherite", "badges": ["TACHI", "NETHERITE"] },
+    "epicfight:netherite_dagger": { "theme": "netherite", "badges": ["DAGGER", "NETHERITE"] },
+    "epicfight:netherite_spear": { "theme": "netherite", "badges": ["SPEAR", "NETHERITE"] },
+
+    "epicfight:skillbook": { "theme": "enchanted" },
+
+    "epicfight:stray_hat": { "theme": "stone", "badges": ["ARMOR", "UNIQUE"] },
+    "epicfight:stray_robe": { "theme": "stone", "badges": ["ARMOR", "UNIQUE"] },
+    "epicfight:stray_pants": { "theme": "stone", "badges": ["ARMOR", "UNIQUE"] },
+
+    "epicfight:uchigatana": { "theme": "blossom", "badges": ["UCHIGATANA", "UNIQUE"] },
+    "minecraft:trident": { "theme": "bubble", "badges": ["TRIDENT", "UNIQUE"] },
+    "minecraft:mace": { "theme": "enchanted", "badges": ["MACE", "UNIQUE"] }
+  }
+}

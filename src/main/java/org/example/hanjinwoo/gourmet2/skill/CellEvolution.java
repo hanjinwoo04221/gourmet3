@@ -193,6 +193,22 @@ public final class CellEvolution {
         return 1.0F + level * 0.05F;
     }
 
+    // ---------------------------------------------------------------- resistance
+
+    /**
+     * The share of incoming damage that still lands at this Cell level (the Resistance passive): each level takes a
+     * little more off, and it only ever approaches nothing — no level makes a body immune. Level 10 takes about
+     * 41% off, level 30 about 68%, level 100 about 87%.
+     */
+    public static float resistanceFactor(int level) {
+        return 1.0F / (1.0F + 0.07F * Math.max(0, level));
+    }
+
+    /** The damage pool a Resistance window can shrug off at this Cell level. */
+    public static float resistCapacity(int level) {
+        return 8.0F + 3.0F * Math.max(0, level);
+    }
+
     // ---------------------------------------------------------------- cost scaling
 
     /**

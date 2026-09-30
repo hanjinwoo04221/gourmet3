@@ -1,0 +1,16 @@
+{
+	"attribute_modifiers": [
+		{
+			"attribute": "minecraft:generic.attack_damage",
+			"id": "epicfight:forbidden_strength_modifier",
+			"operation": "add_multiplied_total",
+			"amount": 0.05
+		},
+		{
+			"attribute": "minecraft:generic.max_health",
+			"id": "epicfight:forbidden_strength_modifier",
+			"operation": "add_value",
+			"amount": 4.0
+		}
+	]
+}

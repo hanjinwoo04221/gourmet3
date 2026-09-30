@@ -28,6 +28,8 @@ public final class MobFighter {
     private final Mob mob;
     private @Nullable MobDouble twin;
     private @Nullable Vec3 aim;
+    private static final int RESIST_RECOVERY = 90;
+    private int resistReadyTick;
 
     public MobFighter(Mob mob) {
         this.mob = mob;
@@ -148,6 +150,23 @@ public final class MobFighter {
         CombatEngine.handle(twin(), CombatAction.AERIAL_ATTACK.ordinal(), 0);
     }
 
+    /**
+     * Braces with the Resistance active: opens the resist window at this body's Cell level (a mob does not need the
+     * skill unlocked) and plays the guard clip. Refuses while it is still recovering from the last one.
+     */
+    public boolean resist() {
+        if (mob.tickCount < resistReadyTick) {
+            return false;
+        }
+        resistReadyTick = mob.tickCount + RESIST_RECOVERY;
+        MobDouble t = twin();
+        org.example.hanjinwoo.gourmet2.skill.ResistanceEngine.open(t, data());
+        if (mob instanceof ClipPlayer player) {
+            player.playClip("guard");
+        }
+        return true;
+    }
+
     public void dodge() {
         CombatEngine.handle(twin(), CombatAction.DODGE.ordinal(), 0);
     }
@@ -172,6 +191,11 @@ public final class MobFighter {
 
     public void leapCharge() {
         LeapEngine.charge(twin());
+    }
+
+    /** A short leap tap: the flash step, toward these movement keys (forward, strafe-left), relative to where it faces. */
+    public boolean flashStep(float forward, float strafe) {
+        return org.example.hanjinwoo.gourmet2.skill.LeapEngine.flash(twin(), data(), forward, strafe);
     }
 
     public void leapRelease() {

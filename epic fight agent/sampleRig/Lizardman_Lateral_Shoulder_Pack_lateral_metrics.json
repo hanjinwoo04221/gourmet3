@@ -1,0 +1,30 @@
+{
+  "lizardman.cross_claw_knee": {
+    "L": {
+      "hand_lateral_range": 0.4349683076143265,
+      "shoulder_y_range_degrees": 36.06746278022348,
+      "hand_lateral_min": 0.242146298289299,
+      "hand_lateral_max": 0.6771146059036255
+    },
+    "R": {
+      "hand_lateral_range": 0.2929041385650635,
+      "shoulder_y_range_degrees": 35.75299062555234,
+      "hand_lateral_min": -0.5588346123695374,
+      "hand_lateral_max": -0.2659304738044739
+    }
+  },
+  "lizardman.low_sweep_double_rake": {
+    "L": {
+      "hand_lateral_range": 0.5364310443401337,
+      "shoulder_y_range_degrees": 31.99202892135486,
+      "hand_lateral_min": 0.20902594923973083,
+      "hand_lateral_max": 0.7454569935798645
+    },
+    "R": {
+      "hand_lateral_range": 0.5234882533550262,
+      "shoulder_y_range_degrees": 37.5852503421108,
+      "hand_lateral_min": -0.7591313123703003,
+      "hand_lateral_max": -0.23564305901527405
+    }
+  }
+}

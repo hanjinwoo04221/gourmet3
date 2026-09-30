@@ -1,0 +1,37 @@
+{
+  "martial.jab_cross_hook": {
+    "authored_joint_keys_min_max": [
+      2,
+      13
+    ],
+    "max_half_frame_rotation_degrees": 15.285346598012058,
+    "worst_step": [
+      17.5,
+      "Elbow_R"
+    ],
+    "median_moving_joints": 12,
+    "contact_world_tail_drift": {
+      "Foot_R:7-10": 0.011789611174115398,
+      "Foot_L:16-19": 0.016659378595703905,
+      "Foot_R:25-28": 0.026751873865682074
+    },
+    "largest_reach_error": 2.6538372039794367e-05
+  },
+  "martial.slip_elbow_knee": {
+    "authored_joint_keys_min_max": [
+      2,
+      10
+    ],
+    "max_half_frame_rotation_degrees": 17.509361078422046,
+    "worst_step": [
+      13.0,
+      "Arm_R"
+    ],
+    "median_moving_joints": 29,
+    "contact_world_tail_drift": {
+      "Foot_L:11-15": 0.033851204499371124,
+      "Foot_R:22-26": 0.026925803891361576
+    },
+    "largest_reach_error": 1.1485815048214998e-05
+  }
+}

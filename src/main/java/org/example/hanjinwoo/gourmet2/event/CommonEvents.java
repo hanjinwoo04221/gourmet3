@@ -24,6 +24,13 @@ public final class CommonEvents {
     private CommonEvents() {}
 
     @SubscribeEvent
+    public static void onPlayerTickPre(PlayerTickEvent.Pre event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            org.example.hanjinwoo.gourmet2.skill.PlayerCling.serverTick(player);
+        }
+    }
+
+    @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             SkillEngine.tick(player);

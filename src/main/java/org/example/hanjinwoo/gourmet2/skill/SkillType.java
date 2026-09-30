@@ -62,7 +62,13 @@ public enum SkillType {
     /** Asura Chopsticks (Ichiryu) - hold to spray big single chopsticks straight ahead. */
     CHOPSTICK_ASURA("chopstick_asura", 4, 50, 0, 0xFFD84A, InputMode.AUTO, SkillTree.ICHIRYU, 35),
     /** Minority World (Ichiryu) - a sphere whose rules the caster rewrites from a settings screen. */
-    MINORITY_WORLD("minority_world", 30, 0, 0, 0x8A5CFF, InputMode.INSTANT, SkillTree.ICHIRYU, 40);
+    MINORITY_WORLD("minority_world", 30, 0, 0, 0x8A5CFF, InputMode.INSTANT, SkillTree.ICHIRYU, 40),
+    /**
+     * 抵抗 — passive: every Cell level cuts the damage taken; active: a brief window that shrugs off blows up to a
+     * level-scaled pool of damage and throws the attacker off, breaking their combo. Appended last: the ordinal
+     * is the wire format.
+     */
+    RESISTANCE("resistance", 14, 120, 0, 0xC8D0E0, InputMode.INSTANT, SkillTree.TECHNIQUE, 5);
 
     /** How the use-key controls this skill. See {@code SkillEngine}/{@code ClientEvents}. */
     public enum InputMode {

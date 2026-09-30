@@ -1,0 +1,271 @@
+[
+  {
+    "action": "mocap.boxing_two_strikes",
+    "source": "14_01.bvh",
+    "source_frames": [
+      1531,
+      1711
+    ],
+    "mapping": {
+      "Torso": "LowerBack",
+      "Chest": "Spine",
+      "Head": "Head",
+      "Shoulder_L": "LeftShoulder",
+      "Arm_L": "LeftArm",
+      "Elbow_L": "LeftForeArm",
+      "Shoulder_R": "RightShoulder",
+      "Arm_R": "RightArm",
+      "Elbow_R": "RightForeArm",
+      "Thigh_L": "LeftUpLeg",
+      "Knee_L": "LeftLeg",
+      "Leg_L": "LeftLeg",
+      "Foot_L": "LeftFoot",
+      "Thigh_R": "RightUpLeg",
+      "Knee_R": "RightLeg",
+      "Leg_R": "RightLeg",
+      "Foot_R": "RightFoot"
+    },
+    "mapped_bones": [
+      "Arm_L",
+      "Arm_R",
+      "Chest",
+      "Elbow_L",
+      "Elbow_R",
+      "Foot_L",
+      "Foot_R",
+      "Head",
+      "Knee_L",
+      "Knee_R",
+      "Leg_L",
+      "Leg_R",
+      "Shoulder_L",
+      "Shoulder_R",
+      "Thigh_L",
+      "Thigh_R",
+      "Torso"
+    ],
+    "scale": 0.0,
+    "anchors": [
+      13,
+      22
+    ],
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 7,
+        "end": 15
+      },
+      {
+        "bone": "Foot_L",
+        "start": 18,
+        "end": 28
+      }
+    ],
+    "ik_residual_max": {
+      "Hand_L": 0.45275527602679877,
+      "Hand_R": 0.2211058509860945,
+      "Foot_R": null
+    },
+    "prelock_contact_deviation": {
+      "Foot_R": [
+        5.3726900748371916e-08,
+        0.0,
+        8.33000234328132e-08,
+        8.024520884654677e-08,
+        0.0,
+        8.33000234328132e-08,
+        0.0,
+        4.344397704933063e-08,
+        5.3726900748371916e-08
+      ],
+      "Foot_L": [
+        0.0,
+        3.332000937312528e-08,
+        5.819089469244073e-08,
+        2.6863450374185958e-08,
+        4.7706993203109864e-08,
+        0.0,
+        6.409231772305538e-08,
+        7.450580596923828e-08,
+        0.0,
+        6.869095904598301e-08,
+        2.6863450374185958e-08
+      ]
+    },
+    "validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 12.165783481039194
+    },
+    "joint_coverage": {
+      "selected": 23,
+      "joint_helpers": [
+        "Elbow_L",
+        "Elbow_R",
+        "Knee_L",
+        "Knee_R"
+      ],
+      "mean_active_per_sample": 5.402777777777778,
+      "least_active_per_sample": 2,
+      "active_samples_by_bone": {
+        "Arm_L": 70,
+        "Arm_R": 69,
+        "Chest": 0,
+        "Hand_L": 0,
+        "Hand_R": 0,
+        "Head": 0,
+        "Jaw": 0,
+        "Shoulder_L": 64,
+        "Shoulder_R": 69,
+        "Tail1": 0,
+        "Tail2": 0,
+        "Tail3": 0,
+        "Toe_L_in": 0,
+        "Toe_L_mid": 0,
+        "Toe_L_out": 0,
+        "Toe_R_in": 0,
+        "Toe_R_mid": 0,
+        "Toe_R_out": 0,
+        "Torso": 4,
+        "Elbow_L": 45,
+        "Elbow_R": 68,
+        "Knee_L": 0,
+        "Knee_R": 0
+      }
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified",
+      "Review animated deforming joint helpers: ['Elbow_L', 'Elbow_R', 'Knee_L', 'Knee_R']"
+    ]
+  },
+  {
+    "action": "mocap.front_kick_right",
+    "source": "135_04.bvh",
+    "source_frames": [
+      311,
+      461
+    ],
+    "mapping": {
+      "Torso": "LowerBack",
+      "Chest": "Spine",
+      "Head": "Head",
+      "Shoulder_L": "LeftShoulder",
+      "Arm_L": "LeftArm",
+      "Elbow_L": "LeftForeArm",
+      "Shoulder_R": "RightShoulder",
+      "Arm_R": "RightArm",
+      "Elbow_R": "RightForeArm",
+      "Thigh_L": "LeftUpLeg",
+      "Knee_L": "LeftLeg",
+      "Leg_L": "LeftLeg",
+      "Foot_L": "LeftFoot",
+      "Thigh_R": "RightUpLeg",
+      "Knee_R": "RightLeg",
+      "Leg_R": "RightLeg",
+      "Foot_R": "RightFoot"
+    },
+    "mapped_bones": [
+      "Arm_L",
+      "Arm_R",
+      "Chest",
+      "Elbow_L",
+      "Elbow_R",
+      "Foot_L",
+      "Foot_R",
+      "Head",
+      "Knee_L",
+      "Knee_R",
+      "Leg_L",
+      "Leg_R",
+      "Shoulder_L",
+      "Shoulder_R",
+      "Thigh_L",
+      "Thigh_R",
+      "Torso"
+    ],
+    "scale": 0.0,
+    "anchors": [
+      14
+    ],
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 7,
+        "end": 24
+      }
+    ],
+    "ik_residual_max": {
+      "Hand_L": null,
+      "Hand_R": null,
+      "Foot_R": 0.2902121890144505
+    },
+    "prelock_contact_deviation": {
+      "Foot_L": [
+        3.7990655851310376e-08,
+        1.666000468656264e-08,
+        7.450580596923828e-09,
+        3.332000937312528e-08,
+        2.1073424255447017e-08,
+        3.725290298461914e-08,
+        0.0,
+        0.0,
+        0.0,
+        2.2351741790771484e-08,
+        7.028863677424642e-08,
+        2.1073424255447017e-08,
+        0.0,
+        1.0536712127723509e-08,
+        1.0536712127723509e-08,
+        3.0719530773294423e-08,
+        3.7990655851310376e-08,
+        2.356080457693621e-08
+      ]
+    },
+    "validation": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 13.463450476674526
+    },
+    "joint_coverage": {
+      "selected": 26,
+      "joint_helpers": [
+        "Elbow_L",
+        "Elbow_R",
+        "Knee_L",
+        "Knee_R"
+      ],
+      "mean_active_per_sample": 4.15,
+      "least_active_per_sample": 0,
+      "active_samples_by_bone": {
+        "Arm_L": 0,
+        "Arm_R": 0,
+        "Chest": 0,
+        "Foot_R": 51,
+        "Hand_L": 0,
+        "Hand_R": 0,
+        "Head": 0,
+        "Jaw": 0,
+        "Leg_R": 51,
+        "Shoulder_L": 0,
+        "Shoulder_R": 0,
+        "Tail1": 0,
+        "Tail2": 0,
+        "Tail3": 0,
+        "Thigh_R": 53,
+        "Toe_L_in": 0,
+        "Toe_L_mid": 0,
+        "Toe_L_out": 0,
+        "Toe_R_in": 0,
+        "Toe_R_mid": 0,
+        "Toe_R_out": 0,
+        "Torso": 4,
+        "Elbow_L": 30,
+        "Elbow_R": 15,
+        "Knee_L": 0,
+        "Knee_R": 45
+      }
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified",
+      "Review animated deforming joint helpers: ['Elbow_L', 'Elbow_R', 'Knee_L', 'Knee_R']"
+    ]
+  }
+]

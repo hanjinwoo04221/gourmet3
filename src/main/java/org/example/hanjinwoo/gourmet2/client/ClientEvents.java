@@ -289,10 +289,14 @@ public final class ClientEvents {
         // The leap key has the same shape: held to wind up, released to launch. It is not a combat-mode
         // move, so it is read here rather than inside tickCombat.
         boolean leapDown = inGame && ModKeys.LEAP.isDown();
+        float moveForward = minecraft.player == null ? 0.0F : minecraft.player.input.forwardImpulse;
+        float moveStrafe = minecraft.player == null ? 0.0F : minecraft.player.input.leftImpulse;
         if (leapDown && !leapWasDown) {
-            PacketDistributor.sendToServer(C2SLeap.CHARGE);
+            PacketDistributor.sendToServer(C2SLeap.charge(moveForward, moveStrafe));
         } else if (!leapDown && leapWasDown) {
-            PacketDistributor.sendToServer(C2SLeap.RELEASE);
+            PacketDistributor.sendToServer(C2SLeap.release(moveForward, moveStrafe));
+            // Leaving a wall or ceiling: let go of it, or the hanging pins the body against the leap.
+            ClientCling.leaveSurface();
         }
         leapWasDown = leapDown;
     }

@@ -38,6 +38,7 @@ public final class ClientSetup {
         event.register(ModKeys.COMBAT_MODE);
         event.register(ModKeys.COMBAT_STYLE);
         event.register(ModKeys.DODGE);
+        event.register(ModKeys.CLING);
         event.register(ModKeys.ATTACK_GROUP_2);
         event.register(ModKeys.ATTACK_GROUP_3);
         event.register(ModKeys.LEAP);

@@ -1,0 +1,317 @@
+[
+  {
+    "action": "lizardman.cross_claw_knee",
+    "authored": "lizardman.cross_claw_knee.authored",
+    "impacts": [
+      13,
+      23,
+      29
+    ],
+    "contacts": [
+      {
+        "bone": "Foot_R",
+        "start": 1,
+        "end": 3
+      },
+      {
+        "bone": "Foot_L",
+        "start": 11,
+        "end": 13
+      },
+      {
+        "bone": "Foot_L",
+        "start": 21,
+        "end": 23
+      },
+      {
+        "bone": "Foot_R",
+        "start": 29,
+        "end": 31
+      }
+    ],
+    "limb_accents": [
+      {
+        "frame": 5,
+        "bones": [
+          "Shoulder_L",
+          "Arm_L",
+          "Elbow_L",
+          "Hand_L",
+          "Thigh_R",
+          "Knee_R",
+          "Leg_R",
+          "Foot_R"
+        ]
+      },
+      {
+        "frame": 9,
+        "bones": [
+          "Shoulder_L",
+          "Arm_L",
+          "Elbow_L",
+          "Hand_L",
+          "Thigh_R",
+          "Knee_R",
+          "Leg_R",
+          "Foot_R"
+        ]
+      },
+      {
+        "frame": 13,
+        "bones": [
+          "Shoulder_L",
+          "Arm_L",
+          "Elbow_L",
+          "Hand_L",
+          "Shoulder_R",
+          "Arm_R",
+          "Thigh_L",
+          "Knee_L",
+          "Leg_L"
+        ]
+      },
+      {
+        "frame": 18,
+        "bones": [
+          "Thigh_R",
+          "Knee_R",
+          "Leg_R",
+          "Foot_R",
+          "Shoulder_L",
+          "Arm_L",
+          "Shoulder_R",
+          "Arm_R"
+        ]
+      },
+      {
+        "frame": 23,
+        "bones": [
+          "Thigh_R",
+          "Knee_R",
+          "Leg_R",
+          "Foot_R",
+          "Shoulder_L",
+          "Arm_L",
+          "Elbow_L",
+          "Shoulder_R",
+          "Arm_R",
+          "Elbow_R"
+        ]
+      },
+      {
+        "frame": 26,
+        "bones": [
+          "Shoulder_R",
+          "Arm_R",
+          "Elbow_R",
+          "Hand_R",
+          "Thigh_L",
+          "Knee_L",
+          "Leg_L"
+        ]
+      },
+      {
+        "frame": 29,
+        "bones": [
+          "Shoulder_R",
+          "Arm_R",
+          "Elbow_R",
+          "Hand_R",
+          "Shoulder_L",
+          "Arm_L",
+          "Thigh_R",
+          "Knee_R",
+          "Leg_R"
+        ]
+      }
+    ],
+    "followthrough_bones": [
+      "Shoulder_R",
+      "Arm_R",
+      "Elbow_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Elbow_L",
+      "Hand_L",
+      "Thigh_R",
+      "Knee_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Knee_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "refinement": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 29.91664062928881
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  },
+  {
+    "action": "lizardman.low_sweep_double_rake",
+    "authored": "lizardman.low_sweep_double_rake.authored",
+    "impacts": [
+      14,
+      22,
+      28
+    ],
+    "contacts": [
+      {
+        "bone": "Foot_L",
+        "start": 1,
+        "end": 3
+      },
+      {
+        "bone": "Foot_L",
+        "start": 12,
+        "end": 14
+      },
+      {
+        "bone": "Foot_R",
+        "start": 20,
+        "end": 22
+      },
+      {
+        "bone": "Foot_L",
+        "start": 27,
+        "end": 29
+      }
+    ],
+    "limb_accents": [
+      {
+        "frame": 5,
+        "bones": [
+          "Shoulder_R",
+          "Arm_R",
+          "Elbow_R",
+          "Hand_R",
+          "Thigh_L",
+          "Knee_L",
+          "Leg_L"
+        ]
+      },
+      {
+        "frame": 10,
+        "bones": [
+          "Thigh_R",
+          "Knee_R",
+          "Leg_R",
+          "Foot_R",
+          "Shoulder_L",
+          "Arm_L",
+          "Shoulder_R",
+          "Arm_R"
+        ]
+      },
+      {
+        "frame": 14,
+        "bones": [
+          "Thigh_R",
+          "Knee_R",
+          "Leg_R",
+          "Foot_R",
+          "Shoulder_L",
+          "Arm_L",
+          "Elbow_L",
+          "Shoulder_R",
+          "Arm_R",
+          "Elbow_R"
+        ]
+      },
+      {
+        "frame": 18,
+        "bones": [
+          "Shoulder_R",
+          "Arm_R",
+          "Elbow_R",
+          "Hand_R",
+          "Thigh_L",
+          "Knee_L",
+          "Leg_L"
+        ]
+      },
+      {
+        "frame": 22,
+        "bones": [
+          "Shoulder_R",
+          "Arm_R",
+          "Elbow_R",
+          "Hand_R",
+          "Shoulder_L",
+          "Arm_L",
+          "Thigh_R",
+          "Knee_R",
+          "Leg_R"
+        ]
+      },
+      {
+        "frame": 25,
+        "bones": [
+          "Shoulder_L",
+          "Arm_L",
+          "Elbow_L",
+          "Hand_L",
+          "Thigh_R",
+          "Knee_R",
+          "Leg_R",
+          "Foot_R"
+        ]
+      },
+      {
+        "frame": 28,
+        "bones": [
+          "Shoulder_L",
+          "Arm_L",
+          "Elbow_L",
+          "Hand_L",
+          "Shoulder_R",
+          "Arm_R",
+          "Thigh_L",
+          "Knee_L",
+          "Leg_L"
+        ]
+      }
+    ],
+    "followthrough_bones": [
+      "Shoulder_R",
+      "Arm_R",
+      "Elbow_R",
+      "Hand_R",
+      "Shoulder_L",
+      "Arm_L",
+      "Elbow_L",
+      "Hand_L",
+      "Thigh_R",
+      "Knee_R",
+      "Leg_R",
+      "Foot_R",
+      "Toe_R_out",
+      "Toe_R_mid",
+      "Toe_R_in",
+      "Thigh_L",
+      "Knee_L",
+      "Leg_L",
+      "Foot_L",
+      "Toe_L_out",
+      "Toe_L_mid",
+      "Toe_L_in"
+    ],
+    "refinement": {
+      "contact_error": 0.0,
+      "max_sample_rotation_degrees": 20.801233787240008
+    },
+    "warnings": [
+      "No anatomical limits supplied; joint feasibility is not certified"
+    ]
+  }
+]

@@ -124,7 +124,7 @@ key_key.hotbar.9:key.keyboard.9
 key_key.epicfight.show_tooltip:key.keyboard.left.shift
 key_key.epicfight.skill_gui:key.keyboard.k
 key_key.epicfight.config:key.keyboard.unknown
-key_key.epicfight.emote:key.keyboard.y
+key_key.epicfight.emote:key.keyboard.unknown
 key_key.epicfight.dodge:key.keyboard.left.alt
 key_key.epicfight.guard:key.mouse.right
 key_key.epicfight.attack:key.mouse.left
@@ -144,6 +144,7 @@ key_key.gourmet2.skill_slots:key.keyboard.g
 key_key.gourmet2.combat_mode:key.keyboard.z
 key_key.gourmet2.combat_style:key.keyboard.n
 key_key.gourmet2.dodge:key.keyboard.x
+key_key.gourmet2.cling:key.keyboard.y
 key_key.gourmet2.attack_group_2:key.keyboard.f
 key_key.gourmet2.attack_group_3:key.keyboard.t
 key_key.gourmet2.leap:key.keyboard.q
